@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+    <link rel="stylesheet" href="/static/commons.css">
+    <style>
+        form{
+            width: 800px;
+            height: 480px;
+            margin: 200px auto;
+        }
+        form label{
+            display: inline-block;
+            width: 120px;
+            text-align: right;
+            margin: 10px 0;
+        }
+        form input{
+            width: 120px;
+            margin: 10px 0;
+        }
+        form input[type='submit']{
+            margin-left: 120px;
+        }
+        .msg{
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <form action="/login/" method="post">
+        <p>
+            <label for="user">用户名：</label>
+            <input id="user" name="user" type="text" />
+        </p>
+        <p>
+            <label for="password">密码：</label>
+            <input id="password" name="password" type="password" />
+        </p>
+        <p>
+            <input type="submit" value="登录" />
+        </p>
+        <p><span class="msg">{{ msg_info }}</span></p>
+    </form>
+    <script src="/static/jquery3.4.1.js"></script>
+</body>
+</html>

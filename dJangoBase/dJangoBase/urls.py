@@ -17,13 +17,12 @@ from django.contrib import admin
 from django.urls import path
 
 from django.shortcuts import HttpResponse
-from app_test.views import app_test_hello
-
-def home(request):
-    return HttpResponse("<h1>Hello world!</h1>")
+import app_test.views
+import sysfunc.views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('hello/', home),
-    path('app_test_hello', app_test_hello),
+    path('app_test_hello', app_test.views.app_test_hello),
+    path('login/', sysfunc.views.login),
+    path('home', sysfunc.views.home),
 ]
