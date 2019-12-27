@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>员工管理</title>
+    <link rel="stylesheet" href="/static/commons.css">
+</head>
+<body>
+    <div id="frameTitle">
+        <div id="frameTitleText">后台管理系统</div>
+    </div>
+    <div id="frameMain">
+        <div id="frameMenu0">
+            <div class="frameMenu1">后台管理</div>
+            <div class="frameMenu2">员工管理</div>
+        </div>
+        <div id="frameContent">
+            <div>员工管理</div>
+            <table id="empList">
+                <thead>
+                <tr>
+                    <td>ID</td>
+                    <td>姓名</td>
+                    <td>性别</td>
+                    <td>岗位</td>
+                    <td>操作</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                {% for emp in empList %}
+                    <td>{{ emp.key }}</td>
+                    <td><a href="/employees/detail?oID={{ emp.ID }}">{{ emp.name }}</a></td>
+                    <td>{{ emp.gender }}</td>
+                    <td>{{ emp.position }}</td>
+                    <td><a href="/employees/update?oID={{ emp.ID }}">修改</a> |
+                        <a href="/employees/delete?oID={{ emp.ID }}">删除</a></td>
+                {% endfor %}
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script src="/static/jquery3.4.1.js"></script>
+</body>
+</html>

@@ -1,4 +1,4 @@
-"""dJangoBase URL Configuration
+"""exerDjango URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/3.0/topics/http/urls/
@@ -15,14 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-
-from django.shortcuts import HttpResponse
-import app_test.views
-import sysfunc.views
+import appSys.views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('app_test_hello', app_test.views.app_test_hello),
-    path('login/', sysfunc.views.login),
-    path('home', sysfunc.views.home),
+    path('login/', appSys.views.login),
+    path('employees', appSys.views.employees),
 ]

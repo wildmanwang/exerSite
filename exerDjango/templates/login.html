@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+    <link rel="stylesheet" href="/static/commons.css">
+</head>
+<body>
+    <div id="frameTitle">
+        <div id="frameTitleText">后台管理系统</div>
+    </div>
+    <div id="singleContent">
+        <form action="/login/" method="POST">
+            <p>
+                <label for="user">用户名：</label>
+                <input id="user" name="user" type="text" placeholder="请输入用户名">
+            </p>
+            <p>
+                <label for="pwd">密码：</label>
+                <input id="pwd" name="pwd" type="password" placeholder="请输入登录密码">
+            </p>
+            <p>
+                <input type="submit" value="登录">
+                <span class="infoErr">{{ info }}</span>
+            </p>
+        </form>
+    </div>
+    <script src="/static/jquery3.4.1.js"></script>
+</body>
+</html>
