@@ -21,4 +21,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('login/', appSys.views.login),
     path('employees', appSys.views.employees),
+    path('employee/detail', appSys.views.employeeDetail),
+    path('employee/new', appSys.views.employeeNew),
+    path('employee/update', appSys.views.employeeUpdate),
+    path('employee/delete', appSys.views.employeeDelete),
 ]

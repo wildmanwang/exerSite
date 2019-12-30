@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>员工管理</title>
+    <link rel="stylesheet" href="/static/commons.css">
+</head>
+<body>
+    <div id="frameTitle">
+        <div id="frameTitleText">后台管理系统</div>
+    </div>
+    <div id="frameMain">
+        <div id="frameMenu0">
+            <div class="frameMenu1">后台管理</div>
+            <div class="frameMenu2">员工管理</div>
+        </div>
+        <div id="frameContent">
+            <h3>员工管理 —— 修改</h3>
+            <form action="/employee/update" method="POST">
+                <p><label for="ID">ID：</label><input id="ID" name="ID" type="text" value="{{ user.ID }}"></p>
+                <p><label for="name">姓名：</label><input id="name" name="name" type="text" value="{{ user.name }}"></p>
+                <p><label for="gender">性别：</label><input id="gender" name="gender" type="radio" value="1" checked="checked">男<input name="gender" type="radio" value="0">女</p>
+                <p><label for="mobile">手机号码：</label><input id="mobile" name="mobile" type="text" value="{{ user.mobile }}"></p>
+                <p><label for="position">岗位：</label><select id="position" name="position"><option value="1">产品</option><option value="2" selected="selected">研发</option><option value="3">测试</option></select></p>
+                <p><label for="pwd">密码：</label><input id="pwd" name="pwd" type="password" value="{{ user.pwd }}"></p>
+                <p><label for="status">状态：</label><input id="status" name="status" type="checkbox" checked="checked"></p>
+                <input type="submit" value="确定" style="margin-left: 120px;" /><input id="btn_rtn" type="button" value="返回">
+            </form>
+            <form id="rtn" action="/employees" method="GET">
+            </form>
+        </div>
+    </div>
+    <script src="/static/jquery3.4.1.js"></script>
+    <script>
+        $("#btn_rtn").click(function () {
+            $("#rtn").submit();
+        });
+    </script>
+</body>
+</html>

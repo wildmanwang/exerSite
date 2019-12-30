@@ -15,7 +15,8 @@
             <div class="frameMenu2">员工管理</div>
         </div>
         <div id="frameContent">
-            <div>员工管理</div>
+            <h3>员工管理</h3>
+            <a href="/employee/new">新增</a>
             <table id="empList">
                 <thead>
                 <tr>
@@ -27,20 +28,41 @@
                 </tr>
                 </thead>
                 <tbody>
+                {% for emp in users %}
                 <tr>
-                {% for emp in empList %}
-                    <td>{{ emp.key }}</td>
-                    <td><a href="/employees/detail?oID={{ emp.ID }}">{{ emp.name }}</a></td>
-                    <td>{{ emp.gender }}</td>
-                    <td>{{ emp.position }}</td>
-                    <td><a href="/employees/update?oID={{ emp.ID }}">修改</a> |
-                        <a href="/employees/delete?oID={{ emp.ID }}">删除</a></td>
-                {% endfor %}
+                    <td class="col1">{{ emp.ID }}</td>
+                    <td class="col2"><a href="/employee/detail?userID={{ emp.ID }}">{{ emp.name }}</a></td>
+                    <td class="col1">{{ emp.gender }}</td>
+                    <td class="col1">{{ emp.position }}</td>
+                    <td class="col2"><a href="/employee/update?userID={{ emp.ID }}">修改</a> |
+                        <a class="btn_delete" targetID="{{ emp.ID }}">删除</a></td>
                 </tr>
+                {% endfor %}
                 </tbody>
             </table>
         </div>
+        <div class="mask hide"></div>
+        <div id="winAsk" class="popup hide">
+            <h4 id="deleteAsk">确定要删除该员工吗？</h4>
+            <form action="/employee/delete" method="POST">
+                <input class="hide" id="deleteID" type="text" name="userID">
+                <input type="submit" value="确定">
+                <input id="btn_cancel" type="button" value="取消">
+            </form>
+        </div>
     </div>
     <script src="/static/jquery3.4.1.js"></script>
+    <script>
+        $(".btn_delete").click(function () {
+            $("#deleteID").val($(this).attr("targetID"));
+            $("#deleteAsk").text("确定要删除ID为[" + $(this).attr("targetID") + "]的员工吗？");
+            $("#winAsk").removeClass("hide");
+            $(".mask").removeClass("hide");
+        });
+        $("#btn_cancel").click(function () {
+            $("#winAsk").addClass("hide");
+            $(".mask").addClass("hide");
+        });
+    </script>
 </body>
 </html>

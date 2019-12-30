@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>员工管理</title>
+    <link rel="stylesheet" href="/static/commons.css">
+</head>
+<body>
+    <div id="frameTitle">
+        <div id="frameTitleText">后台管理系统</div>
+    </div>
+    <div id="frameMain">
+        <div id="frameMenu0">
+            <div class="frameMenu1">后台管理</div>
+            <div class="frameMenu2">员工管理</div>
+        </div>
+        <div id="frameContent">
+            <h3>员工管理 —— 查看</h3>
+            <form action="/employees" method="GET">
+                <table id="empDetail">
+                    <tr><td class="detailLabel">ID：</td><td class="detailValue">{{ user.ID }}</td></tr>
+                    <tr><td class="detailLabel">姓名：</td><td class="detailValue">{{ user.name }}</td></tr>
+                    <tr><td class="detailLabel">性别：</td><td class="detailValue">{{ user.gender }}</td></tr>
+                    <tr><td class="detailLabel">手机号码：</td><td class="detailValue">{{ user.mobile }}</td></tr>
+                    <tr><td class="detailLabel">岗位：</td><td class="detailValue">{{ user.position }}</td></tr>
+                    <tr><td class="detailLabel">密码：</td><td class="detailValue">{{ user.pwd }}</td></tr>
+                    <tr><td class="detailLabel">状态：</td><td class="detailValue">{{ user.status }}</td></tr>
+                </table>
+                <input type="submit" value="返回" />
+            </form>
+        </div>
+    </div>
+    <script src="/static/jquery3.4.1.js"></script>
+</body>
+</html>
