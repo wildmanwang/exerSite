@@ -3,12 +3,12 @@ from django.shortcuts import render, redirect, HttpResponse
 # Create your views here.
 
 UserList = [
-    {"ID": "aaa", "name": "张小慧", "gender": "女", "mobile": "13812346661", "position": "研发", "pwd": "111", "status": "正常"},
-    {"ID": "bbb", "name": "李莉莉", "gender": "女", "mobile": "13812346662", "position": "研发", "pwd": "222", "status": "正常"},
-    {"ID": "ccc", "name": "孙晓芸", "gender": "女", "mobile": "13812346663", "position": "研发", "pwd": "333", "status": "正常"},
-    {"ID": "ddd", "name": "周芳芳", "gender": "女", "mobile": "13812346664", "position": "测试", "pwd": "444", "status": "正常"},
-    {"ID": "eee", "name": "刘玉芳", "gender": "女", "mobile": "13812346665", "position": "测试", "pwd": "555", "status": "正常"},
-    {"ID": "fff", "name": "王培培", "gender": "女", "mobile": "13812346666", "position": "测试", "pwd": "666", "status": "正常"}
+    {"ID": "111", "name": "张小慧", "gender": "女", "mobile": "13812346661", "position": "研发", "pwd": "111", "status": "正常"},
+    {"ID": "222", "name": "李莉莉", "gender": "女", "mobile": "13812346662", "position": "研发", "pwd": "222", "status": "正常"},
+    {"ID": "333", "name": "孙晓芸", "gender": "女", "mobile": "13812346663", "position": "研发", "pwd": "333", "status": "正常"},
+    {"ID": "444", "name": "周芳芳", "gender": "女", "mobile": "13812346664", "position": "测试", "pwd": "444", "status": "正常"},
+    {"ID": "555", "name": "刘玉芳", "gender": "女", "mobile": "13812346665", "position": "测试", "pwd": "555", "status": "正常"},
+    {"ID": "666", "name": "王培培", "gender": "女", "mobile": "13812346666", "position": "测试", "pwd": "666", "status": "正常"}
 ]
 
 def login(request):
@@ -27,8 +27,9 @@ def login(request):
 def employees(request):
     return render(request, "employees.html", {"users": UserList})
 
-def employeeDetail(request):
-    user = request.GET.get("userID", None)
+def employeeDetail(request, userID):
+    # user = request.GET.get("userID", None)
+    user = userID
     for rec in UserList:
         if rec["ID"] == user:
             return render(request, "emp_detail.html", {"user": rec})
@@ -49,15 +50,17 @@ def employeeNew(request):
         })
         return redirect("/employees")
 
-def employeeUpdate(request):
+def employeeUpdate(request, userID):
     if request.method == "GET":
-        user = request.GET.get("userID", None)
+        # user = request.GET.get("userID", None)
+        user = userID
         for rec in UserList:
             if rec["ID"] == user:
                 return render(request, "emp_update.html", {"user": rec})
         return HttpResponse("<head><meta http-equiv='Refresh' Content='3;/employees'><title>查无此员工</title></head><body><h3>查无此员工!</h3></body>")
     elif request.method == "POST":
-        user = request.POST.get("ID", None)
+        # user = request.POST.get("ID", None)
+        user = userID
         for rec in UserList:
             if rec["ID"] == user:
                 rec["name"] = request.POST.get("name", None)
