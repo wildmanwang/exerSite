@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'appSys',
 ]
 
 MIDDLEWARE = [
@@ -73,10 +74,17 @@ WSGI_APPLICATION = 'exerDjango.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
+# sqllite3:
+# 'ENGINE': 'django.db.backends.sqlite3',
+# 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'dbtest',
+        'USER': 'root',
+        'PASSWORD': '0Wangle?',
+        'HOST': '127.0.0.1',
+        'PORT': '3306',
     }
 }
 
