@@ -25,4 +25,5 @@ urlpatterns = [
     path('employee/new', appSys.views.employeeNew),
     re_path('employee/update-(?P<userID>\d+)', appSys.views.employeeUpdate),
     path('employee/delete', appSys.views.employeeDelete),
+    path('employee/orm', appSys.views.ormTest),
 ]

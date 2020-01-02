@@ -89,3 +89,13 @@ def employeeDelete(request):
             return redirect("/employees")
     return HttpResponse("<head><meta http-equiv='Refresh' Content='3;/employees'><title>查无此员工</title></head><body><h3>查无此员工!</h3></body>")
 
+def ormTest(request):
+    from appSys import models
+
+    res = models.Employee.objects.all()
+    print(res)
+    rtn = "<hr><h2>操作前" + str(len(res)) + "条记录</h2>"
+    for item in res:
+        rtn += "<h4>" + item.jobNumber + " " + item.name + "</h4>"
+
+    return HttpResponse(rtn)
