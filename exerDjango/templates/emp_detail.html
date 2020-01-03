@@ -16,17 +16,60 @@
         </div>
         <div id="frameContent">
             <h3>员工管理 —— 查看</h3>
-            <form action="/employees" method="GET">
+            <form action="/employeesAllInOne" method="GET">
                 <table id="empDetail">
-                    <tr><td class="detailLabel">ID：</td><td class="detailValue">{{ user.ID }}</td></tr>
+                    <tr><td class="detailLabel">工号：</td><td class="detailValue">{{ user.jobNumber }}</td></tr>
                     <tr><td class="detailLabel">姓名：</td><td class="detailValue">{{ user.name }}</td></tr>
-                    <tr><td class="detailLabel">性别：</td><td class="detailValue">{{ user.gender }}</td></tr>
-                    <tr><td class="detailLabel">手机号码：</td><td class="detailValue">{{ user.mobile }}</td></tr>
-                    <tr><td class="detailLabel">岗位：</td><td class="detailValue">{{ user.position }}</td></tr>
+                    <tr>
+                        <td class="detailLabel">性别：</td>
+                        {% if user.gender == 1 %}
+                            <td class="detailValue">男</td>
+                        {% else %}
+                            <td class="detailValue">女</td>
+                        {% endif %}
+                    </tr>
+                    <tr><td class="detailLabel">部门：</td><td class="detailValue">{{ user.dept.name }}</td></tr>
+                    <tr>
+                        <td class="detailLabel">岗位：</td>
+                        {% if user.position == "product" %}
+                            <td class="detailValue">产品</td>
+                        {% elif user.position == "develop" %}
+                            <td class="detailValue">研发</td>
+                        {% elif user.position == "test" %}
+                            <td class="detailValue">测试</td>
+                        {% elif user.position == "service" %}
+                            <td class="detailValue">营运</td>
+                        {% else %}
+                            <td class="detailValue"></td>
+                        {% endif %}
+                    </tr>
+                    <tr><td class="detailLabel">电子邮箱：</td>
+                        {% if user.email %}
+                            <td class="detailValue">{{ user.email }}</td>
+                        {% else %}
+                            <td class="detailValue"></td>
+                        {% endif %}
+                    </tr>
+                    <tr><td class="detailLabel">手机号码：</td>
+                        {% if user.phone %}
+                            <td class="detailValue">{{ user.phone }}</td>
+                        {% else %}
+                            <td class="detailValue"></td>
+                        {% endif %}
+                    </tr>
                     <tr><td class="detailLabel">密码：</td><td class="detailValue">{{ user.pwd }}</td></tr>
-                    <tr><td class="detailLabel">状态：</td><td class="detailValue">{{ user.status }}</td></tr>
+                    <tr>
+                        <td class="detailLabel">状态：</td>
+                        {% if user.status == 1 %}
+                            <td class="detailValue">在职</td>
+                        {% elif user.status == 0 %}
+                            <td class="detailValue">离职</td>
+                        {% else %}
+                            <td class="detailValue">其他</td>
+                        {% endif %}
+                    </tr>
                 </table>
-                <input type="submit" value="返回" />
+                <input type="submit" class="button" value="返回" />
             </form>
         </div>
     </div>

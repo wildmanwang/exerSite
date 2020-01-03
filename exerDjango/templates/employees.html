@@ -20,22 +20,40 @@
             <table id="empList">
                 <thead>
                 <tr>
-                    <td>ID</td>
-                    <td>姓名</td>
-                    <td>性别</td>
-                    <td>岗位</td>
-                    <td>操作</td>
+                    <td class="col1">工号</td>
+                    <td class="col2">姓名</td>
+                    <td class="col1">性别</td>
+                    <td class="col2">部门</td>
+                    <td class="col1">岗位</td>
+                    <td class="col2">操作</td>
                 </tr>
                 </thead>
                 <tbody>
                 {% for emp in users %}
                 <tr>
-                    <td class="col1">{{ emp.ID }}</td>
-                    <td class="col2"><a href="/employee/detail-{{ emp.ID }}">{{ emp.name }}</a></td>
-                    <td class="col1">{{ emp.gender }}</td>
-                    <td class="col1">{{ emp.position }}</td>
-                    <td class="col2"><a href="/employee/update-{{ emp.ID }}">修改</a> |
-                        <a class="btn_delete" targetID="{{ emp.ID }}">删除</a></td>
+                    <td class="col1">{{ emp.jobNumber }}</td>
+                    <td class="col2"><a href="/employee/detail-{{ emp.id }}">{{ emp.name }}</a></td>
+                    {% if emp.gender == 1 %}
+                        <td class="col1">男</td>
+                    {% else %}
+                        <td class="col1">女</td>
+                    {% endif %}
+                    <td class="col2">{{ emp.dept.name }}</td>
+                    {% if emp.position == "product" %}
+                        <td class="col1">产品</td>
+                    {% elif emp.position == "develop" %}
+                        <td class="col1">研发</td>
+                    {% elif emp.position == "test" %}
+                        <td class="col1">测试</td>
+                    {% elif emp.position == "service" %}
+                        <td class="col1">营运</td>
+                    {% else %}
+                        <td class="col1"></td>
+                    {% endif %}
+                    <td class="col2">
+                        <a href="/employee/update-{{ emp.id }}">修改</a> |
+                        <a class="btn_delete" targetID="{{ emp.id }}">删除</a>
+                    </td>
                 </tr>
                 {% endfor %}
                 </tbody>
@@ -46,8 +64,8 @@
             <h4 id="deleteAsk">确定要删除该员工吗？</h4>
             <form action="/employee/delete" method="POST">
                 <input class="hide" id="deleteID" type="text" name="userID">
-                <input type="submit" value="确定">
-                <input id="btn_cancel" type="button" value="取消">
+                <input type="submit" class="button" value="确定">
+                <input id="btn_cancel" type="button" class="button" value="取消">
             </form>
         </div>
     </div>

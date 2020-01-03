@@ -1,15 +1,8 @@
-from django.shortcuts import render, redirect, HttpResponse
+from django.shortcuts import HttpResponse, render, redirect
+from appSys import models
 
 # Create your views here.
 
-UserList = [
-    {"ID": "111", "name": "张小慧", "gender": "女", "mobile": "13812346661", "position": "研发", "pwd": "111", "status": "正常"},
-    {"ID": "222", "name": "李莉莉", "gender": "女", "mobile": "13812346662", "position": "研发", "pwd": "222", "status": "正常"},
-    {"ID": "333", "name": "孙晓芸", "gender": "女", "mobile": "13812346663", "position": "研发", "pwd": "333", "status": "正常"},
-    {"ID": "444", "name": "周芳芳", "gender": "女", "mobile": "13812346664", "position": "测试", "pwd": "444", "status": "正常"},
-    {"ID": "555", "name": "刘玉芳", "gender": "女", "mobile": "13812346665", "position": "测试", "pwd": "555", "status": "正常"},
-    {"ID": "666", "name": "王培培", "gender": "女", "mobile": "13812346666", "position": "测试", "pwd": "666", "status": "正常"}
-]
 
 def login(request):
     if request.method == "GET":
@@ -17,85 +10,81 @@ def login(request):
     elif request.method == "POST":
         user = request.POST.get("userID", None)
         pwd = request.POST.get("userPwd", None)
-        if user is None:
+        if not user:
             return render(request, "login.html", {"info": "请输入用户ID！"})
-        for rec in UserList:
-            if rec["ID"] == user and rec["pwd"] == pwd:
-                return redirect("/employees")
-        return render(request, "login.html", {"info": "用户或密码错误！"})
+        res = models.Employee.objects.filter(jobNumber=user).first()
+        if not res:
+            return render(request, "login.html", {"info": "查无此操作员：[" + user + "]"})
+        if res.pwd == pwd:
+            return redirect("/employees")
+        else:
+            return render(request, "login.html", {"info": "用户或密码错误！"})
+
 
 def employees(request):
-    return render(request, "employees.html", {"users": UserList})
+    return render(request, "employees.html", {"users": models.Employee.objects.all()})
+
+
+def employeesAllInOne(request):
+    return render(request, "employeesAllInOne.html", {"users": models.Employee.objects.all()})
+
 
 def employeeDetail(request, userID):
-    # user = request.GET.get("userID", None)
-    user = userID
-    for rec in UserList:
-        if rec["ID"] == user:
-            return render(request, "emp_detail.html", {"user": rec})
-    return HttpResponse("<head><meta http-equiv='Refresh' Content='3;/employees'><title>查无此员工</title></head><body><h3>查无此员工!</h3></body>")
+    res = models.Employee.objects.filter(id=userID).first()
+    if not res:
+        return HttpResponse("<head><meta http-equiv='Refresh' Content='3;/employees'></head><body><h3>查无此员工!</h3></body>")
+    else:
+        return render(request, "emp_detail.html", {"user": res})
+
 
 def employeeNew(request):
     if request.method == "GET":
         return render(request, "emp_new.html")
     elif request.method == "POST":
-        UserList.append({
-            "ID": request.POST.get("ID", None),
-            "name": request.POST.get("name", None),
-            "gender": request.POST.get("gender", None),
-            "mobile": request.POST.get("mobile", None),
-            "position": request.POST.get("position", None),
-            "pwd": request.POST.get("pwd", None),
-            "status": request.POST.get("status", None)
-        })
-        return redirect("/employees")
+        userID = request.POST.get("jobNumber")
+        res = models.Employee.objects.filter(jobNumber=userID)
+        if res.count() > 0:
+            return render(request, "emp_new.html", {"info": "工号" + userID + "已存在！"})
+        models.Employee.objects.create(
+            jobNumber=request.POST.get("jobNumber"),
+            name=request.POST.get("name"),
+            gender=request.POST.get("gender"),
+            position=request.POST.get("position"),
+            email=request.POST.get("email"),
+            phone=request.POST.get("phone"),
+            dept_id=request.POST.get("dept_id"),
+            pwd=request.POST.get("pwd")
+        )
+        return redirect("/employeesAllInOne")
+
 
 def employeeUpdate(request, userID):
+    res = models.Employee.objects.filter(id=userID).first()
+    if not res:
+        return HttpResponse("<head><meta http-equiv='Refresh' Content='3;/employees'></head><body><h3>查无此员工!</h3></body>")
+    print("userID=" + userID)
+    print(res)
     if request.method == "GET":
-        # user = request.GET.get("userID", None)
-        user = userID
-        for rec in UserList:
-            if rec["ID"] == user:
-                return render(request, "emp_update.html", {"user": rec})
-        return HttpResponse("<head><meta http-equiv='Refresh' Content='3;/employees'><title>查无此员工</title></head><body><h3>查无此员工!</h3></body>")
+        dept = models.Department.objects.all()
+        return render(request, "emp_update.html", {"user": res, "dept": dept})
     elif request.method == "POST":
-        # user = request.POST.get("ID", None)
-        user = userID
-        for rec in UserList:
-            if rec["ID"] == user:
-                rec["name"] = request.POST.get("name", None)
-                if request.POST.get("gender", None) == "0":
-                    rec["gender"] = "女"
-                else:
-                    rec["gender"] = "男"
-                rec["mobile"] = request.POST.get("mobile", None)
-                tmp = request.POST.get("position", None)
-                if tmp == "1":
-                    rec["position"] = "产品"
-                elif tmp == "2":
-                    rec["position"] = "研发"
-                else:
-                    rec["position"] = "测试"
-                rec["pwd"] = request.POST.get("pwd", None)
-                rec["status"] = request.POST.get("status", None)
-                return redirect("/employees")
-        return HttpResponse("<head><meta http-equiv='Refresh' Content='3;/employees'><title>查无此员工</title></head><body><h3>查无此员工!</h3></body>")
+        models.Employee.objects.filter(id=userID).update(
+            jobNumber=request.POST.get("jobNumber"),
+            name=request.POST.get("name"),
+            gender=request.POST.get("gender"),
+            position=request.POST.get("position"),
+            email=request.POST.get("email"),
+            phone=request.POST.get("phone"),
+            dept_id=request.POST.get("dept_id"),
+            pwd=request.POST.get("pwd")
+        )
+        return redirect("/employeesAllInOne")
+
 
 def employeeDelete(request):
-    user = request.POST.get("userID", None)
-    for rec in UserList:
-        if rec["ID"] == user:
-            UserList.remove(rec)
-            return redirect("/employees")
-    return HttpResponse("<head><meta http-equiv='Refresh' Content='3;/employees'><title>查无此员工</title></head><body><h3>查无此员工!</h3></body>")
-
-def ormTest(request):
-    from appSys import models
-
-    res = models.Employee.objects.all()
-    print(res)
-    rtn = "<hr><h2>操作前" + str(len(res)) + "条记录</h2>"
-    for item in res:
-        rtn += "<h4>" + item.jobNumber + " " + item.name + "</h4>"
-
-    return HttpResponse(rtn)
+    userID = request.POST.get("userID", None)
+    res = models.Employee.objects.filter(id=userID).first()
+    if not res:
+        return HttpResponse("<head><meta http-equiv='Refresh' Content='3;/employees'></head><body><h3>查无此员工!</h3></body>")
+    models.Employee.objects.filter(id=userID).delete()
+    return redirect("/employeesAllInOne")

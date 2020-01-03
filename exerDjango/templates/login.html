@@ -13,14 +13,14 @@
         <form action="/login/" method="POST">
             <p>
                 <label for="user">用户名：</label>
-                <input id="user" name="userID" type="text" placeholder="请输入用户名">
+                <input id="user" class="input" name="userID" type="text" placeholder="请输入用户名">
             </p>
             <p>
                 <label for="pwd">密码：</label>
-                <input id="pwd" name="userPwd" type="password" placeholder="请输入登录密码">
+                <input id="pwd" class="input" name="userPwd" type="password" placeholder="请输入登录密码">
             </p>
             <p>
-                <input type="submit" value="登录" style="margin-left: 120px;">
+                <input type="submit" class="button" value="登录" style="margin-left: 120px;">
                 <span class="infoErr">{{ info }}</span>
             </p>
         </form>

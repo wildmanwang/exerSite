@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>员工管理</title>
+    <link rel="stylesheet" href="/static/commons.css">
+    <link rel="stylesheet" href="/static/jquery-ui-1.12.1.custom/jquery-ui.min.css">
+    <link rel="stylesheet" href="/static/jquery-ui-1.12.1.custom/jquery-ui.structure.min.css">
+    <script src="/static/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
+    <script>
+        $( function() {
+            $( ".widget input[type=submit], .widget a, .widget button" ).button();
+            $( "button, input, a" ).click( function( event ) {
+              event.preventDefault();
+            } );
+        } );
+        $( function() {
+            $( "input" ).checkboxradio();
+        } );
+  </script>
+</head>
+<body>
+    <div id="frameTitle">
+        <div id="frameTitleText">后台管理系统</div>
+    </div>
+    <div id="frameMain">
+        <div id="frameMenu0">
+            <div class="frameMenu1">后台管理</div>
+            <div class="frameMenu2">员工管理</div>
+        </div>
+        <div id="frameContent">
+            <h3>员工管理[All In One]</h3>
+            <input id="btn_new" type="button" class="ui-button ui-widget ui-corner-all" value="新增">
+            <table id="empList">
+                <thead>
+                <tr>
+                    <td class="col1">工号</td>
+                    <td class="col2">姓名</td>
+                    <td class="col1">性别</td>
+                    <td class="col2">部门</td>
+                    <td class="col1">岗位</td>
+                    <td class="col2">操作</td>
+                </tr>
+                </thead>
+                <tbody>
+                {% for emp in users %}
+                <tr>
+                    <td class="col1">{{ emp.jobNumber }}</td>
+                    <td class="col2"><a href="/employee/detail-{{ emp.id }}">{{ emp.name }}</a></td>
+                    {% if emp.gender == 1 %}
+                        <td class="col1">男</td>
+                    {% else %}
+                        <td class="col1">女</td>
+                    {% endif %}
+                    <td class="col2">{{ emp.dept.name }}</td>
+                    {% if emp.position == "product" %}
+                        <td class="col1">产品</td>
+                    {% elif emp.position == "develop" %}
+                        <td class="col1">研发</td>
+                    {% elif emp.position == "test" %}
+                        <td class="col1">测试</td>
+                    {% elif emp.position == "service" %}
+                        <td class="col1">营运</td>
+                    {% else %}
+                        <td class="col1"></td>
+                    {% endif %}
+                    <td class="col2">
+                        <a class="btn_update" targetID="{{ emp }}">修改</a> |
+                        <a class="btn_delete" targetID="{{ emp.id }}">删除</a>
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="mask hide"></div>
+        <div id="winNew" class="popup hide">
+            <h4>新增员工</h4>
+            <form action="/employee/new" method="POST">
+                <p><label for="jobNumber">工号：</label><input id="jobNumber" name="jobNumber" type="text"></p>
+                <p><label for="name">姓名：</label><input id="name" name="name" type="text"></p>
+                <p><label for="gender">性别：</label><input id="gender" name="gender" type="radio" value="1" checked="checked">男<input name="gender" type="radio" value="0">女</p>
+                <p><label for="name">部门：</label><input id="dept_id" name="dept_id" type="text"></p>
+                <p><label for="position">岗位：</label><select id="position" name="position"><option value="product">产品</option><option value="develop" selected="selected">研发</option><option value="test">测试</option><option value="service">营运</option></select></p>
+                <p><label for="mobile">电子邮箱：</label><input id="mobile" name="mobile" type="text"></p>
+                <p><label for="mobile">手机号码：</label><input id="mobile" name="mobile" type="text"></p>
+                <p><label for="pwd">密码：</label><input id="pwd" name="pwd" type="password"></p>
+                <p><label for="status">状态：</label><input id="status" name="status" type="checkbox" checked="checked"></p>
+                <input type="submit" class="button" value="确定" style="margin-left: 120px;" /><input id="btn_newcancel" type="button" class="button" value="取消">
+            </form>
+        </div>
+        <div id="winDelete" class="popup hide">
+            <h4 id="deleteAsk">确定要删除该员工吗？</h4>
+            <form action="/employee/delete" method="POST">
+                <input class="hide" id="deleteID" type="text" name="userID">
+                <input type="submit" class="button" value="确定">
+                <input id="btn_delcancel" type="button" class="button" value="取消">
+            </form>
+        </div>
+        <div id="winUpdate" class="popup widget hide">
+            <h4>修改员工信息</h4>
+            <form action="/employee/update-{{ user.id }}" method="POST">
+                <p><label for="jobNumber">工号：</label><input id="jobNumber" class="input" name="jobNumber" type="text" value="{{ user.jobNumber }}"></p>
+                <p><label for="name">姓名：</label><input id="name" class="input" name="name" type="text" value="{{ user.name }}"></p>
+                <p><label for="gender">性别：</label>
+                    {% if user.gender == 1 %}
+                        <input id="gender" name="gender" type="radio" value="1" checked="checked">男<input name="gender" type="radio" value="0">女
+                    {% else %}
+                        <input id="gender" name="gender" type="radio" value="1">男<input name="gender" type="radio" value="0" checked="checked">女
+                    {% endif %}
+                </p>
+                <p><label for="dept_id">部门：</label><select id="dept_id" class="input" name="dept_id">
+                    <option value="" selected="selected"></option>
+                    {% for item in dept %}
+                        {% if user.dept_id == item.id %}
+                            <option value="{{ item.id }}" selected="selected">{{ item.name }}</option>
+                        {% else %}
+                            <option value="{{ item.id }}">{{ item.name }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select></p>
+                <p><label for="position">岗位：</label><select id="position" class="input" name="position">
+                    {% if user.position == "product" %}
+                        <option value="product" selected="selected">产品</option>
+                    {% else %}
+                        <option value="product">产品</option>
+                    {% endif %}
+                    {% if user.position == "develop" %}
+                        <option value="develop" selected="selected">研发</option>
+                    {% else %}
+                        <option value="develop">研发</option>
+                    {% endif %}
+                    {% if user.position == "test" %}
+                        <option value="test" selected="selected">测试</option>
+                    {% else %}
+                        <option value="test">测试</option>
+                    {% endif %}
+                    {% if user.position == "service" %}
+                        <option value="service" selected="selected">营运</option>
+                    {% else %}
+                        <option value="service">营运</option>
+                    {% endif %}
+                </select></p>
+                <p><label for="email">电子邮箱：</label>
+                    {% if user.email %}
+                        <input id="email" class="input" name="email" type="text" value="{{ user.email }}">
+                    {% else %}
+                        <input id="email" class="input" name="email" type="text" value="">
+                    {% endif %}
+                </p>
+                <p><label for="phone">手机号码：</label>
+                    {% if user.phone %}
+                        <input id="phone" class="input" name="phone" type="text" value="{{ user.phone }}">
+                    {% else %}
+                        <input id="phone" class="input" name="phone" type="text" value="">
+                    {% endif %}
+                </p>
+                <p><label for="pwd">密码：</label><input id="pwd" class="input" name="pwd" type="password" value="{{ user.pwd }}"></p>
+                <p><label for="status">状态：</label><input id="status" name="status" type="checkbox" checked="checked"></p>
+                <input type="submit" class="ui-button ui-widget ui-corner-all" value="确定" style="margin-left: 120px;" /><input id="btn_updcancel" type="button" class="button" value="取消">
+            </form>
+        </div>
+    </div>
+    <script src="/static/jquery3.4.1.js"></script>
+    <script>
+        $("#btn_new").click(function () {
+            $("#winNew").removeClass("hide");
+            $(".mask").removeClass("hide");
+        });
+        $("#btn_newcancel").click(function () {
+            $("#winNew").addClass("hide");
+            $(".mask").addClass("hide");
+        });
+        $(".btn_delete").click(function () {
+            $("#deleteID").val($(this).attr("targetID"));
+            $("#deleteAsk").text("确定要删除ID为[" + $(this).attr("targetID") + "]的员工吗？");
+            $("#winDelete").removeClass("hide");
+            $(".mask").removeClass("hide");
+        });
+        $("#btn_delcancel").click(function () {
+            $("#winDelete").addClass("hide");
+            $(".mask").addClass("hide");
+        });
+        $(".btn_update").click(function () {
+            $("#winUpdate").removeClass("hide");
+            $(".mask").removeClass("hide");
+            print(emp);
+            $("#jobNumber").val(emp.jobNumber);
+        });
+        $("#btn_updcancel").click(function () {
+            $("#winUpdate").addClass("hide");
+            $(".mask").addClass("hide");
+        });
+    </script>
+</body>
+</html>

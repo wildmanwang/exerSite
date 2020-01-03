@@ -16,15 +16,65 @@
         </div>
         <div id="frameContent">
             <h3>员工管理 —— 修改</h3>
-            <form action="/employee/update-{{ user.ID }}" method="POST">
-                <p><label for="ID">ID：</label><input id="ID" name="ID" type="text" value="{{ user.ID }}"></p>
-                <p><label for="name">姓名：</label><input id="name" name="name" type="text" value="{{ user.name }}"></p>
-                <p><label for="gender">性别：</label><input id="gender" name="gender" type="radio" value="1" checked="checked">男<input name="gender" type="radio" value="0">女</p>
-                <p><label for="mobile">手机号码：</label><input id="mobile" name="mobile" type="text" value="{{ user.mobile }}"></p>
-                <p><label for="position">岗位：</label><select id="position" name="position"><option value="1">产品</option><option value="2" selected="selected">研发</option><option value="3">测试</option></select></p>
-                <p><label for="pwd">密码：</label><input id="pwd" name="pwd" type="password" value="{{ user.pwd }}"></p>
-                <p><label for="status">状态：</label><input id="status" name="status" type="checkbox" checked="checked"></p>
-                <input type="submit" value="确定" style="margin-left: 120px;" /><input id="btn_rtn" type="button" value="返回">
+            <form action="/employee/update-{{ user.id }}" method="POST">
+                <p><label for="jobNumber">工号：</label><input id="jobNumber" class="input" name="jobNumber" type="text" value="{{ user.jobNumber }}"></p>
+                <p><label for="name">姓名：</label><input id="name" class="input" name="name" type="text" value="{{ user.name }}"></p>
+                <p><label for="gender">性别：</label>
+                    {% if user.gender == 1 %}
+                        <input id="gender" name="gender" type="radio" value="1" checked="checked">男<input name="gender" type="radio" value="0">女
+                    {% else %}
+                        <input id="gender" name="gender" type="radio" value="1">男<input name="gender" type="radio" value="0" checked="checked">女
+                    {% endif %}
+                </p>
+                <p><label for="dept_id">部门：</label><select id="dept_id" class="input" name="dept_id">
+                    <option value="" selected="selected"></option>
+                    {% for item in dept %}
+                        {% if user.dept_id == item.id %}
+                            <option value="{{ item.id }}" selected="selected">{{ item.name }}</option>
+                        {% else %}
+                            <option value="{{ item.id }}">{{ item.name }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select></p>
+                <p><label for="position">岗位：</label><select id="position" class="input" name="position">
+                    {% if user.position == "product" %}
+                        <option value="product" selected="selected">产品</option>
+                    {% else %}
+                        <option value="product">产品</option>
+                    {% endif %}
+                    {% if user.position == "develop" %}
+                        <option value="develop" selected="selected">研发</option>
+                    {% else %}
+                        <option value="develop">研发</option>
+                    {% endif %}
+                    {% if user.position == "test" %}
+                        <option value="test" selected="selected">测试</option>
+                    {% else %}
+                        <option value="test">测试</option>
+                    {% endif %}
+                    {% if user.position == "service" %}
+                        <option value="service" selected="selected">营运</option>
+                    {% else %}
+                        <option value="service">营运</option>
+                    {% endif %}
+                </select></p>
+                <p><label for="email">电子邮箱：</label>
+                    {% if user.email %}
+                        <input id="email" class="input" name="email" type="text" value="{{ user.email }}">
+                    {% else %}
+                        <input id="email" class="input" name="email" type="text" value="">
+                    {% endif %}
+                </p>
+                <p><label for="phone">手机号码：</label>
+                    {% if user.phone %}
+                        <input id="phone" class="input" name="phone" type="text" value="{{ user.phone }}">
+                    {% else %}
+                        <input id="phone" class="input" name="phone" type="text" value="">
+                    {% endif %}
+                </p>
+                <p><label for="pwd">密码：</label><input id="pwd" class="input" name="pwd" type="password" value="{{ user.pwd }}"></p>
+                <p><label for="status">状态：</label><input id="status" class="input" name="status" type="checkbox" checked="checked"></p>
+                <input type="submit" class="button" value="确定" style="margin-left: 120px;" /><input id="btn_rtn" type="button" class="button" value="返回">
             </form>
             <form id="rtn" action="/employees" method="GET">
             </form>
