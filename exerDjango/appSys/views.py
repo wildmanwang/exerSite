@@ -1,5 +1,7 @@
 from django.shortcuts import HttpResponse, render, redirect
 from appSys import models
+import json
+
 
 # Create your views here.
 
@@ -26,7 +28,7 @@ def employees(request):
 
 
 def employeesAllInOne(request):
-    return render(request, "employeesAllInOne.html", {"users": models.Employee.objects.all()})
+    return render(request, "employeesAllInOne.html", {"users": models.Employee.objects.all(), "dept": models.Department.objects.all()})
 
 
 def employeeDetail(request, userID):
@@ -39,23 +41,36 @@ def employeeDetail(request, userID):
 
 def employeeNew(request):
     if request.method == "GET":
+        print(request.method)
         return render(request, "emp_new.html")
     elif request.method == "POST":
-        userID = request.POST.get("jobNumber")
-        res = models.Employee.objects.filter(jobNumber=userID)
-        if res.count() > 0:
-            return render(request, "emp_new.html", {"info": "工号" + userID + "已存在！"})
-        models.Employee.objects.create(
-            jobNumber=request.POST.get("jobNumber"),
-            name=request.POST.get("name"),
-            gender=request.POST.get("gender"),
-            position=request.POST.get("position"),
-            email=request.POST.get("email"),
-            phone=request.POST.get("phone"),
-            dept_id=request.POST.get("dept_id"),
-            pwd=request.POST.get("pwd")
-        )
-        return redirect("/employeesAllInOne")
+        rtn = {
+            "result": False,
+            "info": None,
+            "data": None
+        }
+        try:
+            userID = request.POST.get("jobNumber")
+            res = models.Employee.objects.filter(jobNumber=userID)
+            if not userID or len(userID) < 4:
+                rtn["info"] = "工号无效！"
+            elif res.count() > 0:
+                rtn["info"] = "工号" + userID + "已存在！"
+            else:
+                models.Employee.objects.create(
+                    jobNumber=request.POST.get("jobNumber"),
+                    name=request.POST.get("name"),
+                    gender=request.POST.get("gender"),
+                    position=request.POST.get("position"),
+                    email=request.POST.get("email"),
+                    phone=request.POST.get("phone"),
+                    dept_id=request.POST.get("dept_id"),
+                    pwd=request.POST.get("pwd")
+                )
+                rtn["result"] = True
+        except Exception as e:
+            rtn["info"] = str(e)
+        return HttpResponse(json.dumps(rtn))
 
 
 def employeeUpdate(request, userID):
@@ -82,9 +97,21 @@ def employeeUpdate(request, userID):
 
 
 def employeeDelete(request):
-    userID = request.POST.get("userID", None)
-    res = models.Employee.objects.filter(id=userID).first()
-    if not res:
-        return HttpResponse("<head><meta http-equiv='Refresh' Content='3;/employees'></head><body><h3>查无此员工!</h3></body>")
-    models.Employee.objects.filter(id=userID).delete()
-    return redirect("/employeesAllInOne")
+    rtn = {
+        "result": False,
+        "info": None,
+        "data": None
+    }
+    try:
+        userID = request.POST.get("userID", None)
+        res = models.Employee.objects.filter(id=userID).first()
+        if not res:
+            print(request.POST)
+            rtn["info"] = "userID:" + userID + "查无此员工！"
+        else:
+            models.Employee.objects.filter(id=userID).delete()
+            rtn["result"] = True
+    except Exception as e:
+        rtn["info"] = str(e)
+
+    return HttpResponse(json.dumps(rtn))

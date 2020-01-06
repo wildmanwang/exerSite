@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="/static/commons.css">
     <link rel="stylesheet" href="/static/jquery-ui-1.12.1.custom/jquery-ui.min.css">
     <link rel="stylesheet" href="/static/jquery-ui-1.12.1.custom/jquery-ui.structure.min.css">
+    <script src="/static/jquery3.4.1.js"></script>
     <script src="/static/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
     <script>
         $( function() {
@@ -76,24 +77,37 @@
         <div class="mask hide"></div>
         <div id="winNew" class="popup hide">
             <h4>新增员工</h4>
-            <form action="/employee/new" method="POST">
+            <form id="formnew" action="/employee/new" method="POST">
                 <p><label for="jobNumber">工号：</label><input id="jobNumber" name="jobNumber" type="text"></p>
                 <p><label for="name">姓名：</label><input id="name" name="name" type="text"></p>
                 <p><label for="gender">性别：</label><input id="gender" name="gender" type="radio" value="1" checked="checked">男<input name="gender" type="radio" value="0">女</p>
-                <p><label for="name">部门：</label><input id="dept_id" name="dept_id" type="text"></p>
-                <p><label for="position">岗位：</label><select id="position" name="position"><option value="product">产品</option><option value="develop" selected="selected">研发</option><option value="test">测试</option><option value="service">营运</option></select></p>
-                <p><label for="mobile">电子邮箱：</label><input id="mobile" name="mobile" type="text"></p>
+                <p><label for="dept_id">部门：</label><select id="dept_id" name="dept_id">
+                    {% for item in dept %}
+                        <option value="{{ item.id }}">{{ item.name }}</option>
+                    {% endfor %}
+                </select></p>
+                <p><label for="position">岗位：</label><select id="position" name="position">
+                    <option value="product">产品</option>
+                    <option value="develop" selected="selected">研发</option>
+                    <option value="test">测试</option>
+                    <option value="service">营运</option>
+                </select></p>
+                <p><label for="email">电子邮箱：</label><input id="email" name="mobile" type="text"></p>
                 <p><label for="mobile">手机号码：</label><input id="mobile" name="mobile" type="text"></p>
                 <p><label for="pwd">密码：</label><input id="pwd" name="pwd" type="password"></p>
                 <p><label for="status">状态：</label><input id="status" name="status" type="checkbox" checked="checked"></p>
-                <input type="submit" class="button" value="确定" style="margin-left: 120px;" /><input id="btn_newcancel" type="button" class="button" value="取消">
+                <p><label id="newinfo" style="color: red"></label></p>
+                <input id="btn_newsubmit" type="button" class="button" value="确定" style="margin-left: 120px;" />
+                <input id="btn_newcancel" type="button" class="button" value="取消">
+                <input id="btn_newtest" type="button" class="button" value="测试">
             </form>
         </div>
         <div id="winDelete" class="popup hide">
             <h4 id="deleteAsk">确定要删除该员工吗？</h4>
-            <form action="/employee/delete" method="POST">
+            <form id="formdelete" action="/employee/delete" method="POST">
                 <input class="hide" id="deleteID" type="text" name="userID">
-                <input type="submit" class="button" value="确定">
+                <label id="deleteinfo" style="color: red"></label>
+                <input id="btn_deletesubmit" type="button" class="button" value="确定">
                 <input id="btn_delcancel" type="button" class="button" value="取消">
             </form>
         </div>
@@ -163,34 +177,82 @@
     </div>
     <script src="/static/jquery3.4.1.js"></script>
     <script>
-        $("#btn_new").click(function () {
-            $("#winNew").removeClass("hide");
-            $(".mask").removeClass("hide");
-        });
-        $("#btn_newcancel").click(function () {
-            $("#winNew").addClass("hide");
-            $(".mask").addClass("hide");
-        });
-        $(".btn_delete").click(function () {
-            $("#deleteID").val($(this).attr("targetID"));
-            $("#deleteAsk").text("确定要删除ID为[" + $(this).attr("targetID") + "]的员工吗？");
-            $("#winDelete").removeClass("hide");
-            $(".mask").removeClass("hide");
-        });
-        $("#btn_delcancel").click(function () {
-            $("#winDelete").addClass("hide");
-            $(".mask").addClass("hide");
-        });
-        $(".btn_update").click(function () {
-            $("#winUpdate").removeClass("hide");
-            $(".mask").removeClass("hide");
-            print(emp);
-            $("#jobNumber").val(emp.jobNumber);
-        });
-        $("#btn_updcancel").click(function () {
-            $("#winUpdate").addClass("hide");
-            $(".mask").addClass("hide");
-        });
+        $(function () {
+            $("#btn_new").click(function () {
+                $("#winNew").removeClass("hide");
+                $(".mask").removeClass("hide");
+            });
+            $("#btn_newsubmit").click(function () {
+                $("#newinfo").val("");
+                $.ajax({
+                    url: 'employee/new',
+                    type: 'POST',
+                    data: $("#formnew").serialize(),
+                    data1: {
+                        "jobNumber": $("#jobNumber").val(),
+                        "name": $("#name").val(),
+                        "gender": $("#gender").prop("checked")?1:0,
+                        "dept_id": $("#dept_id").val(),
+                        "position": $("#position").val(),
+                        "email": $("#email").val(),
+                        "mobile": $("#mobile").val(),
+                        "pwd": $("#pwd").val()
+                    },
+                    success: function (data) {
+                        rtn = JSON.parse(data);
+                        if (rtn.result) {
+                            location.reload();
+                        }
+                        else {
+                            $("#newinfo").text(rtn.info);
+                        }
+                    }
+                })
+            });
+            $("#btn_newcancel").click(function () {
+                $("#winNew").addClass("hide");
+                $(".mask").addClass("hide");
+            });
+            $("#btn_newtest").click(function () {
+                $("#newinfo").text($("#gender").prop("checked"));
+            });
+            $(".btn_delete").click(function () {
+                $("#deleteID").val($(this).attr("targetID"));
+                $("#deleteAsk").text("确定要删除ID为[" + $(this).attr("targetID") + "]的员工吗？");
+                $("#winDelete").removeClass("hide");
+                $(".mask").removeClass("hide");
+            });
+            $("#btn_deletesubmit").click(function () {
+                $.ajax({
+                    url: 'employee/delete',
+                    type: "POST",
+                    data: $("#formdelete").serialize(),
+                    success: function (data) {
+                        rtn = JSON.parse(data);
+                        if (rtn.result) {
+                            location.reload();
+                        }
+                        else {
+                            $("#deleteinfo").text(rtn.info);
+                        }
+                    }
+                })
+            });
+            $("#btn_delcancel").click(function () {
+                $("#winDelete").addClass("hide");
+                $(".mask").addClass("hide");
+            });
+            $(".btn_update").click(function () {
+                $("#winUpdate").removeClass("hide");
+                $(".mask").removeClass("hide");
+                print(emp);
+                $("#jobNumber").val(emp.jobNumber);
+            });
+            $("#btn_updcancel").click(function () {
+                $("#winUpdate").addClass("hide");
+                $(".mask").addClass("hide");
+            });
+        })
     </script>
 </body>
 </html>
