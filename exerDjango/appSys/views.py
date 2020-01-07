@@ -74,26 +74,37 @@ def employeeNew(request):
 
 
 def employeeUpdate(request, userID):
-    res = models.Employee.objects.filter(id=userID).first()
-    if not res:
-        return HttpResponse("<head><meta http-equiv='Refresh' Content='3;/employees'></head><body><h3>查无此员工!</h3></body>")
-    print("userID=" + userID)
-    print(res)
     if request.method == "GET":
+        res = models.Employee.objects.filter(id=userID).first()
+        if not res:
+            return HttpResponse("<head><meta http-equiv='Refresh' Content='3;/employees'></head><body><h3>查无此员工!</h3></body>")
         dept = models.Department.objects.all()
         return render(request, "emp_update.html", {"user": res, "dept": dept})
     elif request.method == "POST":
-        models.Employee.objects.filter(id=userID).update(
-            jobNumber=request.POST.get("jobNumber"),
-            name=request.POST.get("name"),
-            gender=request.POST.get("gender"),
-            position=request.POST.get("position"),
-            email=request.POST.get("email"),
-            phone=request.POST.get("phone"),
-            dept_id=request.POST.get("dept_id"),
-            pwd=request.POST.get("pwd")
-        )
-        return redirect("/employeesAllInOne")
+        rtn = {
+            "result": False,
+            "info": None,
+            "data": None
+        }
+        try:
+            if not userID or len(userID) == 0:
+                rtn["info"] = "员工ID无效"
+            else:
+                models.Employee.objects.filter(id=userID).update(
+                    jobNumber=request.POST.get("jobNumber"),
+                    name=request.POST.get("name"),
+                    gender=request.POST.get("gender"),
+                    position=request.POST.get("position"),
+                    email=request.POST.get("email"),
+                    phone=request.POST.get("phone"),
+                    dept_id=request.POST.get("dept_id"),
+                    pwd=request.POST.get("pwd")
+                )
+                rtn["result"] = True
+        except Exception as e:
+            rtn["info"] = str(e)
+
+        return HttpResponse(json.dumps(rtn))
 
 
 def employeeDelete(request):
@@ -104,6 +115,7 @@ def employeeDelete(request):
     }
     try:
         userID = request.POST.get("userID", None)
+        print(userID)
         res = models.Employee.objects.filter(id=userID).first()
         if not res:
             print(request.POST)

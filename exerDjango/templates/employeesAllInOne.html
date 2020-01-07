@@ -45,29 +45,33 @@
                 </thead>
                 <tbody>
                 {% for emp in users %}
-                <tr>
-                    <td class="col1">{{ emp.jobNumber }}</td>
-                    <td class="col2"><a href="/employee/detail-{{ emp.id }}">{{ emp.name }}</a></td>
+                <tr targetID="{{ emp.id }}">
+                    <td class="col1 jobNumber">{{ emp.jobNumber }}</td>
+                    <td class="col2 name">{{ emp.name }}</td>
                     {% if emp.gender == 1 %}
-                        <td class="col1">男</td>
+                        <td class="col1 gender">男</td>
                     {% else %}
-                        <td class="col1">女</td>
+                        <td class="col1 gender">女</td>
                     {% endif %}
-                    <td class="col2">{{ emp.dept.name }}</td>
+                    <td class="col2 deptname" targetID="{{ emp.dept.id }}">{{ emp.dept.name }}</td>
                     {% if emp.position == "product" %}
-                        <td class="col1">产品</td>
+                        <td class="col1 position" targetID="{{ emp.position }}">产品</td>
                     {% elif emp.position == "develop" %}
-                        <td class="col1">研发</td>
+                        <td class="col1 position" targetID="{{ emp.position }}">研发</td>
                     {% elif emp.position == "test" %}
-                        <td class="col1">测试</td>
+                        <td class="col1 position" targetID="{{ emp.position }}">测试</td>
                     {% elif emp.position == "service" %}
-                        <td class="col1">营运</td>
+                        <td class="col1 position" targetID="{{ emp.position }}">营运</td>
                     {% else %}
-                        <td class="col1"></td>
+                        <td class="col1 position" targetID="{{ emp.position }}"></td>
                     {% endif %}
+                    <td class="hide email">{{ emp.email }}</td>
+                    <td class="hide phone">{{ emp.phone }}</td>
+                    <td class="hide pwd">{{ emp.pwd }}</td>
+                    <td class="hide status">{{ emp.status }}</td>
                     <td class="col2">
-                        <a class="btn_update" targetID="{{ emp }}">修改</a> |
-                        <a class="btn_delete" targetID="{{ emp.id }}">删除</a>
+                        <a class="btn_update">修改</a> |
+                        <a class="btn_delete">删除</a>
                     </td>
                 </tr>
                 {% endfor %}
@@ -96,7 +100,7 @@
                 <p><label for="mobile">手机号码：</label><input id="mobile" name="mobile" type="text"></p>
                 <p><label for="pwd">密码：</label><input id="pwd" name="pwd" type="password"></p>
                 <p><label for="status">状态：</label><input id="status" name="status" type="checkbox" checked="checked"></p>
-                <p><label id="newinfo" style="color: red"></label></p>
+                <p><label id="newinfo" class="promptinfo"></label></p>
                 <input id="btn_newsubmit" type="button" class="button" value="确定" style="margin-left: 120px;" />
                 <input id="btn_newcancel" type="button" class="button" value="取消">
                 <input id="btn_newtest" type="button" class="button" value="测试">
@@ -106,73 +110,76 @@
             <h4 id="deleteAsk">确定要删除该员工吗？</h4>
             <form id="formdelete" action="/employee/delete" method="POST">
                 <input class="hide" id="deleteID" type="text" name="userID">
-                <label id="deleteinfo" style="color: red"></label>
+                <label id="deleteinfo" class="promptinfo"></label>
                 <input id="btn_deletesubmit" type="button" class="button" value="确定">
                 <input id="btn_delcancel" type="button" class="button" value="取消">
             </form>
         </div>
         <div id="winUpdate" class="popup widget hide">
             <h4>修改员工信息</h4>
-            <form action="/employee/update-{{ user.id }}" method="POST">
-                <p><label for="jobNumber">工号：</label><input id="jobNumber" class="input" name="jobNumber" type="text" value="{{ user.jobNumber }}"></p>
-                <p><label for="name">姓名：</label><input id="name" class="input" name="name" type="text" value="{{ user.name }}"></p>
-                <p><label for="gender">性别：</label>
-                    {% if user.gender == 1 %}
-                        <input id="gender" name="gender" type="radio" value="1" checked="checked">男<input name="gender" type="radio" value="0">女
-                    {% else %}
-                        <input id="gender" name="gender" type="radio" value="1">男<input name="gender" type="radio" value="0" checked="checked">女
-                    {% endif %}
-                </p>
-                <p><label for="dept_id">部门：</label><select id="dept_id" class="input" name="dept_id">
-                    <option value="" selected="selected"></option>
+            <form>
+                <p><label for="jobNumber">工号：</label><input class="input" name="jobNumber" type="text"></p>
+                <p><label for="name">姓名：</label><input class="input" name="name" type="text"></p>
+                <p><label for="gender">性别：</label><input id="gender1" name="gender" type="radio" value="1">男<input id="gender0" name="gender" type="radio" value="0" checked="checked">女</p>
+                <p><label for="dept_id">部门：</label><select class="input" name="dept_id">
+                    <option value=""></option>
                     {% for item in dept %}
-                        {% if user.dept_id == item.id %}
-                            <option value="{{ item.id }}" selected="selected">{{ item.name }}</option>
-                        {% else %}
-                            <option value="{{ item.id }}">{{ item.name }}</option>
-                        {% endif %}
+                        <option value="{{ item.id }}">{{ item.name }}</option>
                     {% endfor %}
                 </select></p>
-                <p><label for="position">岗位：</label><select id="position" class="input" name="position">
-                    {% if user.position == "product" %}
-                        <option value="product" selected="selected">产品</option>
-                    {% else %}
-                        <option value="product">产品</option>
-                    {% endif %}
-                    {% if user.position == "develop" %}
-                        <option value="develop" selected="selected">研发</option>
-                    {% else %}
-                        <option value="develop">研发</option>
-                    {% endif %}
-                    {% if user.position == "test" %}
-                        <option value="test" selected="selected">测试</option>
-                    {% else %}
-                        <option value="test">测试</option>
-                    {% endif %}
-                    {% if user.position == "service" %}
-                        <option value="service" selected="selected">营运</option>
-                    {% else %}
-                        <option value="service">营运</option>
-                    {% endif %}
+                <p><label for="position">岗位：</label><select class="input" name="position">
+                    <option value="product">产品</option>
+                    <option value="develop">研发</option>
+                    <option value="test">测试</option>
+                    <option value="service">营运</option>
                 </select></p>
-                <p><label for="email">电子邮箱：</label>
-                    {% if user.email %}
-                        <input id="email" class="input" name="email" type="text" value="{{ user.email }}">
-                    {% else %}
-                        <input id="email" class="input" name="email" type="text" value="">
-                    {% endif %}
-                </p>
-                <p><label for="phone">手机号码：</label>
-                    {% if user.phone %}
-                        <input id="phone" class="input" name="phone" type="text" value="{{ user.phone }}">
-                    {% else %}
-                        <input id="phone" class="input" name="phone" type="text" value="">
-                    {% endif %}
-                </p>
-                <p><label for="pwd">密码：</label><input id="pwd" class="input" name="pwd" type="password" value="{{ user.pwd }}"></p>
-                <p><label for="status">状态：</label><input id="status" name="status" type="checkbox" checked="checked"></p>
-                <input type="submit" class="ui-button ui-widget ui-corner-all" value="确定" style="margin-left: 120px;" /><input id="btn_updcancel" type="button" class="button" value="取消">
+                <p><label for="email">电子邮箱：</label><input class="input" name="email" type="text"></p>
+                <p><label for="phone">手机号码：</label><input class="input" name="phone" type="text"></p>
+                <p><label for="pwd">密码：</label><input class="input" name="pwd" type="password"></p>
+                <p><label for="status">状态：</label><input name="status" type="checkbox" checked="checked"></p>
+                <label id="updateinfo" class="promptinfo"></label>
+                <input id="btn_updatesubmit" type="button" class="ui-button ui-widget ui-corner-all" value="确定" style="margin-left: 120px;" />
+                <input id="btn_updcancel" type="button" class="ui-button ui-widget ui-corner-all" value="取消" />
+                <input id="btn_updtest" type="button" class="ui-button ui-widget ui-corner-all" value="测试" />
             </form>
+        </div>
+        <div id="winDetail" class="popup widget hide">
+            <h4>员工信息详情</h4>
+            <table>
+                <tbody>
+                <tr>
+                    <td class="col2">工号</td>
+                    <td class="col4 jobNumber"></td>
+                </tr>
+                <tr>
+                    <td class="col2">姓名</td>
+                    <td class="col4 name"></td>
+                </tr>
+                <tr>
+                    <td class="col2">性别</td>
+                    <td class="col4 gender"></td>
+                </tr>
+                <tr>
+                    <td class="col2">部门</td>
+                    <td class="col4 deptname"></td>
+                </tr>
+                <tr>
+                    <td class="col2">岗位</td>
+                    <td class="col4 position"></td>
+                </tr>
+                <tr>
+                    <td class="col2">密码</td>
+                    <td class="col4 pwd"></td>
+                </tr>
+                <tr>
+                    <td class="col2">状态</td>
+                    <td class="col4 status"></td>
+                </tr>
+                </tbody>
+            </table>
+            <p>
+                <input id="btn_detcancel" type="button" class="button" value="返回">
+            </p>
         </div>
     </div>
     <script src="/static/jquery3.4.1.js"></script>
@@ -217,8 +224,8 @@
                 $("#newinfo").text($("#gender").prop("checked"));
             });
             $(".btn_delete").click(function () {
-                $("#deleteID").val($(this).attr("targetID"));
-                $("#deleteAsk").text("确定要删除ID为[" + $(this).attr("targetID") + "]的员工吗？");
+                $("#deleteID").val($(this).parent().parent().attr("targetID"));
+                $("#deleteAsk").text("确定要删除ID为[" + $(this).parent().parent().attr("targetID") + "]的员工吗？");
                 $("#winDelete").removeClass("hide");
                 $(".mask").removeClass("hide");
             });
@@ -243,13 +250,60 @@
                 $(".mask").addClass("hide");
             });
             $(".btn_update").click(function () {
+                $("#winUpdate form").attr("targetID", $(this).parent().parent().attr("targetID"));
+                $("#winUpdate [name='jobNumber']").val($(this).parent().parent().find(".jobNumber").text());
+                $("#winUpdate [name='name']").val($(this).parent().parent().find(".name").text());
+                if ($(this).parent().parent().find(".gender").text() === "男") {
+                    $("#gender1").prop("checked", true);
+                }
+                else {
+                    $("#gender0").prop("checked", true);
+                }
+                $("#winUpdate [name='dept_id']").val($(this).parent().parent().find(".deptname").attr("targetID"));
+                $("#winUpdate [name='position']").val($(this).parent().parent().find(".position").attr("targetID"));
+                $("#winUpdate [name='email']").val($(this).parent().parent().find(".email").text());
+                $("#winUpdate [name='phone']").val($(this).parent().parent().find(".phone").text());
+                $("#winUpdate [name='pwd']").val($(this).parent().parent().find(".pwd").text());
+                $("#winUpdate [name='status']").val($(this).parent().parent().find(".status").text());
                 $("#winUpdate").removeClass("hide");
                 $(".mask").removeClass("hide");
-                print(emp);
-                $("#jobNumber").val(emp.jobNumber);
+            });
+            $("#btn_updatesubmit").click(function () {
+                $.ajax({
+                    url: "employee/update-" + $("#winUpdate form").attr("targetID"),
+                    type: "POST",
+                    data: $("#winUpdate form").serialize(),
+                    success: function (data) {
+                        rtn = JSON.parse(data);
+                        if (rtn.result) {
+                            location.reload();
+                        }
+                        else {
+                            $("#updateinfo").text(rtn.info);
+                        }
+                    }
+                })
             });
             $("#btn_updcancel").click(function () {
                 $("#winUpdate").addClass("hide");
+                $(".mask").addClass("hide");
+            });
+            $("#btn_updtest").click(function () {
+                $("#dept_id").find("option[text='研发中心']").attr("selected", true);
+            });
+            $(".name").click(function () {
+                $("#winDetail .jobNumber").text($(this).parent().find(".jobNumber").text());
+                $("#winDetail .name").text($(this).parent().find(".name").text());
+                $("#winDetail .gender").text($(this).parent().find(".gender").text());
+                $("#winDetail .deptname").text($(this).parent().find(".deptname").text());
+                $("#winDetail .position").text($(this).parent().find(".position").text());
+                $("#winDetail .pwd").text($(this).parent().find(".pwd").text());
+                $("#winDetail .status").text($(this).parent().find(".status").text());
+                $("#winDetail").removeClass("hide");
+                $(".mask").removeClass("hide");
+            });
+            $("#btn_detcancel").click(function () {
+                $("#winDetail").addClass("hide");
                 $(".mask").addClass("hide");
             });
         })

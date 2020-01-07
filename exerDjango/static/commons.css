@@ -112,6 +112,9 @@ td{
 .col3{
     width: 180px;
 }
+.col4{
+    width: 240px;
+}
 .detailLabel{
     width: 120px;
     height: 30px;
@@ -147,4 +150,8 @@ td{
 }
 .hide{
     display: none;
+}
+.promptinfo{
+    color: red;
+    display: block;
 }
