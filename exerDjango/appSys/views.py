@@ -73,6 +73,11 @@ def employeeNew(request):
         return HttpResponse(json.dumps(rtn))
 
 
+def employeeNewmany(request):
+    if request.method == "GET":
+        print(request.GET)
+
+
 def employeeUpdate(request, userID):
     if request.method == "GET":
         res = models.Employee.objects.filter(id=userID).first()

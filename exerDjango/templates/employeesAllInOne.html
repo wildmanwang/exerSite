@@ -32,6 +32,7 @@
         <div id="frameContent">
             <h3>员工管理[All In One]</h3>
             <input id="btn_new" type="button" class="ui-button ui-widget ui-corner-all" value="新增">
+            <input id="btn_newmany" type="button" class="ui-button ui-widget ui-corner-all" value="新增关系">
             <table id="empList">
                 <thead>
                 <tr>
@@ -101,6 +102,18 @@
                 <p><label for="pwd">密码：</label><input id="pwd" name="pwd" type="password"></p>
                 <p><label for="status">状态：</label><input id="status" name="status" type="checkbox" checked="checked"></p>
                 <p><label id="newinfo" class="promptinfo"></label></p>
+                <input id="btn_newsubmit" type="button" class="button" value="确定" style="margin-left: 120px;" />
+                <input id="btn_newcancel" type="button" class="button" value="取消">
+                <input id="btn_newtest" type="button" class="button" value="测试">
+            </form>
+        </div>
+        <div id="winNewmany" class="popup hide">
+            <h4>新增员工及关系</h4>
+            <form id="formnewmany" action="/employee/newmany" method="GET">
+                <p><label for="jobNumber">工号：</label><input name="jobNumber" type="text"></p>
+                <p><label for="name">姓名：</label><input name="name" type="text"></p>
+                <p><label for="gender">性别：</label><input name="gender" type="radio" value="1" checked="checked">男<input name="gender" type="radio" value="0">女</p>
+                <p><label id="newmanyinfo" class="promptinfo"></label></p>
                 <input id="btn_newsubmit" type="button" class="button" value="确定" style="margin-left: 120px;" />
                 <input id="btn_newcancel" type="button" class="button" value="取消">
                 <input id="btn_newtest" type="button" class="button" value="测试">

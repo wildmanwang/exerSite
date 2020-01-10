@@ -24,6 +24,7 @@ urlpatterns = [
     path('employeesAllInOne', appSys.views.employeesAllInOne),
     re_path('employee/detail-(?P<userID>\d+)', appSys.views.employeeDetail),
     path('employee/new', appSys.views.employeeNew),
+    path('employee/newmany', appSys.views.employeeNewmany),
     re_path('employee/update-(?P<userID>\d+)', appSys.views.employeeUpdate),
     path('employee/delete', appSys.views.employeeDelete),
 ]
