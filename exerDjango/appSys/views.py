@@ -28,7 +28,7 @@ def employees(request):
 
 
 def employeesAllInOne(request):
-    return render(request, "employeesAllInOne.html", {"users": models.Employee.objects.all(), "dept": models.Department.objects.all()})
+    return render(request, "employeesAllInOne.html", {"users": models.Employee.objects.all(), "dept": models.Department.objects.all(), "projects": models.Project.objects.all()})
 
 
 def employeeDetail(request, userID):
@@ -74,8 +74,20 @@ def employeeNew(request):
 
 
 def employeeNewmany(request):
-    if request.method == "GET":
-        print(request.GET)
+    rtn = {
+        "result": True,
+        "info": ""
+    }
+    if request.method == "POST":
+        obj = models.Employee.objects.create(
+            jobNumber=request.POST.get("jobNumber", None),
+            name=request.POST.get("name", None),
+            gender=request.POST.get("gender", None)
+        )
+        for pro in request.POST.getlist("projects", None):
+            obj.rPro.add(pro)
+
+    return HttpResponse(json.dumps(rtn))
 
 
 def employeeUpdate(request, userID):
@@ -106,6 +118,24 @@ def employeeUpdate(request, userID):
                     pwd=request.POST.get("pwd")
                 )
                 rtn["result"] = True
+        except Exception as e:
+            rtn["info"] = str(e)
+
+        return HttpResponse(json.dumps(rtn))
+
+
+def employeeUpdatemany(request, userID):
+    if request.method == "POST":
+        rtn = {
+            "result": False,
+            "info": None,
+            "data": None
+        }
+        try:
+            if not userID or len(userID) == 0:
+                rtn["info"] = "员工ID无效"
+            else:
+                obj = models.Employee.objects.get(id=userID)
         except Exception as e:
             rtn["info"] = str(e)
 

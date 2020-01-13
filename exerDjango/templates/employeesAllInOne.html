@@ -41,7 +41,9 @@
                     <td class="col1">性别</td>
                     <td class="col2">部门</td>
                     <td class="col1">岗位</td>
+                    <td class="col3">项目</td>
                     <td class="col2">操作</td>
+                    <td class="col3">关系操作</td>
                 </tr>
                 </thead>
                 <tbody>
@@ -70,9 +72,18 @@
                     <td class="hide phone">{{ emp.phone }}</td>
                     <td class="hide pwd">{{ emp.pwd }}</td>
                     <td class="hide status">{{ emp.status }}</td>
+                    <td class="project">
+                        {% for rpro in emp.rPro.all %}
+                            <span class="relation" targetID="{{ rpro.id }}">{{ rpro.name }}</span>
+                        {% endfor %}
+                    </td>
                     <td class="col2">
                         <a class="btn_update">修改</a> |
                         <a class="btn_delete">删除</a>
+                    </td>
+                    <td class="col3">
+                        <a class="btn_updatemany">修改关系</a> |
+                        <a class="btn_deletemany">删除关系</a>
                     </td>
                 </tr>
                 {% endfor %}
@@ -83,24 +94,24 @@
         <div id="winNew" class="popup hide">
             <h4>新增员工</h4>
             <form id="formnew" action="/employee/new" method="POST">
-                <p><label for="jobNumber">工号：</label><input id="jobNumber" name="jobNumber" type="text"></p>
-                <p><label for="name">姓名：</label><input id="name" name="name" type="text"></p>
-                <p><label for="gender">性别：</label><input id="gender" name="gender" type="radio" value="1" checked="checked">男<input name="gender" type="radio" value="0">女</p>
-                <p><label for="dept_id">部门：</label><select id="dept_id" name="dept_id">
+                <p><label>工号：</label><input id="jobNumber" name="jobNumber" type="text"></p>
+                <p><label>姓名：</label><input id="name" name="name" type="text"></p>
+                <p><label>性别：</label><input id="gender" name="gender" type="radio" value="1" checked="checked">男<input name="gender" type="radio" value="0">女</p>
+                <p><label>部门：</label><select id="dept_id" name="dept_id">
                     {% for item in dept %}
                         <option value="{{ item.id }}">{{ item.name }}</option>
                     {% endfor %}
                 </select></p>
-                <p><label for="position">岗位：</label><select id="position" name="position">
+                <p><label>岗位：</label><select id="position" name="position">
                     <option value="product">产品</option>
                     <option value="develop" selected="selected">研发</option>
                     <option value="test">测试</option>
                     <option value="service">营运</option>
                 </select></p>
-                <p><label for="email">电子邮箱：</label><input id="email" name="mobile" type="text"></p>
-                <p><label for="mobile">手机号码：</label><input id="mobile" name="mobile" type="text"></p>
-                <p><label for="pwd">密码：</label><input id="pwd" name="pwd" type="password"></p>
-                <p><label for="status">状态：</label><input id="status" name="status" type="checkbox" checked="checked"></p>
+                <p><label>电子邮箱：</label><input id="email" name="mobile" type="text"></p>
+                <p><label>手机号码：</label><input id="mobile" name="mobile" type="text"></p>
+                <p><label>密码：</label><input id="pwd" name="pwd" type="password"></p>
+                <p><label>状态：</label><input id="status" name="status" type="checkbox" checked="checked"></p>
                 <p><label id="newinfo" class="promptinfo"></label></p>
                 <input id="btn_newsubmit" type="button" class="button" value="确定" style="margin-left: 120px;" />
                 <input id="btn_newcancel" type="button" class="button" value="取消">
@@ -110,13 +121,18 @@
         <div id="winNewmany" class="popup hide">
             <h4>新增员工及关系</h4>
             <form id="formnewmany" action="/employee/newmany" method="GET">
-                <p><label for="jobNumber">工号：</label><input name="jobNumber" type="text"></p>
-                <p><label for="name">姓名：</label><input name="name" type="text"></p>
-                <p><label for="gender">性别：</label><input name="gender" type="radio" value="1" checked="checked">男<input name="gender" type="radio" value="0">女</p>
+                <p><label>工号：</label><input name="jobNumber" type="text"></p>
+                <p><label>姓名：</label><input name="name" type="text"></p>
+                <p><label>性别：</label><input name="gender" type="radio" value="1" checked="checked">男<input name="gender" type="radio" value="0">女</p>
+                <p><label>关联项目：</label><select name="projects" multiple="multiple">
+                    {% for pro in projects %}
+                        <option value="{{ pro.id }}">{{ pro.name }}</option>
+                    {% endfor %}
+                </select></p>
                 <p><label id="newmanyinfo" class="promptinfo"></label></p>
-                <input id="btn_newsubmit" type="button" class="button" value="确定" style="margin-left: 120px;" />
-                <input id="btn_newcancel" type="button" class="button" value="取消">
-                <input id="btn_newtest" type="button" class="button" value="测试">
+                <input id="btn_newsubmitmany" type="button" class="button" value="确定" style="margin-left: 120px;" />
+                <input id="btn_newcancelmany" type="button" class="button" value="取消">
+                <input id="btn_newtestmany" type="button" class="button" value="测试">
             </form>
         </div>
         <div id="winDelete" class="popup hide">
@@ -131,29 +147,46 @@
         <div id="winUpdate" class="popup widget hide">
             <h4>修改员工信息</h4>
             <form>
-                <p><label for="jobNumber">工号：</label><input class="input" name="jobNumber" type="text"></p>
-                <p><label for="name">姓名：</label><input class="input" name="name" type="text"></p>
-                <p><label for="gender">性别：</label><input id="gender1" name="gender" type="radio" value="1">男<input id="gender0" name="gender" type="radio" value="0" checked="checked">女</p>
-                <p><label for="dept_id">部门：</label><select class="input" name="dept_id">
+                <p><label>工号：</label><input class="input" name="jobNumber" type="text"></p>
+                <p><label>姓名：</label><input class="input" name="name" type="text"></p>
+                <p><label>性别：</label><input id="gender1" name="gender" type="radio" value="1">男<input id="gender0" name="gender" type="radio" value="0" checked="checked">女</p>
+                <p><label>部门：</label><select class="input" name="dept_id">
                     <option value=""></option>
                     {% for item in dept %}
                         <option value="{{ item.id }}">{{ item.name }}</option>
                     {% endfor %}
                 </select></p>
-                <p><label for="position">岗位：</label><select class="input" name="position">
+                <p><label>岗位：</label><select class="input" name="position">
                     <option value="product">产品</option>
                     <option value="develop">研发</option>
                     <option value="test">测试</option>
                     <option value="service">营运</option>
                 </select></p>
-                <p><label for="email">电子邮箱：</label><input class="input" name="email" type="text"></p>
-                <p><label for="phone">手机号码：</label><input class="input" name="phone" type="text"></p>
-                <p><label for="pwd">密码：</label><input class="input" name="pwd" type="password"></p>
-                <p><label for="status">状态：</label><input name="status" type="checkbox" checked="checked"></p>
+                <p><label>电子邮箱：</label><input class="input" name="email" type="text"></p>
+                <p><label>手机号码：</label><input class="input" name="phone" type="text"></p>
+                <p><label>密码：</label><input class="input" name="pwd" type="password"></p>
+                <p><label>状态：</label><input name="status" type="checkbox" checked="checked"></p>
                 <label id="updateinfo" class="promptinfo"></label>
                 <input id="btn_updatesubmit" type="button" class="ui-button ui-widget ui-corner-all" value="确定" style="margin-left: 120px;" />
                 <input id="btn_updcancel" type="button" class="ui-button ui-widget ui-corner-all" value="取消" />
                 <input id="btn_updtest" type="button" class="ui-button ui-widget ui-corner-all" value="测试" />
+            </form>
+        </div>
+        <div id="winUpdatemany" class="popup hide">
+            <h4>修改员工关系</h4>
+            <form id="formupdatemany" action="/employee/newmany" method="GET">
+                <p><label>工号：</label><input name="jobNumber" type="text"></p>
+                <p><label>姓名：</label><input name="name" type="text"></p>
+                <p><label>性别：</label><input id="gender3" name="gender" type="radio" value="1" checked="checked">男<input id="gender2" name="gender" type="radio" value="0">女</p>
+                <p><label>关联项目：</label><select name="projects" multiple="multiple">
+                    {% for pro in projects %}
+                        <option value="{{ pro.id }}">{{ pro.name }}</option>
+                    {% endfor %}
+                </select></p>
+                <p><label id="updatemanyinfo" class="promptinfo"></label></p>
+                <input id="btn_updatesubmitmany" type="button" class="button" value="确定" style="margin-left: 120px;" />
+                <input id="btn_updatecancelmany" type="button" class="button" value="取消">
+                <input id="btn_updatetestmany" type="button" class="button" value="测试">
             </form>
         </div>
         <div id="winDetail" class="popup widget hide">
@@ -236,6 +269,31 @@
             $("#btn_newtest").click(function () {
                 $("#newinfo").text($("#gender").prop("checked"));
             });
+            $("#btn_newmany").click(function () {
+                $("#winNewmany").removeClass("hide");
+                $(".mask").removeClass("hide");
+            });
+            $("#btn_newsubmitmany").click(function () {
+                $("#newmanyinfo").val("");
+                $.ajax({
+                    url: 'employee/newmany',
+                    type: 'POST',
+                    data: $("#formnewmany").serialize(),
+                    success: function (data) {
+                        rtn = JSON.parse(data);
+                        if (rtn.result) {
+                            location.reload();
+                        }
+                        else {
+                            $("#newmanyinfo").text(rtn.info);
+                        }
+                    }
+                })
+            });
+            $("#btn_newcancelmany").click(function () {
+                $("#winNewmany").addClass("hide");
+                $(".mask").addClass("hide");
+            });
             $(".btn_delete").click(function () {
                 $("#deleteID").val($(this).parent().parent().attr("targetID"));
                 $("#deleteAsk").text("确定要删除ID为[" + $(this).parent().parent().attr("targetID") + "]的员工吗？");
@@ -303,6 +361,29 @@
             });
             $("#btn_updtest").click(function () {
                 $("#dept_id").find("option[text='研发中心']").attr("selected", true);
+            });
+            $(".btn_updatemany").click(function () {
+                $("#winUpdatemany form").attr("targetID", $(this).parent().parent().attr("targetID"));
+                $("#winUpdatemany [name='jobNumber']").val($(this).parent().parent().find(".jobNumber").text());
+                $("#winUpdatemany [name='name']").val($(this).parent().parent().find(".name").text());
+                if ($(this).parent().parent().find(".gender").text() === "男")  {
+                    $("#gender3").prop("checked", true);
+                }
+                else {
+                    $("#gender2").prop("checked", true);
+                }
+                $(this).parent().parent().find("option").each(function () {
+
+                });
+                $("#winUpdatemany").removeClass("hide");
+                $(".mask").removeClass("hide");
+            });
+            $("#btn_updatesubmitmany").click(function () {
+                $("#updatemanyinfo").text("");
+            });
+            $("#btn_updatecancelmany").click(function () {
+                $("#winUpdatemany").addClass("hide");
+                $(".mask").addClass("hide");
             });
             $(".name").click(function () {
                 $("#winDetail .jobNumber").text($(this).parent().find(".jobNumber").text());
