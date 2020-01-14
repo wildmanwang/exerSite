@@ -144,6 +144,15 @@
                 <input id="btn_delcancel" type="button" class="button" value="取消">
             </form>
         </div>
+        <div id="winDeletemany" class="popup hide">
+            <h4 id="deletemanyAsk">确定要删除该员工吗？</h4>
+            <form id="formdeletemany" action="/employee/deletemany" method="POST">
+                <input class="hide" type="text" name="userID">
+                <label id="deletemanyinfo" class="promptinfo"></label>
+                <input id="btn_deletemanysubmit" type="button" class="button" value="确定">
+                <input id="btn_delmanycancel" type="button" class="button" value="取消">
+            </form>
+        </div>
         <div id="winUpdate" class="popup widget hide">
             <h4>修改员工信息</h4>
             <form>
@@ -372,17 +381,59 @@
                 else {
                     $("#gender2").prop("checked", true);
                 }
-                $(this).parent().parent().find("option").each(function () {
-
+                selectValue = [];
+                $(this).parent().parent().find(".project .relation").each(function () {
+                    selectValue.push($(this).attr("targetID"));
                 });
+                $("#winUpdatemany select").val(selectValue);
                 $("#winUpdatemany").removeClass("hide");
                 $(".mask").removeClass("hide");
             });
             $("#btn_updatesubmitmany").click(function () {
                 $("#updatemanyinfo").text("");
+                $.ajax({
+                    url: 'employee/updatemany-' + $("#winUpdatemany form").attr("targetID"),
+                    method: 'POST',
+                    data: $("#formupdatemany").serialize(),
+                    success: function (data) {
+                        rtn = JSON.parse(data);
+                        if (rtn.result) {
+                            location.reload();
+                        }
+                        else {
+                            $("#updatemanyinfo").text(rtn.info);
+                        }
+                    }
+                })
             });
             $("#btn_updatecancelmany").click(function () {
                 $("#winUpdatemany").addClass("hide");
+                $(".mask").addClass("hide");
+            });
+            $(".btn_deletemany").click(function () {
+                $("#formdeletemany [name='userID']").val($(this).parent().parent().attr("targetID"));
+                $("#deletemanyinfo").text("");
+                $("#winDeletemany").removeClass("hide");
+                $(".mask").removeClass("hide");
+            });
+            $("#btn_deletemanysubmit").click(function () {
+                $.ajax({
+                    url: 'employee/deletemany',
+                    method: 'POST',
+                    data: $("#formdeletemany").serialize(),
+                    success: function (data) {
+                        rtn = JSON.parse(data);
+                        if (rtn.result) {
+                            location.reload();
+                        }
+                        else {
+                            $("#deletemanyinfo").text(rtn.info);
+                        }
+                    }
+                })
+            });
+            $("#btn_delmanycancel").click(function () {
+                $("#winDeletemany").addClass("hide");
                 $(".mask").addClass("hide");
             });
             $(".name").click(function () {

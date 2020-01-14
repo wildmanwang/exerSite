@@ -26,5 +26,8 @@ urlpatterns = [
     path('employee/new', appSys.views.employeeNew),
     path('employee/newmany', appSys.views.employeeNewmany),
     re_path('employee/update-(?P<userID>\d+)', appSys.views.employeeUpdate),
+    re_path('employee/updatemany-(?P<userID>\d+)$', appSys.views.employeeUpdatemany),
     path('employee/delete', appSys.views.employeeDelete),
+    path('employee/deletemany', appSys.views.employeeDeletemany),
+    re_path('multipages-(?P<pageNo>\d+)$', appSys.views.multipages),
 ]

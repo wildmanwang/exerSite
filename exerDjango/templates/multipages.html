@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>分页</title>
+</head>
+<body>
+    {% for item in data %}
+        <li>{{ item }}</li>
+    {% endfor %}
+    {{ pagetag|safe }}
+</body>
+</html>

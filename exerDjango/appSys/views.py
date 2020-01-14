@@ -28,6 +28,7 @@ def employees(request):
 
 
 def employeesAllInOne(request):
+    print(type(request))
     return render(request, "employeesAllInOne.html", {"users": models.Employee.objects.all(), "dept": models.Department.objects.all(), "projects": models.Project.objects.all()})
 
 
@@ -135,7 +136,14 @@ def employeeUpdatemany(request, userID):
             if not userID or len(userID) == 0:
                 rtn["info"] = "员工ID无效"
             else:
+                models.Employee.objects.filter(id=userID).update(
+                    jobNumber=request.POST.get("jobNumber"),
+                    name=request.POST.get("name"),
+                    gender=request.POST.get("gender")
+                )
                 obj = models.Employee.objects.get(id=userID)
+                obj.rPro.set(request.POST.getlist("projects"))
+                rtn["result"] = True
         except Exception as e:
             rtn["info"] = str(e)
 
@@ -162,3 +170,42 @@ def employeeDelete(request):
         rtn["info"] = str(e)
 
     return HttpResponse(json.dumps(rtn))
+
+
+def employeeDeletemany(request):
+    rtn = {
+        "result": False,
+        "info": None,
+        "data": None
+    }
+    try:
+        userID = request.POST.get("userID", None)
+        res = models.Employee.objects.filter(id=userID).first()
+        if not res:
+            print(request.POST)
+            rtn["info"] = "userID:" + userID + "查无此员工！"
+        else:
+            res.rPro.clear()
+            rtn["result"] = True
+    except Exception as e:
+        rtn["info"] = str(e)
+
+    return HttpResponse(json.dumps(rtn))
+
+
+PageDatas = []
+for i in range(116):
+    PageDatas.append(i)
+
+
+def multipages(request, pageNo):
+    pageSize = 12
+    start = (int(pageNo) - 1) * pageSize
+    end = int(pageNo) * pageSize
+    a,b = divmod(len(PageDatas), pageSize)
+    if b:
+        a += 1
+    pagestr = ""
+    for i in range(1, a):
+        pagestr += '<a href="/multipages-{page}">{page}</a>'.format(page=i)
+    return render(request, "multipages.html", {"data": PageDatas[start:end], "pagetag": pagestr})
