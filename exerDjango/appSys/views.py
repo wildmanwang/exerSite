@@ -199,13 +199,7 @@ for i in range(116):
 
 
 def multipages(request, pageNo):
-    pageSize = 12
-    start = (int(pageNo) - 1) * pageSize
-    end = int(pageNo) * pageSize
-    a,b = divmod(len(PageDatas), pageSize)
-    if b:
-        a += 1
-    pagestr = ""
-    for i in range(1, a):
-        pagestr += '<a href="/multipages-{page}">{page}</a>'.format(page=i)
-    return render(request, "multipages.html", {"data": PageDatas[start:end], "pagetag": pagestr})
+    from utils.pages import Pages
+
+    page = Pages(len(PageDatas), 12, "/multipages-", pageNo)
+    return render(request, "multipages.html", {"data": PageDatas[page.startRec:page.endRec], "pagetag": page.pageStr})
