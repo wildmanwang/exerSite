@@ -29,7 +29,7 @@ class Pages():
         pagestr = ""
         for page in range(1, self.pageCnt):
             if self.curPage == page:
-                pagestr += '<a href="{baseUrl}{page}" class="page active">{page}</a>'.format(baseUrl=self.baseUrl, page=page)
+                pagestr += '<span class="page active">{page}</span>'.format(baseUrl=self.baseUrl, page=page)
             else:
                 pagestr += '<a href="{baseUrl}{page}" class="page">{page}</a>'.format(baseUrl=self.baseUrl, page=page)
         return pagestr
