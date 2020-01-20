@@ -28,7 +28,6 @@ def employees(request):
 
 
 def employeesAllInOne(request):
-    print(type(request))
     return render(request, "employeesAllInOne.html", {"users": models.Employee.objects.all(), "dept": models.Department.objects.all(), "projects": models.Project.objects.all()})
 
 
@@ -42,7 +41,6 @@ def employeeDetail(request, userID):
 
 def employeeNew(request):
     if request.method == "GET":
-        print(request.method)
         return render(request, "emp_new.html")
     elif request.method == "POST":
         rtn = {
@@ -158,10 +156,8 @@ def employeeDelete(request):
     }
     try:
         userID = request.POST.get("userID", None)
-        print(userID)
         res = models.Employee.objects.filter(id=userID).first()
         if not res:
-            print(request.POST)
             rtn["info"] = "userID:" + userID + "查无此员工！"
         else:
             models.Employee.objects.filter(id=userID).delete()
@@ -182,7 +178,6 @@ def employeeDeletemany(request):
         userID = request.POST.get("userID", None)
         res = models.Employee.objects.filter(id=userID).first()
         if not res:
-            print(request.POST)
             rtn["info"] = "userID:" + userID + "查无此员工！"
         else:
             res.rPro.clear()
