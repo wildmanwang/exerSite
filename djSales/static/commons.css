@@ -1,0 +1,13 @@
+body{
+    margin: 0;
+}
+.labelInput{
+    display: inline-block;
+    text-align: right;
+    width: 120px;
+}
+.input{
+    width: 200px;
+    height: 30px;
+    line-height: 30px;
+}
