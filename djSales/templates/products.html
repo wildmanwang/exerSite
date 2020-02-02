@@ -1,0 +1,76 @@
+{% extends "master/mMain.html" %}
+
+{% block content %}
+    <a href="products-new" style="display: inline-block; margin: 10px 0; ">新增</a>
+    <table id="dataTable">
+    <thead>
+    <tr>
+        <th style="width: 30px; ">序号</th>
+        <th style="width: 60px; ">编码</th>
+        <th style="width: 240px; ">名称</th>
+        <th style="width: 80px; ">参考价格</th>
+        <th style="width: 240px; ">备注</th>
+        <th style="width: 120px; ">操作</th>
+    </tr>
+    </thead>
+    <tbody>
+        {% for rec in ds %}
+        <tr targetID="{{ rec.id }}">
+            <td colname="counter" style="text-align: center; ">{{ forloop.counter }}</td>
+            <td colname="code">{{ rec.code }}</td>
+            <td colname="name"><a href="products-detail-{{ rec.id }}">{{ rec.name }}</a></td>
+            <td colname="price" style="text-align: right; ">{{ rec.price }}</td>
+            <td colname="remark">{{ rec.remark }}</td>
+            <td colname="operate" style="text-align: center; ">
+                <a href="products-modify-{{ rec.id }}" class="recModify" style="margin: 0 5px; cursor: pointer; ">修改</a>
+                <span class="recDelete" style="margin: 0 5px; cursor: pointer; ">删除</span>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+    </table>
+    {{ pagetag|safe }}
+    {# 删除操作二次确认框 #}
+    <div id="dialog-delete" class="dialog hide" style="width: 400px; height: 120px; margin-left: -200px; margin-top: -220px; ">
+        <h4>确定要删除【<span id="title-delete"></span>】吗？</h4>
+        <label class="promptInfo"></label>
+        <input id="btn_delconfirm" type="button" value="确定" style="margin-left: 160px; ">
+        <input id="btn_delcancel" type="button" value="取消">
+    </div>
+{% endblock %}
+
+{% block subscript %}
+    $("#PAGE_reccnt_perpage_select").val($.cookie("reccnt_perpage"));
+    $("#PAGE_reccnt_perpage_select").change(function () {
+        $.cookie("reccnt_perpage", $(this).val());
+        location.reload();
+    });
+    $(".recDelete").click(function () {
+        $("#dialog-delete").attr("targetID", $(this).parent().parent().attr("targetID"));
+        $("#title-delete").text($(this).parent().parent().children("[colname='name']").text());
+        $("#dialog-delete").removeClass("hide");
+        $(".cover-layer").removeClass("hide");
+    });
+    $("#btn_delconfirm").click(function () {
+        $.ajax({
+            url: "products-delete-" + $("#dialog-delete").attr("targetID"),
+            method: "POST",
+            dataType: "JSON",
+            success: function (data) {
+                if (data.result) {
+                    location.reload();
+                } else {
+                    $(".promptInfo").text(data.info);
+                }
+            },
+            error: function() {
+                $(".promptInfo").text("Error is raised!");
+            }
+        })
+    });
+    $("#btn_delcancel").click(function () {
+        $("#title-delete").text("");
+        $("#dialog-delete").addClass("hide");
+        $(".cover-layer").addClass("hide");
+    });
+{% endblock %}

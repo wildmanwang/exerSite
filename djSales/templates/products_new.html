@@ -1,0 +1,43 @@
+{% extends "master/mMain.html" %}
+
+{% block content %}
+    <div style="padding: 0 20px; ">
+        <h2>新增商品</h2>
+        <form id="data-new">
+            <p><label class="labelInput" for="col_code">编码：</label><input id="col_code" name="col_code" type="text"></p>
+            <p><label class="labelInput" for="col_name">名称：</label><input id="col_name" name="col_name" type="text"></p>
+            <p><label class="labelInput" for="col_price">参考价格：</label><input id="col_price" name="col_price" type="text"></p>
+            <p><label class="labelInput" for="col_verMain">主版本：</label><input id="col_verMain" name="col_verMain" type="text"></p>
+            <p><label class="labelInput" for="col_verSub">子版本：</label><input id="col_verSub" name="col_verSub" type="text"></p>
+            <p><label class="labelInput" for="col_datePro">注册日期：</label><input id="col_datePro" name="col_datePro" type="date"></p>
+            <p><label class="labelInput" for="col_dateCur">版本日期：</label><input id="col_dateCur" name="col_dateCur" type="date"></p>
+            <p><label class="labelInput" for="col_remark">备注：</label><input id="col_remark" name="col_remark" type="text"></p>
+            <p><label class="labelInput"></label><label class="promptInfo"></label></p>
+            <p><label class="labelInput"></label><input id="btn-save" type="button" value="保存"><input id="btn-cancel" type="button" value="取消" style="margin-left: 10px; "></p>
+        </form>
+    </div>
+{% endblock %}
+
+{% block subscript %}
+    $("#btn-save").click(function () {
+        $.ajax({
+            url: "products-new",
+            method: "POST",
+            data: $("#data-new").serialize(),
+            dataType: "JSON",
+            success: function(data) {
+                if (data.result) {
+                    location.reload();
+                } else {
+                    $(".promptInfo").text(data.info);
+                }
+            },
+            error: function() {
+                $(".promptInfo").text("Error is raised!");
+            }
+        })
+    });
+    $("#btn-cancel").click(function () {
+        location.href = "products-1"
+    });
+{% endblock %}

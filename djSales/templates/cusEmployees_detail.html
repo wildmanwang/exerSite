@@ -1,0 +1,27 @@
+{% extends "master/mMain.html" %}
+
+{% block content %}
+    <div style="padding: 0 20px; ">
+        <h2>联系人详情</h2>
+        <form id="data-modify" targetID="{{ rec.id }}">
+            <p><label class="labelInput">姓名：</label><label>{{ rec.name }}</label></p>
+            <p><label class="labelInput">职位：</label><label>{{ rec.position }}</label></p>
+            <p><label class="labelInput">手机号码：</label><label>{{ rec.mobile }}</label></p>
+            <p><label class="labelInput">电子邮箱：</label><label>{{ rec.email }}</label></p>
+            <p><label class="labelInput">状态：</label><label id="col_status" col_value="{{ rec.status }}"></label></p>
+            <p><label class="labelInput">备注：</label>{{ rec.remark }}<label></label></p>
+            <hr>
+            <p><label class="labelInput"></label><input id="btn-cancel" type="button" value="返回"></p>
+        </form>
+    </div>
+{% endblock %}
+{% block subscript %}
+    if ($("#col_status").attr("col_value") == "1") {
+        $("#col_status").text("正常");
+    } else {
+        $("#col_status").text("失效");
+    }
+    $("#btn-cancel").click(function () {
+        location.href = "cusEmployees-1";
+    });
+{% endblock %}

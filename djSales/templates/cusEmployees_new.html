@@ -1,0 +1,40 @@
+{% extends "master/mMain.html" %}
+
+{% block content %}
+    <div style="padding: 0 20px; ">
+        <h2>新增联系人</h2>
+        <form id="data-new">
+            <p><label class="labelInput" for="col_name">姓名：</label><input id="col_name" name="col_name" type="text"></p>
+            <p><label class="labelInput" for="col_position">职位：</label><input id="col_position" name="col_position" type="text"></p>
+            <p><label class="labelInput" for="col_mobile">手机号码：</label><input id="col_mobile" name="col_mobile" type="text"></p>
+            <p><label class="labelInput" for="col_email">电子邮箱：</label><input id="col_email" name="col_email" type="text"></p>
+            <p><label class="labelInput" for="col_remark">备注：</label><input id="col_remark" name="col_remark" type="text"></p>
+            <p><label class="labelInput"></label><label class="promptInfo"></label></p>
+            <p><label class="labelInput"></label><input id="btn-save" type="button" value="保存"><input id="btn-cancel" type="button" value="取消" style="margin-left: 10px; "></p>
+        </form>
+    </div>
+{% endblock %}
+
+{% block subscript %}
+    $("#btn-save").click(function () {
+        $.ajax({
+            url: "cusEmployees-new",
+            method: "POST",
+            data: $("#data-new").serialize(),
+            dataType: "JSON",
+            success: function(data) {
+                if (data.result) {
+                    location.reload();
+                } else {
+                    $(".promptInfo").text(data.info);
+                }
+            },
+            error: function() {
+                $(".promptInfo").text("Error is raised!");
+            }
+        })
+    });
+    $("#btn-cancel").click(function () {
+        location.href = "cusEmployees-1"
+    });
+{% endblock %}

@@ -1,0 +1,125 @@
+{% extends "master/mMain.html" %}
+
+{% block content %}
+    <div style="padding: 0 20px; ">
+        <h2>修改客户</h2>
+        <form id="data-modify" targetID="{{ rec.id }}">
+            <p><label class="labelInput" for="col_code">编码：</label><input id="col_code" name="col_code" type="text" value="{{ rec.code }}"></p>
+            <p><label class="labelInput" for="col_name">名称：</label><input id="col_name" name="col_name" type="text" value="{{ rec.name }}"></p>
+            <p><label class="labelInput" for="col_simpleName">简称：</label><input id="col_simpleName" name="col_simpleName" type="text" value="{{ rec.simpleName }}"></p>
+            <p><label class="labelInput" for="col_contactPerson">联系人：</label><select id="col_contactPerson" name="col_contactPerson" col_value="{{ rec.contactPerson_id }}">
+                <option value=""></option>
+                {% for emp in cusEmps %}
+                    <option value="{{ emp.id }}">{{ emp.name }}</option>
+                {% endfor %}
+            </select></p>
+            <p><label class="labelInput" for="col_address">地址：</label><input id="col_address" name="col_address" type="text" value="{{ rec.address }}"></p>
+            <p><label class="labelInput" for="col_status">状态：</label><select id="col_status" name="col_status" selectedValue="{{ rec.status }}"><option value="1">正常</option><option value="0">失效</option> </select></p>
+            <p><label class="labelInput" for="col_remark">备注：</label><input id="col_remark" name="col_remark" type="text" value="{{ rec.remark }}"></p>
+            <p><label class="labelInput">使用商品：</label></p>
+            <div id="proList">
+                {% for pro in rec.products.all %}
+                    <p>
+                        <label class="labelInput"></label>
+                        <label class="proItem" targetID="{{ pro.id }}">{{ pro.name }}</label>
+                    </p>
+                {% endfor %}
+            </div>
+            <p><label class="labelInput"></label><label class="promptInfo"></label></p>
+            <p><label class="labelInput"></label>
+                <input id="btn-select" type="button" value="选择商品">
+                <input id="btn-save" type="button" value="保存">
+                <input id="btn-cancel" type="button" value="取消">
+            </p>
+        </form>
+    </div>
+    <div id="dialog-select" class="dialog hide" style="width: 600px; height: 360px; margin-left: -300px; margin-top: -300px; ">
+        <h4>选择商品</h4>
+        <div style="height: 240px; overflow: scroll; ">
+        <table>
+            <thead>
+            <tr>
+                <th style="width: 60px; ">编码</th>
+                <th style="width: 160px; ">名称</th>
+                <th style="width: 80px; ">价格</th>
+                <th style="width: 220px; ">备注</th>
+                <th style="width: 50px; ">选择</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for pro in pros %}
+                    <tr targetID="{{ pro.id }}">
+                    <td>{{ pro.code }}</td>
+                    <td col_name="name">{{ pro.name }}</td>
+                    <td style="text-align: right; ">{{ pro.price }}</td>
+                    <td>{{ pro.remark }}</td>
+                    <td><input name="pro_select" type="checkbox"></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        </div>
+        <p><label class="labelInput"></label>
+        <input id="btn_selectconfirm" type="button" value="确定">
+        <input id="btn_selectcancel" type="button" value="取消"></p>
+    </div>
+{% endblock %}
+{% block subscript %}
+    $("#btn-select").click(function () {
+        $("#dialog-select [name='pro_select']").prop("checked", false);
+        $("#proList .proItem").each(function() {
+            $("#dialog-select [targetID='" + $(this).attr("targetID") + "'] [name='pro_select']").prop("checked", true);
+        });
+        $("#dialog-select").removeClass("hide");
+    });
+    $("#col_contactPerson").children().each(function () {
+        if ($(this).val() == $(this).parent().attr("col_value")) {
+            $(this).attr("selected", "selected");
+        }
+    });
+    $("#col_status").children().each(function () {
+        if ($(this).val() == $(this).parent().attr("selectedValue")) {
+            $(this).attr("selected", "selected");
+        }
+    });
+    $("#btn-save").click(function () {
+        console.log($("#data-modify").serialize());
+        var proItems = ""
+        $("#proList .proItem").each(function() {
+            proItems = proItems + "&proItem=" + $(this).attr("targetID");
+        });
+        $.ajax({
+            url: "customers-modify-" + $("#data-modify").attr("targetID"),
+            method: "POST",
+            data: $("#data-modify").serialize() + proItems,
+            dataType: "JSON",
+            success: function(data) {
+                if (data.result) {
+                    location.href = "customers-detail-" + $("#data-modify").attr("targetID");
+                } else {
+                    $(".promptInfo").text(data.info);
+                }
+            },
+            error: function() {
+                $(".promptInfo").text("Error is raised!");
+            }
+        })
+    });
+    $("#btn-cancel").click(function () {
+        location.href = "customers-1"
+    });
+    $("#btn_selectconfirm").click(function () {
+        $("#proList").empty();
+        $("#dialog-select [name='pro_select']:checked").each(function () {
+            if ($("#proList [targetID='" + $(this).parent().parent().attr('targetID') + "']").length == 0) {
+                $("#proList").append('<p><label class="labelInput"></label><label class="proItem" targetID="' + $(this).parent().parent().attr('targetID') + '">' + $(this).parent().parent().children('[col_name="name"]').text() + '</label></p>');
+            }
+        });
+        $(".cover-layer").addClass("hide");
+        $("#dialog-select").addClass("hide");
+    });
+    $("#btn_selectcancel").click(function () {
+        $(".cover-layer").addClass("hide");
+        $("#dialog-select").addClass("hide");
+    });
+{% endblock %}

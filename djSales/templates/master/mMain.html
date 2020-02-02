@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome to DJ Sales Management System!</title>
+    <link rel="stylesheet" href="/static/commons.css">
+</head>
+<body>
+    {#  顶部banner  #}
+    <div>
+        <div class="frame-top bkcolor2">
+            <div>
+                <span class="left font-size5 color5" style="margin: 30px 0 0 40px; ">DJ Sales Management System</span>
+                {% if type == 0 %}
+                    <span id="wintitle" class="left font-size5 color5" style="margin: 30px 0 0 40px; ">我的桌面</span>
+                {% else %}
+                    <span id="wintitle" class="left font-size5 color5" style="margin: 30px 0 0 40px; ">{{ title }}</span>
+                {% endif %}
+                <span id="exit" class="right font-size1 color4" style="margin: 15px 35px 0 15px; cursor: pointer; ">退出登录</span>
+                <span id="curUser" class="right font-size1 color4" style="margin: 15px 0 0 5px; ">拾落的流星</span>
+                <span class="right color4" style="width: 16px; height: 16px; border-radius: 10px; border: 1px solid; margin: 14px 0; "></span>
+            </div>
+        </div>
+    </div>
+    <div style="width: 1280px; margin: 0 auto; overflow: hidden">
+        {#  左边menu  #}
+        <div class="frame-menu bkcolor3">
+            <div class="menu-group font-size2 color2">基础资料</div>
+            <div class="menu-item font-size1 color4" menutext="商品">商品</div>
+            <div class="menu-item font-size1 color4" menutext="客户">客户</div>
+            <div class="menu-item font-size1 color4" menutext="联系人">联系人</div>
+            <div class="menu-group font-size2 color2">业务处理</div>
+            <div class="menu-item font-size1 color4 hide" menutext="业务1">业务1</div>
+            <div class="menu-item font-size1 color4 hide" menutext="业务2">业务2</div>
+            <div class="menu-group font-size2 color2">系统管理</div>
+            <div class="menu-item font-size1 color4 hide" menutext="用户">用户</div>
+            <div class="menu-item font-size1 color4 hide" menutext="系统设置">系统设置</div>
+        </div>
+        {#  内容content #}
+        <div class="frame-cons">
+            <div class="frame-tabmenu bkcolor4" style="overflow: hidden">
+                {% if type == 0 %}
+                    <div id="tabitem-mydesk" class="frame-tabitem left frame-tabactive">我的桌面</div>
+                {% else %}
+                    <div id="tabitem-mydesk" class="frame-tabitem left">我的桌面</div>
+                    <div id="tabitem-curfunc" class="frame-tabitem left frame-tabactive">{{ title }}</div>
+                {% endif %}
+            </div>
+            <div class="frame-content">
+                {% block content %}
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+    {#  底部footer  #}
+    <div>
+        <div class="frame-bottom bkcolor4">
+            <div class="left" style="width: 500px; margin: 15px 40px 10px 240px; ">
+                <div class="font-size2 color2" style="margin: 0 0 10px 0; ">关于DJ Sales</div>
+                <div class="font-size1 color3">2020年5月1日成立于深圳西乡，年销售额从最初的不足百万到超亿元，今用了3年的时间。我们坚信：有付出就有收货，努力必须用对方向。我们前期经过谨慎的探索，睿智的思考，探索出一条前无古人、后无来者的成功之路。</div>
+            </div>
+            <div class="left" style="width: 300px; margin: 15px 40px 10px 40px; ">
+                <div class="font-size2 color2" style="margin: 0 0 10px 0; ">联系我们</div>
+                <div class="font-size1 color3">电话：13866668888</div>
+                <div class="font-size1 color3">电子邮箱：rabit@qq.com</div>
+                <div class="font-size1 color3">地址：中央城市大道1号DJ Sales总部</div>
+            </div>
+        </div>
+    </div>
+    {#  遮罩层  #}
+    <div class="cover-layer hide"></div>
+    <script type="text/javascript" src="/static/jquery3.4.1.js"></script>
+    <script type="text/javascript" src="/static/jquery.cookie.js"></script>
+    <script>
+        $(function () {
+            $("#curUser").text("Welcome, " + $.cookie("curUser"));
+            $(".frame-menu [menutext='" + $("#wintitle").text() + "']").addClass("menu-active");
+            $("#exit").click(function () {
+                $.cookie(curUser, null);
+                location.href = "login/";
+            });
+            $(".menu-group").click(function () {
+                $(this).siblings(".menu-item").addClass("hide");
+                $(this).nextUntil(".menu-group").removeClass("hide");
+            });
+            $("#tabitem-mydesk").click(function () {
+                location.href = "myDesk";
+            });
+            $(".menu-item").click(function () {
+                if ($(this).text() == "商品") {
+                    location.href = "products-1";
+                }
+                if ($(this).text() == "客户") {
+                    location.href = "customers-1"
+                }
+                if ($(this).text() == "联系人") {
+                    location.href = "cusEmployees-1"
+                }
+            });
+            {% block subscript %}
+            {% endblock %}
+        });
+    </script>
+</body>
+</html>

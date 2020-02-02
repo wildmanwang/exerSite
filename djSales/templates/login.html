@@ -6,17 +6,25 @@
     <link rel="stylesheet" href="/static/commons.css" type="text/css" />
 </head>
 <body>
-    <div style="width: 600px; height: 400px; position: fixed; left: 50%; top: 50%; margin-left: -300px; margin-top: -200px; ">
+    <div style="width: 600px; height: 400px; position: fixed; left: 50%; top: 50%; margin-left: -300px; margin-top: -300px; ">
         <h1>欢迎登录</h1>
         <h2>DJ Sales Management System</h2>
-        <form>
+        <hr>
+        <form id="form_login" action="http://127.0.0.1:8000/login/" method="post">
             <p>
                 <label class="labelInput">用户名：</label>
-                <input type="text">
+                <input type="text" name="username">
             </p>
             <p>
                 <label class="labelInput">密码：</label>
-                <input type="password">
+                <input type="password" name="password">
+            </p>
+            <p>
+                <div class="promptInfo" style="margin-left: 120px; ">{{ info }}</div>
+            </p>
+            <p>
+                <input type="submit" value="登录" style="margin-left: 120px; ">
+                <input type="button" value="注册">
             </p>
         </form>
     </div>

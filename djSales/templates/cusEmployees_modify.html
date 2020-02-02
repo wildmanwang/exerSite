@@ -1,0 +1,45 @@
+{% extends "master/mMain.html" %}
+
+{% block content %}
+    <div style="padding: 0 20px; ">
+        <h2>修改联系人</h2>
+        <form id="data-modify" targetID="{{ rec.id }}">
+            <p><label class="labelInput" for="col_name">姓名：</label><input id="col_name" name="col_name" type="text" value="{{ rec.name }}"></p>
+            <p><label class="labelInput" for="col_position">职位：</label><input id="col_position" name="col_position" type="text" value="{{ rec.position }}"></p>
+            <p><label class="labelInput" for="col_mobile">手机号码：</label><input id="col_mobile" name="col_mobile" type="text" value="{{ rec.mobile }}"></p>
+            <p><label class="labelInput" for="col_email">电子邮箱：</label><input id="col_email" name="col_email" type="text" value="{{ rec.email }}"></p>
+            <p><label class="labelInput" for="col_status">状态：</label><select id="col_status" name="col_status" selectedValue="{{ rec.status }}"><option value="1">正常</option><option value="0">失效</option> </select></p>
+            <p><label class="labelInput" for="col_remark">备注：</label><input id="col_remark" name="col_remark" type="text" value="{{ rec.remark }}"></p>
+            <p><label class="labelInput"></label><label class="promptInfo"></label></p>
+            <p><label class="labelInput"></label><input id="btn-save" type="button" value="保存"><input id="btn-cancel" type="button" value="取消" style="margin-left: 10px; "></p>
+        </form>
+    </div>
+{% endblock %}
+{% block subscript %}
+    $("#col_status").children().each(function () {
+        if ($(this).val() == $(this).parent().attr("selectedValue")) {
+            $(this).attr("selected", "selected");
+        }
+    });
+    $("#btn-save").click(function () {
+        $.ajax({
+            url: "cusEmployees-modify-" + $("#data-modify").attr("targetID"),
+            method: "POST",
+            data: $("#data-modify").serialize(),
+            dataType: "JSON",
+            success: function(data) {
+                if (data.result) {
+                    location.href = "cusEmployees-detail-" + $("#data-modify").attr("targetID");
+                } else {
+                    $(".promptInfo").text(data.info);
+                }
+            },
+            error: function() {
+                $(".promptInfo").text("Error is raised!");
+            }
+        })
+    });
+    $("#btn-cancel").click(function () {
+        location.href = "cusEmployees-1"
+    });
+{% endblock %}

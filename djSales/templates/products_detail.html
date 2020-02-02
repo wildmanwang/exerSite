@@ -1,0 +1,30 @@
+{% extends "master/mMain.html" %}
+
+{% block content %}
+    <div style="padding: 0 20px; ">
+        <h2>商品详情</h2>
+        <form id="data-modify" targetID="{{ rec.id }}">
+            <p><label class="labelInput">编码：</label><label>{{ rec.code }}</label></p>
+            <p><label class="labelInput">名称：</label><label>{{ rec.name }}</label></p>
+            <p><label class="labelInput">参考价格：</label><label>{{ rec.price }}</label></p>
+            <p><label class="labelInput">主版本：</label><label>{{ rec.verMain }}</label></p>
+            <p><label class="labelInput">子版本：</label><label>{{ rec.verSub }}</label></p>
+            <p><label class="labelInput">注册日期：</label><label>{{ rec.datePro|date:"Y-m-d" }}</label></p>
+            <p><label class="labelInput">版本日期：</label><label>{{ rec.dateCur|date:"Y-m-d" }}</label></p>
+            <p><label class="labelInput">状态：</label><label id="col_status" col_value="{{ rec.status }}"></label></p>
+            <p><label class="labelInput">备注：</label><label>{{ rec.remark }}</label></p>
+            <hr>
+            <p><label class="labelInput"></label><input id="btn-cancel" type="button" value="返回"></p>
+        </form>
+    </div>
+{% endblock %}
+{% block subscript %}
+    if ($("#col_status").attr("col_value") == "1") {
+        $("#col_status").text("正常");
+    } else {
+        $("#col_status").text("下架");
+    }
+    $("#btn-cancel").click(function () {
+        location.href = "products-1";
+    });
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends "master/mMain.html" %}
+
+{% block content %}
+    <div style="padding: 0 20px; ">
+        <h2>客户详情</h2>
+        <form id="data-modify" targetID="{{ rec.id }}">
+            <p><label class="labelInput">编码：</label><label>{{ rec.code }}</label></p>
+            <p><label class="labelInput">名称：</label><label>{{ rec.name }}</label></p>
+            <p><label class="labelInput">简称：</label><label>{{ rec.simpleName }}</label></p>
+            <p><label class="labelInput">联系人：</label><label>{{ rec.contactPerson.name }}</label></p>
+            <p><label class="labelInput">联系电话：</label><label>{{ rec.contactPerson.mobile }}</label></p>
+            <p><label class="labelInput">地址：</label><label>{{ rec.address }}</label></p>
+            <p><label class="labelInput">状态：</label><label id="col_status" col_value="{{ rec.status }}"></label></p>
+            <p><label class="labelInput">备注：</label>{{ rec.remark }}<label></label></p>
+            <p><label class="labelInput">使用商品：</label>
+                {% for pro in rec.products.all %}
+                    <p><label class="labelInput"></label ><label id="col_proid" col_value="{{ pro.id }}">{{ pro.name }}</label></p>
+                {% endfor %}
+            </p>
+            <hr>
+            <p><label class="labelInput"></label><input id="btn-cancel" type="button" value="返回"></p>
+        </form>
+    </div>
+{% endblock %}
+{% block subscript %}
+    if ($("#col_status").attr("col_value") == "1") {
+        $("#col_status").text("正常");
+    } else {
+        $("#col_status").text("失效");
+    }
+    $("#btn-cancel").click(function () {
+        location.href = "customers-1";
+    });
+{% endblock %}
