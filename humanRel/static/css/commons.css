@@ -1,0 +1,176 @@
+body{
+    margin: 0;
+}
+.cover-layer{
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: black;
+    opacity: 0.5;
+    z-index: 10;
+}
+.dialog{
+    border: dimgray 1px solid;
+    border-radius: 4px;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    padding: 5px;
+    background-color: white;
+    z-index: 20;
+}
+.frame-top{
+    width: 1280px;
+    height: 100px;
+    margin: 0 auto;
+}
+.frame-menu{
+    display: inline-block;
+    width: 240px;
+    height: 720px;
+    float: left;
+}
+.menu-group{
+    margin: 15px 0 15px 20px;
+    cursor: pointer;
+}
+.menu-item{
+    width: 198px;
+    margin: 0 1px;
+    padding: 6px 0 6px 40px;
+    cursor: pointer;
+}
+.menu-item:hover{
+    background-color: white;
+    color: cadetblue;
+}
+.menu-active{
+    background-color: lavender;
+    color: cornflowerblue;
+}
+.frame-cons{
+    display: inline-block;
+    width: 1040px;
+    float: left;
+}
+.frame-content{
+    width: 1020px;
+    padding: 5px 10px;
+}
+.frame-tabmenu{
+    display: block;
+    height: 40px;
+}
+.frame-tabitem{
+    width: 120px;
+    height: 38px;
+    margin: 1px 0;
+    text-align: center;
+    line-height: 38px;
+    border: 1px solid white;
+    color: rgb(255, 255, 255);
+}
+.frame-tabactive{
+    background-color: beige;
+    color: darkslategrey;
+}
+.frame-bottom{
+    width: 1280px;
+    height: 120px;
+    margin: 0 auto;
+}
+.hide{
+    display: none;
+}
+.left{
+    display: inline-block;
+    float: left;
+}
+.right{
+    display: inline-block;
+    float: right;
+}
+.font-size1{
+    font-size: 12px;
+}
+.font-size2{
+    font-size: 16px;
+}
+.font-size3{
+    font-size: 20px;
+}
+.font-size4{
+    font-size: 24px;
+}
+.font-size5{
+    font-size: 28px;
+}
+.color1{
+    color: rgb(0, 0, 0);
+}
+.color2{
+    color: rgb(64, 64, 96)
+}
+.color3{
+    color: rgb(128, 128, 160);
+}
+.color4{
+    color: rgb(192, 192, 224);
+}
+.color5{
+    color: rgb(224, 224, 256);
+}
+.bkcolor1{
+    background-color: black;
+}
+.bkcolor2{
+    background-color: darkslategrey;
+}
+.bkcolor3{
+    background-color: cadetblue;
+}
+.bkcolor4{
+    background-color: lightgray;
+}
+.bkcolor5{
+    background-color: white;
+}
+table{
+    border: dimgray 2px solid;
+    border-collapse: collapse;
+}
+tr{
+    height: 35px;
+}
+th{
+    border: darkgray 1px solid;
+    background-color: lightgray;
+    font-size: 12px;
+    color: dimgray;
+}
+td{
+    border: darkgray 1px solid;
+    background-color: white;
+    font-size: 12px;
+    color: darkslategrey;
+}
+.labelInput{
+    display: inline-block;
+    text-align: right;
+    width: 120px;
+}
+input[type=text], input[type=password], select{
+    width: 200px;
+    height: 30px;
+    line-height: 30px;
+}
+input[type=button],input[type=submit],input[type=reset]{
+    width: 90px;
+    height: 30px;
+    line-height: 30px;
+}
+.promptInfo{
+    color: red;
+}
