@@ -1,0 +1,246 @@
+{% extends "../frame.html" %}
+
+
+{% block pageTitle %}人员资料 — 查看{% endblock %}
+
+
+{% block subStyle %}
+    <style>
+        table, tr, td{
+            border: none;
+            background-color: rgb(242, 242, 242);
+            font-size: 14px;
+        }
+        table{
+            border-bottom: #E2E2E2 1px solid;
+        }
+        td{
+            height: 30px;
+        }
+        .groupTitle{
+            background-color: white;
+            padding-left: 50px;
+            height: 30px;
+        }
+        .col1{
+            width: 150px;
+            padding-left: 50px;
+        }
+        .col2{
+            width: 200px;
+        }
+        .col4{
+            width: 600px;
+        }
+        .subRemark{
+            font-size: 12px;
+            color: darkgray;
+        }
+    </style>
+{% endblock %}
+
+
+{% block contents %}
+    <form action="http://127.0.0.1:8000/base/personDetail-{{ rec.id }}" method="POST">
+        <table>
+            <tr>
+                <td class="groupTitle" colspan="4">基础资料</td>
+            </tr>
+            <tr>
+                <td class="col1">{{ form.name.label }}</td>
+                <td class="col2">{{ rec.name }}</td>
+                <td class="col3">{{ form.name.errors }}</td>
+                <td class="col4"><div class="subRemark">请填写真实姓名</div><div class="subRemark">以便人员识别</div></td>
+            </tr>
+            <tr>
+                <td class="col1">{{ form.gender.label }}</td>
+                {% if rec.gender == 1 %}
+                    <td class="col2">男</td>
+                {% elif rec.gender == 0 %}
+                    <td class="col2">女</td>
+                {% else %}
+                    <td class="col2"></td>
+                {% endif %}
+                <td class="col3">{{ form.gender.errors }}</td>
+                <td class="col4"><div class="subRemark">用于婚姻</div><div class="subRemark">以及根据地方习俗预测生日祝寿</div></td>
+            </tr>
+            <tr>
+                <td class="col1">{{ form.birthDate.label }}</td>
+                {% if rec.birthDate %}
+                    <td class="col2">{{ rec.birthDate }}</td>
+                {% else %}
+                    <td class="col2"></td>
+                {% endif %}
+                <td class="col3">{{ form.birthDate.errors }}</td>
+                <td class="col4"><div class="subRemark">用于计算年龄</div><div class="subRemark">预测生日等</div></td>
+            </tr>
+            <tr>
+                <td class="groupTitle" colspan="4">人物关系</td>
+            </tr>
+            <tr>
+                <td class="col1">{{ form.relType.label }}</td>
+                {% if rec.relType == 1 %}
+                    <td class="col2">血亲</td>
+                {% elif rec.relType == 2 %}
+                    <td class="col2">姻亲</td>
+                {% elif rec.relType == 3 %}
+                    <td class="col2">同学</td>
+                {% elif rec.relType == 4 %}
+                    <td class="col2">朋友</td>
+                {% elif rec.relType == 5 %}
+                    <td class="col2">同事</td>
+                {% elif rec.relType == 6 %}
+                    <td class="col2">战友</td>
+                {% elif rec.relType == 7 %}
+                    <td class="col2">街坊</td>
+                {% elif rec.relType == 8 %}
+                    <td class="col2">其他</td>
+                {% else %}
+                    <td class="col2"></td>
+                {% endif %}
+                <td class="col3">{{ form.relType.errors }}</td>
+                <td class="col4"><div class="subRemark">关系类型</div><div class="subRemark">可用于查询和统计分类</div></td>
+            </tr>
+            <tr>
+                <td class="col1">{{ form.family.label }}</td>
+                {% if rec.family %}
+                    <td class="col2">{{ rec.family.name }}</td>
+                {% else %}
+                    <td class="col2"></td>
+                {% endif %}
+                <td class="col3">{{ form.family.errors }}</td>
+                <td class="col4"><div class="subRemark">关联户主</div><div class="subRemark">人情往来都是以家庭为单位</div></td>
+            </tr>
+            <tr>
+                <td class="col1">{{ form.father.label }}</td>
+                {% if rec.father %}
+                    <td class="col2">{{ rec.father.name }}</td>
+                {% else %}
+                    <td class="col2"></td>
+                {% endif %}
+                <td class="col3">{{ form.father.errors }}</td>
+                <td class="col4"><div class="subRemark">用于建立父子关系</div><div class="subRemark">以及关联父系亲属</div></td>
+            </tr>
+            <tr>
+                <td class="col1">{{ form.mother.label }}</td>
+                {% if rec.mother %}
+                    <td class="col2">{{ rec.mother.name }}</td>
+                {% else %}
+                    <td class="col2"></td>
+                {% endif %}
+                <td class="col3">{{ form.mother.errors }}</td>
+                <td class="col4"><div class="subRemark">用于建立母子关系</div><div class="subRemark">以及关联母系亲属</div></td>
+            </tr>
+            <tr>
+                <td class="col1">{{ form.Marriage.label }}</td>
+                {% if rec.Marriage == 1 %}
+                    <td class="col2">已婚</td>
+                {% else %}
+                    <td class="col2">未婚</td>
+                {% endif %}
+                <td class="col3">{{ form.Marriage.errors }}</td>
+                <td class="col4"><div class="subRemark">用于关联配偶</div><div class="subRemark">以及预测结婚生子</div></td>
+            </tr>
+            <tr>
+                <td class="col1">{{ form.spouse.label }}</td>
+                {% if rec.spouse %}
+                    <td class="col2">{{ rec.spouse.name }}</td>
+                {% else %}
+                    <td class="col2"></td>
+                {% endif %}
+                <td class="col3">{{ form.spouse.errors }}</td>
+                <td class="col4"><div class="subRemark">用于建立夫妻关系</div><div class="subRemark">以及关联姻亲</div></td>
+            </tr>
+            <tr>
+                <td class="groupTitle" colspan="4">联系方式</td>
+            </tr>
+            <tr>
+                <td class="col1">{{ form.mobile.label }}</td>
+                <td class="col2">{{ rec.mobile }}</td>
+                <td class="col3">{{ form.mobile.errors }}</td>
+                <td class="col4"><div class="subRemark">主要的联系方式</div><div class="subRemark">请务必填写真实信息</div></td>
+            </tr>
+            <tr>
+                <td class="col1">{{ form.weixin.label }}</td>
+                <td class="col2">{{ rec.weixin }}</td>
+                <td class="col3">{{ form.weixin.errors }}</td>
+                <td class="col4"><div class="subRemark">请填写微信号码</div><div class="subRemark">默认为手机号</div></td>
+            </tr>
+            <tr>
+                <td class="col1">{{ form.email.label }}</td>
+                <td class="col2">{{ rec.email }}</td>
+                <td class="col3">{{ form.email.errors }}</td>
+                <td class="col4"><div class="subRemark">请填写电子邮箱地址</div><div class="subRemark"></div></td>
+            </tr>
+            <tr>
+                <td class="col1">{{ form.address.label }}</td>
+                <td class="col2">{{ rec.address }}</td>
+                <td class="col3">{{ form.address.errors }}</td>
+                <td class="col4"><div class="subRemark">请填写当前居住地址</div><div class="subRemark"></div></td>
+            </tr>
+            <tr>
+                <td class="col1">{{ form.workUnit.label }}</td>
+                <td class="col2">{{ rec.workUnit }}</td>
+                <td class="col3">{{ form.workUnit.errors }}</td>
+                <td class="col4"><div class="subRemark">请填写工作单位</div><div class="subRemark"></div></td>
+            </tr>
+            <tr>
+                <td class="groupTitle" colspan="4">其他</td>
+            </tr>
+            <tr>
+                <td class="col1">{{ form.education.label }}</td>
+                {% if rec.education == 1 %}
+                    <td class="col2">小学</td>
+                {% elif rec.education == 2 %}
+                    <td class="col2">初中</td>
+                {% elif rec.education == 3 %}
+                    <td class="col2">高中</td>
+                {% elif rec.education == 4 %}
+                    <td class="col2">大专</td>
+                {% elif rec.education == 5 %}
+                    <td class="col2">本科</td>
+                {% elif rec.education == 6 %}
+                    <td class="col2">硕士</td>
+                {% elif rec.education == 7 %}
+                    <td class="col2">博士</td>
+                {% elif rec.education == 0 %}
+                    <td class="col2">其他</td>
+                {% endif %}
+                <td class="col3">{{ form.education.errors }}</td>
+                <td class="col4"><div class="subRemark">请选择学历</div><div class="subRemark">在教育的学生将自动更新学历</div></td>
+            </tr>
+            <tr>
+                <td class="col1">{{ form.occupation.label }}</td>
+                <td class="col2">{{ rec.occupation }}</td>
+                <td class="col3">{{ form.occupation.errors }}</td>
+                <td class="col4"><div class="subRemark">请填写职业</div><div class="subRemark"></div></td>
+            </tr>
+            <tr>
+                <td class="col1">{{ form.status.label }}</td>
+                {% if rec.status == 1 %}
+                    <td class="col2">正常</td>
+                {% else %}
+                    <td class="col2">失效</td>
+                {% endif %}
+                <td class="col3">{{ form.status.errors }}</td>
+                <td class="col4"><div class="subRemark">人员状态</div><div class="subRemark">失效后默认不做事件预测、报表统计等</div></td>
+            </tr>
+            <tr>
+                <td class="col1">{{ form.remark.label }}</td>
+                <td class="col2">{{ rec.remark }}</td>
+                <td class="col3">{{ form.remark.errors }}</td>
+                <td class="col4"><div class="subRemark">其他信息</div><div class="subRemark"></div></td>
+            </tr>
+        </table>
+        <p>
+            <input id="btnOk" class="inputBtn" type="button" value="返回" style="margin-left: 196px; ">
+        </p>
+    </form>
+{% endblock %}
+
+
+{% block subScript %}
+    $("#btnOk").click(function () {
+        location.href = "http://127.0.0.1:8000/base/personList-1-1"
+    });
+{% endblock %}

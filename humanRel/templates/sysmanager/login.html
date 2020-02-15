@@ -2,9 +2,58 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>登录人情簿</title>
+    <link href="/static/css/commons.css" type="text/css" rel="stylesheet" />
+    <style>
+        #i1, #i2{
+            border: rgb(221, 221, 221) 1px solid;
+            border-radius: 4px;
+            width: 318px;
+            height: 40px;
+            font-size: 16px;
+        }
+        #i1{
+            margin-top: 40px;
+        }
+        #i3{
+            border: none;
+            background-color: rgb(17, 150, 219);
+            border-radius: 4px;
+            width: 318px;
+            height: 42px;
+            font-size: 18px;
+            color: white;
+        }
+        a{
+            font-size: 12px;
+        }
+    </style>
 </head>
 <body>
-
+    <div style="height: 74px; margin-top: 200px; ">
+        <div style="width: 320px; height: 74px; padding: 0 80px; margin: 0 auto; ">
+            <img src="/static/images/contact.png">
+            <span style="font-size: 48px; color: cornflowerblue; vertical-align: bottom; ">人情</span>
+            <span style="font-size: 48px; font-style: italic; color: rgb(255, 153, 0); vertical-align: bottom; ">簿</span>
+            <img src="/static/images/write.png">
+        </div>
+    </div>
+    <div style="height: 240px; background-color: #F9F9F9; ">
+        <div style="width: 320px; height: 240px; padding: 0 80px; margin: 0 auto; background-color: #F2F2F2; ">
+            <form action="http://127.0.0.1:8000/sys/login/" method="POST">
+                {% csrf_token %}
+                <p><input id="i1" type="text" name="username" placeholder="请输入用户名" /></p>
+                <input id="i2" type="password" name="userpw" placeholder="请输入密码" />
+                <label class="promptInfo">{{ info }}</label>
+                <p><input id="i3" type="submit" value="登录" /></p>
+            </form>
+        </div>
+    </div>
+    <div>
+        <div style="width: 320px; padding: 0 80px; margin: 0 auto; ">
+            <p><a href="http://127.0.0.1:8000/sys/register">注册新用户</a></p>
+            <p><a href="">忘记密码？</a></p>
+        </div>
+    </div>
 </body>
 </html>
