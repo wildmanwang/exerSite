@@ -1,7 +1,7 @@
 {% extends "../frame.html" %}
 
 
-{% block pageTitle %}人员资料{% endblock %}
+{% block pageTitle %}家庭资料{% endblock %}
 
 
 {% block subStyle %}
@@ -25,13 +25,10 @@
                 <thead>
                 <tr>
                     <th style="width: 50px; ">序号</th>
-                    <th style="width: 120px; ">姓名</th>
-                    <th style="width: 60px; ">性别</th>
-                    <th style="width: 120px; ">家庭</th>
-                    <th style="width: 120px; ">出生日期</th>
-                    <th style="width: 80px; ">婚姻状况</th>
-                    <th style="width: 120px; ">职业</th>
-                    <th style="width: 100px; ">手机号码</th>
+                    <th style="width: 120px; ">家长</th>
+                    <th style="width: 140px; ">所在城市/村镇</th>
+                    <th style="width: 240px; ">家庭住址</th>
+                    <th style="width: 230px; ">备注</th>
                     <th style="width: 160px; ">操作</th>
                 </tr>
                 </thead>
@@ -39,28 +36,21 @@
                 {% for rec in dataList %}
                     <tr recID="{{ rec.id }}">
                         <td style="text-align: center; ">{{ forloop.counter }}</td>
-                        <td style="text-align: left; "><a href="http://127.0.0.1:8000/base/personDetail-{{ rec.id }}">{{ rec.name }}</a></td>
-                        {% if rec.gender == 1 %}
-                            <td style="text-align: center; ">男</td>
+                        <td style="text-align: left; "><a href="http://127.0.0.1:8000/base/familyDetail-{{ rec.id }}">{{ rec.name.name }}</a></td>
+                        {% if rec.location %}
+                            <td>{{ rec.location }}</td>
                         {% else %}
-                            <td style="text-align: center; ">女</td>
+                            <td></td>
                         {% endif %}
-                        <td style="text-align: left; ">{{ rec.family.name }}</td>
-                        {% if rec.birthDate %}
-                            <td style="text-align: center; ">{{ rec.birthDate|date:"Y-m-d" }}</td>
+                        {% if rec.address %}
+                            <td>{{ rec.address }}</td>
                         {% else %}
-                            <td style="text-align: center; "></td>
+                            <td></td>
                         {% endif %}
-                        {% if rec.Marriage == 1 %}
-                            <td style="text-align: center; ">已婚</td>
+                        {% if rec.remark %}
+                            <td>{{ rec.remark }}</td>
                         {% else %}
-                            <td style="text-align: center; ">未婚</td>
-                        {% endif %}
-                        <td style="text-align: left; ">{{ rec.occupation }}</td>
-                        {% if rec.mobile %}
-                            <td style="text-align: center; ">{{ rec.mobile }}</td>
-                        {% else %}
-                            <td style="text-align: center; "></td>
+                            <td></td>
                         {% endif %}
                         <td style="text-align: center; "><span class="labelBtn recModify">修改</span><span class="labelBtn recDelete">删除</span></td>
                     </tr>
@@ -86,7 +76,7 @@
     $("#PAGE_reccnt_perpage_select").val($.cookie("reccnt_perpage"));
     $("#PAGE_reccnt_perpage_select").change(function () {
         $.cookie("reccnt_perpage", $(this).val(), {path: "/base/"});
-        location.href = "http://127.0.0.1:8000/base/personList-" + $("#queryStatus").val() + "-1";
+        location.href = "http://127.0.0.1:8000/base/familyList-" + $("#queryStatus").val() + "-1";
     });
     $("#queryStatus").children().each(function () {
         if ($(this).val() == $("#queryStatus").attr("selectedValue")) {
@@ -94,13 +84,13 @@
         }
     });
     $("#btnQuery").click(function () {
-        location.href = "http://127.0.0.1:8000/base/personList-" + $("#queryStatus").val() + "-1";
+        location.href = "http://127.0.0.1:8000/base/familyList-" + $("#queryStatus").val() + "-1";
     });
     $("#btnNew").click(function () {
-        location.href = "http://127.0.0.1:8000/base/personNew";
+        location.href = "http://127.0.0.1:8000/base/familyNew";
     });
     $(".recModify").click(function () {
-        location.href = "http://127.0.0.1:8000/base/personModify-" + $(this).parent().parent().attr("recID")
+        location.href = "http://127.0.0.1:8000/base/familyModify-" + $(this).parent().parent().attr("recID")
     });
     $(".recDelete").click(function () {
         $("#dialogDel").attr("recID", $(this).parent().parent().attr("recID"));
@@ -115,7 +105,7 @@
         $(".promptInfo").text("");
         csrf = $('input[name="csrfmiddlewaretoken"]').val();
         $.ajax({
-            url: "personDelete-" + $(this).parent().parent().attr("recID"),
+            url: "familyDelete-" + $(this).parent().parent().attr("recID"),
             method: "POST",
             data: {"csrfmiddlewaretoken": csrf},
             dataType: "JSON",

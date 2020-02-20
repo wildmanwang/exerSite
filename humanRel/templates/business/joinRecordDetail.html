@@ -1,0 +1,119 @@
+{% extends "../frame.html" %}
+
+
+{% block pageTitle %}八方随礼 — 查看{% endblock %}
+
+
+{% block subStyle %}
+    <style>
+        table, tr, td{
+            border: none;
+            background-color: rgb(242, 242, 242);
+            font-size: 14px;
+        }
+        table{
+            border-bottom: #E2E2E2 1px solid;
+        }
+        td{
+            height: 30px;
+        }
+        .groupTitle{
+            background-color: white;
+            padding-left: 50px;
+            height: 30px;
+        }
+        .col1{
+            width: 150px;
+            padding-left: 50px;
+        }
+        .col2{
+            width: 200px;
+        }
+        .col4{
+            width: 600px;
+        }
+        .subRemark{
+            font-size: 12px;
+            color: darkgray;
+        }
+    </style>
+{% endblock %}
+
+
+{% block contents %}
+    <form action="http://127.0.0.1:8000/busi/joinRecordDetail-{{ rec.id }}" method="POST">
+        <table>
+            <tr>
+                <td class="groupTitle" colspan="3">基础信息</td>
+            </tr>
+            <tr>
+                <td class="col1">{{ formEvent.eventDate.label }}</td>
+                <td class="col2">{{ recEvent.eventDate }}</td>
+                <td class="col4"><div class="subRemark">事件的正式日期</div><div class="subRemark"></div></td>
+            </tr>
+            <tr>
+                <td class="col1">{{ formEvent.eventName.label }}</td>
+                <td class="col2">{{ recEvent.eventName }}</td>
+                <td class="col4"><div class="subRemark">请输入事件简称</div><div class="subRemark"></div></td>
+            </tr>
+            <tr>
+                <td class="col1">{{ formEvent.family.label }}</td>
+                <td class="col2">{{ recEvent.family }}</td>
+                <td class="col4"><div class="subRemark">请选择事件发生的家庭</div><div class="subRemark"></div></td>
+            </tr>
+            <tr>
+                <td class="col1">{{ formEvent.person.label }}</td>
+                <td class="col2">{{ recEvent.person }}</td>
+                <td class="col4"><div class="subRemark">请选择事件发生的人员</div><div class="subRemark"></div></td>
+            </tr>
+            <tr>
+                <td class="col1">{{ formEvent.eventType.label }}</td>
+                <td class="col2">{{ recEvent.eventType }}</td>
+                <td class="col4"><div class="subRemark">请选择事件的类型</div><div class="subRemark">无法确定的选择其他</div></td>
+            </tr>
+            <tr>
+                <td class="col1">{{ formEvent.formType.label }}</td>
+                <td class="col2">{{ recEvent.formType }}</td>
+                <td class="col4"><div class="subRemark">请选择宴请类型</div><div class="subRemark">只有隆重宴请才有随礼登记</div></td>
+            </tr>
+            <tr>
+                <td class="col1">{{ formEvent.dateFrom.label }}</td>
+                <td class="col2">{{ recEvent.dateFrom }}</td>
+                <td class="col4"><div class="subRemark">请选择宴请开始的日期</div><div class="subRemark"></div></td>
+            </tr>
+            <tr>
+                <td class="col1">{{ formEvent.dateTo.label }}</td>
+                <td class="col2">{{ recEvent.dateTo }}</td>
+                <td class="col4"><div class="subRemark">请选择宴请结束的日期</div><div class="subRemark"></div></td>
+            </tr>
+            <tr>
+                <td class="groupTitle" colspan="3">详细信息</td>
+            </tr>
+            <tr>
+                <td class="col1">{{ formRecord.amtBook.label }}</td>
+                <td class="col2">{{ recRecord.amtBook }}</td>
+                <td class="col4"><div class="subRemark">用于宴席的支出金额</div><div class="subRemark">通常外包</div></td>
+            </tr>
+            <tr>
+                <td class="col1">{{ formRecord.amtOther.label }}</td>
+                <td class="col2">{{ recRecord.amtOther }}</td>
+                <td class="col4"><div class="subRemark">其他宴席以外的支出金额</div><div class="subRemark"></div></td>
+            </tr>
+            <tr>
+                <td class="col1">{{ formRecord.remark.label }}</td>
+                <td class="col2">{{ recRecord.remark }}</td>
+                <td class="col4"><div class="subRemark">宴请举办过程的补充说明</div><div class="subRemark"></div></td>
+            </tr>
+        </table>
+        <p>
+            <input id="btnOk" class="inputBtn" type="button" value="返回" style="margin-left: 196px; ">
+        </p>
+    </form>
+{% endblock %}
+
+
+{% block subScript %}
+    $("#btnOk").click(function () {
+        location.href = "http://127.0.0.1:8000/busi/joinRecordList-1"
+    });
+{% endblock %}

@@ -1,0 +1,104 @@
+{% extends "../frame.html" %}
+
+
+{% block pageTitle %}礼宴亲朋 — {{ eventName }}的礼簿 — 新增{% endblock %}
+
+
+{% block subStyle %}
+    <style>
+        table, tr, td{
+            border: none;
+        }
+        .labelSpc{
+            font-size: 20px;
+            color: #666666;
+        }
+        .selectSpc{
+            width: 344px;
+            height: 86px;
+            border: #FF9900 2px solid;
+            border-radius: 4px;
+            padding-left: 20px;
+            font-size: 28px;
+            color: #666666;
+        }
+        .inputSpc{
+            width: 320px;
+            height: 80px;
+            border: #FF9900 2px solid;
+            border-radius: 4px;
+            padding-left: 20px;
+            font-size: 28px;
+            color: #666666;
+        }
+        .btnSpc{
+            height: 60px;
+            padding: 0 40px 0 40px;
+            font-size: 24px;
+            border: none;
+            border-radius: 6px;
+            margin-left: 5px;
+            color: white;
+            background-color: #666666;
+        }
+    </style>
+{% endblock %}
+
+
+{% block contents %}
+    <div style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; background-color: white; ">
+        <div style="margin-top: 70px; margin-left: 50px; ">
+            <form action="http://127.0.0.1:8000/busi/relEventModify/bookNew-{{ id }}" method="POST">
+                {% csrf_token %}
+                <table id="recTable" recID="{{ id }}">
+                    <tr>
+                        <td style="width: 360px; "><label for="joinFamily" class="labelSpc">今收到：</label></td>
+                        <td style="width: 300px; "></td>
+                    </tr>
+                    <tr>
+                        <td>{{ form.joinFamily }}</td>
+                        <td><span id="promptPerson"></span></td>
+                    </tr>
+                    <tr style="height: 20px; "></tr>
+                    <tr>
+                        <td><label for="amtBook" class="labelSpc">礼金：</label></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>{{ form.amtBook }}</td>
+                        <td></td>
+                    </tr>
+                </table>
+                <div style="margin-top: 50px; ">
+                    <input class="btnSpc" type="submit" value="确定" style="margin-left: 0; ">
+                    <input id="btnSelect" class="btnSpc" type="button" value="选择宾客">
+                    <input id="btnCash" class="btnSpc" type="button" value="礼金入库">
+                    <input id="btnReturn" class="btnSpc" type="button" value="返回">
+                </div>
+            </form>
+        </div>
+        <div style="height: 240px; padding: 20px 0 0 50px; position: absolute; left: 0; right: 0; bottom: 0; background-color: #EEEEEE; overflow: hidden; ">
+            {% for rec in lastList %}
+                <div class="left" style="position: relative; width: 150px; height: 180px; border: #828282 1px solid; margin-right: 20px; ">
+                    <div style="position: absolute; height: 60px; left: 0; top: 0; right: 0; background-color: #A2A2A2; ">
+                        <span style="font-size: 24px; line-height: 60px; color: white; margin-left: 52px; ">{{ rec.joinFamily.name }}</span>
+                    </div>
+                    <img src="/static/images/flag.png" style="position: absolute; width: 36px; height: 62px; top: 22px; left: 4px; ">
+                    <div style="position: absolute; width: 36px; height: 36px; font-size: 20px; font-weight: bold; line-height: 36px; text-align: center; border: yellow 4px solid; border-radius: 22px; color: red; background-color: #FF9900">礼</div>
+                    <div style="position: absolute; padding: 0 16px; font-size: 16px; color: #666666; height: 40px; text-align: right; line-height: 40px; left: 0; top: 60px; right: 0; ">
+                        <div style="top: 60px;">{{ rec.amtBook }}</div>
+                        <div style="top: 100px;">{{ rec.recTime|date:"Y-m-d" }}</div>
+                        <div style="top: 140px;">{{ rec.recTime|date:"H:i:s" }}</div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block subScript %}
+    $("#btnReturn").click(function () {
+        location.href = "http://127.0.0.1:8000/busi/relEventModify/bookList-" + $("#recTable").attr("recID") + "-0-1"
+    });
+{% endblock %}

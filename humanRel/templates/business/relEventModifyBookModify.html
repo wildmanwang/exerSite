@@ -1,0 +1,111 @@
+{% extends "../frame.html" %}
+
+
+{% block pageTitle %}礼宴亲朋 — {{ eventName }}的礼簿 — 修改{% endblock %}
+
+
+{% block subStyle %}
+    <style>
+        table, tr, td{
+            border: none;
+            background-color: rgb(242, 242, 242);
+            font-size: 14px;
+        }
+        tr[class="promptLine"], .promptLine td{
+            height: 20px;
+        }
+        table{
+            border-bottom: #E2E2E2 1px solid;
+        }
+        td{
+            height: 45px;
+        }
+        .groupTitle{
+            background-color: white;
+            padding-left: 50px;
+            height: 30px;
+        }
+        .col1{
+            width: 150px;
+            padding-left: 50px;
+        }
+        .col2{
+            width: 200px;
+        }
+        .col4{
+            width: 600px;
+        }
+        .colRequired{
+            color: red;
+        }
+        .subRemark{
+            font-size: 12px;
+            color: darkgray;
+        }
+    </style>
+{% endblock %}
+
+
+{% block contents %}
+    <form action="http://127.0.0.1:8000/busi/relEventModify/bookModify-{{ subid }}" method="POST">
+        {% csrf_token %}
+        <table id="recTable" recID="{{ id }}">
+            <tr>
+                <td class="groupTitle" colspan="3">礼簿</td>
+            </tr>
+            <tr class="hide">
+                <td class="col1"></td>
+                <td class="col2">{{ form.event }}</td>
+                <td class="col4"></td>
+            </tr>
+            <tr>
+                <td class="col1 colRequired">{{ form.joinFamily.label_tag }}</td>
+                <td class="col2">{{ form.joinFamily }}</td>
+                <td class="col4"><div class="subRemark">请选择来礼的家庭</div><div class="subRemark"></div></td>
+            </tr>
+            {% if form.joinFamily.errors %}
+            <tr class="promptLine"><td></td><td class="promptInfo" colspan="2">{{ form.errors.joinFamily.0 }}</td></tr>
+            {% endif %}
+            <tr>
+                <td class="col1 colRequired">{{ form.amtBook.label_tag }}</td>
+                <td class="col2">{{ form.amtBook }}</td>
+                <td class="col4"><div class="subRemark">请填写来礼的金额</div><div class="subRemark"></div></td>
+            </tr>
+            {% if form.amtBook.errors %}
+            <tr class="promptLine"><td></td><td class="promptInfo" colspan="2">{{ form.errors.amtBook.0 }}</td></tr>
+            {% endif %}
+            <tr>
+                <td class="col1">{{ form.amtOther.label_tag }}</td>
+                <td class="col2">{{ form.amtOther }}</td>
+                <td class="col4"><div class="subRemark">请填写其他支出</div><div class="subRemark">默认没有</div></td>
+            </tr>
+            {% if form.amtOther.errors %}
+            <tr class="promptLine"><td></td><td class="promptInfo" colspan="2">{{ form.errors.amtOther.0 }}</td></tr>
+            {% endif %}
+            <tr class="hide">
+                <td class="col1"></td>
+                <td class="col2">{{ form.recTime }}</td>
+                <td class="col4"></td>
+            </tr>
+            <tr>
+                <td class="col1">{{ form.remark.label_tag }}</td>
+                <td class="col2">{{ form.remark }}</td>
+                <td class="col4"><div class="subRemark">其他信息</div><div class="subRemark"></div></td>
+            </tr>
+            {% if form.remark.errors %}
+            <tr class="promptLine"><td></td><td class="promptInfo" colspan="2">{{ form.errors.remark.0 }}</td></tr>
+            {% endif %}
+        </table>
+        <p>
+            <input class="inputBtn" type="submit" value="提交" style="margin-left: 196px; ">
+            <input id="btnCancel" class="inputBtn" type="button" value="取消">
+        </p>
+    </form>
+{% endblock %}
+
+
+{% block subScript %}
+    $("#btnCancel").click(function () {
+        location.href = "http://127.0.0.1:8000/busi/relEventModify/bookList-" + $("#recTable").attr("recID") + "-0-1"
+    });
+{% endblock %}

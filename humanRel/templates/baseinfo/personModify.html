@@ -11,6 +11,9 @@
             background-color: rgb(242, 242, 242);
             font-size: 14px;
         }
+        tr[class="promptLine"], .promptLine td{
+            height: 20px;
+        }
         table{
             border-bottom: #E2E2E2 1px solid;
         }
@@ -32,6 +35,9 @@
         .col4{
             width: 600px;
         }
+        .colRequired{
+            color: red;
+        }
         .subRemark{
             font-size: 12px;
             color: darkgray;
@@ -45,125 +51,171 @@
         {% csrf_token %}
         <table>
             <tr>
-                <td class="groupTitle" colspan="4">基础资料</td>
+                <td class="groupTitle" colspan="3">基础资料</td>
+            </tr>
+            <tr class="hide">
+                <td class="col1"></td>
+                <td class="col2">{{ form.id }}</td>
+                <td class="col4"></td>
+            </tr>
+            <tr class="hide">
+                <td class="col1"></td>
+                <td class="col2">{{ form.user_id }}</td>
+                <td class="col4"></td>
             </tr>
             <tr>
-                <td class="col1">{{ form.name.label }}</td>
+                <td class="col1 colRequired">{{ form.name.label_tag }}</td>
                 <td class="col2">{{ form.name }}</td>
-                <td class="col3">{{ form.name.errors }}</td>
                 <td class="col4"><div class="subRemark">请填写真实姓名</div><div class="subRemark">以便人员识别</div></td>
             </tr>
+            {% if form.name.errors %}
+            <tr class="promptLine"><td></td><td class="promptInfo" colspan="2">{{ form.errors.name.0 }}</td></tr>
+            {% endif %}
             <tr>
-                <td class="col1">{{ form.gender.label }}</td>
+                <td class="col1 colRequired">{{ form.gender.label_tag }}</td>
                 <td class="col2">{{ form.gender }}</td>
-                <td class="col3">{{ form.gender.errors }}</td>
                 <td class="col4"><div class="subRemark">用于婚姻</div><div class="subRemark">以及根据地方习俗预测生日祝寿</div></td>
             </tr>
+            {% if form.gender.errors %}
+            <tr class="promptLine"><td></td><td class="promptInfo" colspan="2">{{ form.errors.gender.0 }}</td></tr>
+            {% endif %}
             <tr>
-                <td class="col1">{{ form.birthDate.label }}</td>
+                <td class="col1">{{ form.birthDate.label_tag }}</td>
                 <td class="col2">{{ form.birthDate }}</td>
-                <td class="col3">{{ form.birthDate.errors }}</td>
                 <td class="col4"><div class="subRemark">用于计算年龄</div><div class="subRemark">预测生日等</div></td>
             </tr>
+            {% if form.birthDate.errors %}
+            <tr class="promptLine"><td></td><td class="promptInfo" colspan="2">{{ form.errors.birthDate.0 }}</td></tr>
+            {% endif %}
             <tr>
-                <td class="groupTitle" colspan="4">人物关系</td>
+                <td class="groupTitle" colspan="3">人物关系</td>
             </tr>
             <tr>
-                <td class="col1">{{ form.relType.label }}</td>
+                <td class="col1 colRequired">{{ form.relType.label_tag }}</td>
                 <td class="col2">{{ form.relType }}</td>
-                <td class="col3">{{ form.relType.errors }}</td>
                 <td class="col4"><div class="subRemark">关系类型</div><div class="subRemark">可用于查询和统计分类</div></td>
             </tr>
+            {% if form.relType.errors %}
+            <tr class="promptLine"><td></td><td class="promptInfo" colspan="2">{{ form.errors.relType.0 }}</td></tr>
+            {% endif %}
             <tr>
-                <td class="col1">{{ form.family.label }}</td>
+                <td class="col1">{{ form.family.label_tag }}</td>
                 <td class="col2">{{ form.family }}</td>
-                <td class="col3">{{ form.family.errors }}</td>
                 <td class="col4"><div class="subRemark">关联户主</div><div class="subRemark">人情往来都是以家庭为单位</div></td>
             </tr>
+            {% if form.family.errors %}
+            <tr class="promptLine"><td></td><td class="promptInfo" colspan="2">{{ form.errors.family.0 }}</td></tr>
+            {% endif %}
             <tr>
-                <td class="col1">{{ form.father.label }}</td>
+                <td class="col1">{{ form.father.label_tag }}</td>
                 <td class="col2">{{ form.father }}</td>
-                <td class="col3">{{ form.father.errors }}</td>
                 <td class="col4"><div class="subRemark">用于建立父子关系</div><div class="subRemark">以及关联父系亲属</div></td>
             </tr>
+            {% if form.father.errors %}
+            <tr class="promptLine"><td></td><td class="promptInfo" colspan="2">{{ form.errors.father.0 }}</td></tr>
+            {% endif %}
             <tr>
-                <td class="col1">{{ form.mother.label }}</td>
+                <td class="col1">{{ form.mother.label_tag }}</td>
                 <td class="col2">{{ form.mother }}</td>
-                <td class="col3">{{ form.mother.errors }}</td>
                 <td class="col4"><div class="subRemark">用于建立母子关系</div><div class="subRemark">以及关联母系亲属</div></td>
             </tr>
+            {% if form.mother.errors %}
+            <tr class="promptLine"><td></td><td class="promptInfo" colspan="2">{{ form.errors.mother.0 }}</td></tr>
+            {% endif %}
             <tr>
-                <td class="col1">{{ form.Marriage.label }}</td>
+                <td class="col1 colRequired">{{ form.Marriage.label_tag }}</td>
                 <td class="col2">{{ form.Marriage }}</td>
-                <td class="col3">{{ form.Marriage.errors }}</td>
                 <td class="col4"><div class="subRemark">用于关联配偶</div><div class="subRemark">以及预测结婚生子</div></td>
             </tr>
+            {% if form.Marriage.errors %}
+            <tr class="promptLine"><td></td><td class="promptInfo" colspan="2">{{ form.errors.Marriage.0 }}</td></tr>
+            {% endif %}
             <tr>
-                <td class="col1">{{ form.spouse.label }}</td>
+                <td class="col1">{{ form.spouse.label_tag }}</td>
                 <td class="col2">{{ form.spouse }}</td>
-                <td class="col3">{{ form.spouse.errors }}</td>
                 <td class="col4"><div class="subRemark">用于建立夫妻关系</div><div class="subRemark">以及关联姻亲</div></td>
             </tr>
+            {% if form.spouse.errors %}
+            <tr class="promptLine"><td></td><td class="promptInfo" colspan="2">{{ form.errors.spouse.0 }}</td></tr>
+            {% endif %}
             <tr>
-                <td class="groupTitle" colspan="4">联系方式</td>
+                <td class="groupTitle" colspan="3">联系方式</td>
             </tr>
             <tr>
-                <td class="col1">{{ form.mobile.label }}</td>
+                <td class="col1">{{ form.mobile.label_tag }}</td>
                 <td class="col2">{{ form.mobile }}</td>
-                <td class="col3">{{ form.mobile.errors }}</td>
                 <td class="col4"><div class="subRemark">主要的联系方式</div><div class="subRemark">请务必填写真实信息</div></td>
             </tr>
+            {% if form.mobile.errors %}
+            <tr class="promptLine"><td></td><td class="promptInfo" colspan="2">{{ form.errors.mobile.0 }}</td></tr>
+            {% endif %}
             <tr>
-                <td class="col1">{{ form.weixin.label }}</td>
+                <td class="col1">{{ form.weixin.label_tag }}</td>
                 <td class="col2">{{ form.weixin }}</td>
-                <td class="col3">{{ form.weixin.errors }}</td>
                 <td class="col4"><div class="subRemark">请填写微信号码</div><div class="subRemark">默认为手机号</div></td>
             </tr>
+            {% if form.weixin.errors %}
+            <tr class="promptLine"><td></td><td class="promptInfo" colspan="2">{{ form.errors.weixin.0 }}</td></tr>
+            {% endif %}
             <tr>
-                <td class="col1">{{ form.email.label }}</td>
+                <td class="col1">{{ form.email.label_tag }}</td>
                 <td class="col2">{{ form.email }}</td>
-                <td class="col3">{{ form.email.errors }}</td>
                 <td class="col4"><div class="subRemark">请填写电子邮箱地址</div><div class="subRemark"></div></td>
             </tr>
+            {% if form.email.errors %}
+            <tr class="promptLine"><td></td><td class="promptInfo" colspan="2">{{ form.errors.email.0 }}</td></tr>
+            {% endif %}
             <tr>
-                <td class="col1">{{ form.address.label }}</td>
+                <td class="col1">{{ form.address.label_tag }}</td>
                 <td class="col2">{{ form.address }}</td>
-                <td class="col3">{{ form.address.errors }}</td>
                 <td class="col4"><div class="subRemark">请填写当前居住地址</div><div class="subRemark"></div></td>
             </tr>
+            {% if form.address.errors %}
+            <tr class="promptLine"><td></td><td class="promptInfo" colspan="2">{{ form.errors.address.0 }}</td></tr>
+            {% endif %}
             <tr>
-                <td class="col1">{{ form.workUnit.label }}</td>
+                <td class="col1">{{ form.workUnit.label_tag }}</td>
                 <td class="col2">{{ form.workUnit }}</td>
-                <td class="col3">{{ form.workUnit.errors }}</td>
                 <td class="col4"><div class="subRemark">请填写工作单位</div><div class="subRemark"></div></td>
             </tr>
+            {% if form.workUnit.errors %}
+            <tr class="promptLine"><td></td><td class="promptInfo" colspan="2">{{ form.errors.workUnit.0 }}</td></tr>
+            {% endif %}
             <tr>
-                <td class="groupTitle" colspan="4">其他</td>
+                <td class="groupTitle" colspan="3">其他</td>
             </tr>
             <tr>
-                <td class="col1">{{ form.education.label }}</td>
+                <td class="col1 colRequired">{{ form.education.label_tag }}</td>
                 <td class="col2">{{ form.education }}</td>
-                <td class="col3">{{ form.education.errors }}</td>
                 <td class="col4"><div class="subRemark">请选择学历</div><div class="subRemark">在教育的学生将自动更新学历</div></td>
             </tr>
+            {% if form.education.errors %}
+            <tr class="promptLine"><td></td><td class="promptInfo" colspan="2">{{ form.errors.education.0 }}</td></tr>
+            {% endif %}
             <tr>
-                <td class="col1">{{ form.occupation.label }}</td>
+                <td class="col1">{{ form.occupation.label_tag }}</td>
                 <td class="col2">{{ form.occupation }}</td>
-                <td class="col3">{{ form.occupation.errors }}</td>
                 <td class="col4"><div class="subRemark">请填写职业</div><div class="subRemark"></div></td>
             </tr>
+            {% if form.occupation.errors %}
+            <tr class="promptLine"><td></td><td class="promptInfo" colspan="2">{{ form.errors.occupation.0 }}</td></tr>
+            {% endif %}
             <tr>
-                <td class="col1">{{ form.status.label }}</td>
+                <td class="col1 colRequired">{{ form.status.label_tag }}</td>
                 <td class="col2">{{ form.status }}</td>
-                <td class="col3">{{ form.status.errors }}</td>
                 <td class="col4"><div class="subRemark">人员状态</div><div class="subRemark">失效后默认不做事件预测、报表统计等</div></td>
             </tr>
+            {% if form.status.errors %}
+            <tr class="promptLine"><td></td><td class="promptInfo" colspan="2">{{ form.errors.status.0 }}</td></tr>
+            {% endif %}
             <tr>
-                <td class="col1">{{ form.remark.label }}</td>
+                <td class="col1">{{ form.remark.label_tag }}</td>
                 <td class="col2">{{ form.remark }}</td>
-                <td class="col3">{{ form.remark.errors }}</td>
                 <td class="col4"><div class="subRemark">其他信息</div><div class="subRemark"></div></td>
             </tr>
+            {% if form.remark.errors %}
+            <tr class="promptLine"><td></td><td class="promptInfo" colspan="2">{{ form.errors.remark.0 }}</td></tr>
+            {% endif %}
         </table>
         <p>
             <input class="inputBtn" type="submit" value="提交" style="margin-left: 196px; ">

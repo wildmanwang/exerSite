@@ -1,0 +1,75 @@
+{% extends "../frame.html" %}
+
+
+{% block pageTitle %}设置{% endblock %}
+
+
+{% block subStyle %}
+    <style>
+        table, tr, td{
+            border: none;
+            background-color: rgb(242, 242, 242);
+            font-size: 14px;
+        }
+        table{
+            border-bottom: #E2E2E2 1px solid;
+        }
+        td{
+            height: 45px;
+        }
+        .groupTitle{
+            background-color: white;
+            padding-left: 50px;
+            height: 30px;
+        }
+        .col1{
+            width: 150px;
+            padding-left: 50px;
+        }
+        .col2{
+            width: 200px;
+        }
+        .col4{
+            width: 600px;
+        }
+        .subRemark{
+            font-size: 12px;
+            color: darkgray;
+        }
+    </style>
+{% endblock %}
+
+
+{% block contents %}
+    <form action="http://127.0.0.1:8000/sys/set" method="POST">
+        {% csrf_token %}
+        <table>
+            <tr>
+                <td class="groupTitle" colspan="4">设置</td>
+            </tr>
+            <tr>
+                <td class="col1">{{ form.id.label }}</td>
+                <td class="col2">{{ form.id }}</td>
+                <td class="col3">{{ form.id.errors }}</td>
+                <td class="col4"><div class="subRemark"></div><div class="subRemark"></div></td>
+            </tr>
+            <tr>
+                <td class="col1">{{ form.person.label }}</td>
+                <td class="col2">{{ form.person }}</td>
+                <td class="col3">{{ form.person.errors }}</td>
+                <td class="col4"><div class="subRemark">选择当前登录账户对应的人员</div><div class="subRemark">设置后才能记录人情簿往来</div></td>
+            </tr>
+        </table>
+        <p>
+            <input class="inputBtn" type="submit" value="提交" style="margin-left: 196px; ">
+            <input id="btnCancel" class="inputBtn" type="button" value="取消">
+        </p>
+    </form>
+{% endblock %}
+
+
+{% block subScript %}
+    $("#btnCancel").click(function () {
+        location.href = "http://127.0.0.1:8000/sys/index"
+    });
+{% endblock %}

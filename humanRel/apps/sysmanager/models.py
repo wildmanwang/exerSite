@@ -4,9 +4,10 @@ from django.db import models
 
 
 class Parameters(models.Model):
+    user = models.ForeignKey(verbose_name="用户", to="sysmanager.User", related_name="parametersUser", null=True, on_delete=models.PROTECT)
     code = models.CharField(verbose_name="代码", max_length=50)
     name = models.CharField(verbose_name="名称", max_length=50)
-    pClass = models.IntegerField(verbose_name="分类", choices=((1, "系统"), (2, "资料"), (3, "往来"), (4, "报表"), (0, "其他")))
+    pClass = models.IntegerField(verbose_name="分类", choices=((1, "系统"), (2, "资料"), (3, "往来"), (4, "报表"), (99, "其他")))
     sValue = models.CharField(verbose_name="参数值", max_length=255)
     remark = models.CharField(verbose_name="备注", max_length=255, null=True)
 

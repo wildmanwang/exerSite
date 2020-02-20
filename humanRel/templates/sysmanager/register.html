@@ -46,27 +46,27 @@
             {% csrf_token %}
             <table>
                 <tr>
-                    <td class="lab">{{ form.name.label }}</td>
+                    <td class="lab">{{ form.name.label_tag }}</td>
                     <td>{{ form.name }}</td>
                     <td>{{ form.name.errors }}</td>
                 </tr>
                 <tr>
-                    <td class="lab">{{ form.mobile.label }}</td>
+                    <td class="lab">{{ form.mobile.label_tag }}</td>
                     <td>{{ form.mobile }}</td>
                     <td>{{ form.mobile.errors }}</td>
                 </tr>
                 <tr>
-                    <td class="lab">{{ form.email.label }}</td>
+                    <td class="lab">{{ form.email.label_tag }}</td>
                     <td>{{ form.email }}</td>
                     <td>{{ form.email.errors }}</td>
                 </tr>
                 <tr>
-                    <td class="lab">{{ form.loginPW.label }}</td>
+                    <td class="lab">{{ form.loginPW.label_tag }}</td>
                     <td>{{ form.loginPW }}</td>
                     <td>{{ form.loginPW.errors }}</td>
                 </tr>
                 <tr>
-                    <td class="lab">{{ form.reloginPW.label }}</td>
+                    <td class="lab">{{ form.reloginPW.label_tag }}</td>
                     <td>{{ form.reloginPW }}</td>
                     <td>{{ form.reloginPW.errors }}</td>
                 </tr>

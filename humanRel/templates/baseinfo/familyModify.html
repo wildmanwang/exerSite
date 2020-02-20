@@ -1,0 +1,109 @@
+{% extends "../frame.html" %}
+
+
+{% block pageTitle %}家庭资料 — 修改{% endblock %}
+
+
+{% block subStyle %}
+    <style>
+        table, tr, td{
+            border: none;
+            background-color: rgb(242, 242, 242);
+            font-size: 14px;
+        }
+        tr[class="promptLine"], .promptLine td{
+            height: 20px;
+        }
+        table{
+            border-bottom: #E2E2E2 1px solid;
+        }
+        td{
+            height: 45px;
+        }
+        .groupTitle{
+            background-color: white;
+            padding-left: 50px;
+            height: 30px;
+        }
+        .col1{
+            width: 150px;
+            padding-left: 50px;
+        }
+        .col2{
+            width: 200px;
+        }
+        .col4{
+            width: 600px;
+        }
+        .colRequired{
+            color: red;
+        }
+        .subRemark{
+            font-size: 12px;
+            color: darkgray;
+        }
+    </style>
+{% endblock %}
+
+
+{% block contents %}
+    <form action="http://127.0.0.1:8000/base/familyModify-{{ id }}" method="POST">
+        {% csrf_token %}
+        <table>
+            <tr>
+                <td class="groupTitle" colspan="3">家庭资料</td>
+            </tr>
+            <tr>
+                <td class="col1 colRequired">{{ form.name.label_tag }}</td>
+                <td class="col2">{{ form.name }}</td>
+                <td class="col4"><div class="subRemark">请填写真实姓名</div><div class="subRemark">以便人员识别</div></td>
+            </tr>
+            {% if form.name.errors %}
+            <tr class="promptLine"><td></td><td class="promptInfo" colspan="2">{{ form.errors.name.0 }}</td></tr>
+            {% endif %}
+            <tr>
+                <td class="col1">{{ form.location.label_tag }}</td>
+                <td class="col2">{{ form.location }}</td>
+                <td class="col4"><div class="subRemark">请填写所在城市或者村</div><div class="subRemark">用于地域分类</div></td>
+            </tr>
+            {% if form.location.errors %}
+            <tr class="promptLine"><td></td><td class="promptInfo" colspan="2">{{ form.errors.location.0 }}</td></tr>
+            {% endif %}
+            <tr>
+                <td class="col1">{{ form.address.label_tag }}</td>
+                <td class="col2">{{ form.address }}</td>
+                <td class="col4"><div class="subRemark">请填写家庭详细住址</div><div class="subRemark">各家庭成员共用</div></td>
+            </tr>
+            {% if form.address.errors %}
+            <tr class="promptLine"><td></td><td class="promptInfo" colspan="2">{{ form.errors.address.0 }}</td></tr>
+            {% endif %}
+            <tr>
+                <td class="col1 colRequired">{{ form.status.label_tag }}</td>
+                <td class="col2">{{ form.status }}</td>
+                <td class="col4"><div class="subRemark">家庭状态</div><div class="subRemark">失效后默认不做事件预测、报表统计等</div></td>
+            </tr>
+            {% if form.status.errors %}
+            <tr class="promptLine"><td></td><td class="promptInfo" colspan="2">{{ form.errors.status.0 }}</td></tr>
+            {% endif %}
+            <tr>
+                <td class="col1">{{ form.remark.label_tag }}</td>
+                <td class="col2">{{ form.remark }}</td>
+                <td class="col4"><div class="subRemark">其他信息</div><div class="subRemark"></div></td>
+            </tr>
+            {% if form.remark.errors %}
+            <tr class="promptLine"><td></td><td class="promptInfo" colspan="2">{{ form.errors.remark.0 }}</td></tr>
+            {% endif %}
+        </table>
+        <p>
+            <input class="inputBtn" type="submit" value="提交" style="margin-left: 196px; ">
+            <input id="btnCancel" class="inputBtn" type="button" value="取消">
+        </p>
+    </form>
+{% endblock %}
+
+
+{% block subScript %}
+    $("#btnCancel").click(function () {
+        location.href = "http://127.0.0.1:8000/base/familyList-1-1"
+    });
+{% endblock %}
