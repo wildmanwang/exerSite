@@ -14,11 +14,11 @@
         <div class="queryBackground">
             <div class="queryGroup">
                 <div class="queryLabel">查询开始日期：</div>
-                <input type="date" class="queryItem">
+                <input id="dateFrom" type="date" class="queryItem" value="{{ from|date:"Y-m-d" }}">
             </div>
             <div class="queryGroup">
                 <div class="queryLabel">截止日期：</div>
-                <input type="date" class="queryItem">
+                <input id="dateTo" type="date" class="queryItem" value="{{ to|date:"Y-m-d" }}">
             </div>
             <div class="queryGroup">
                 <div class="queryLabel">事件类型：</div>
@@ -142,7 +142,14 @@
         location.href = "http://127.0.0.1:8000/busi/joinRecordList-1";
     });
     $("#btnQuery").click(function () {
-        location.href = "http://127.0.0.1:8000/busi/joinRecordList-1";
+        sHref = "http://127.0.0.1:8000/busi/joinRecordList-1";
+        if ($("#dateFrom").val()) {
+            sHref = sHref + "?from=" + $("#dateFrom").val()
+        }
+        if ($("#dateTo").val()) {
+            sHref = sHref + "&to=" + $("#dateTo").val()
+        }
+        location.href = sHref;
     });
     $("#btnNew").click(function () {
         location.href = "http://127.0.0.1:8000/busi/joinRecordNew";

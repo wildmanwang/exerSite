@@ -102,7 +102,7 @@
             </div>
             <div class="menu-pag">
                 <img src="/static/images/menu_item1.png" class="menu-img2">
-                <span class="menu-item">任务关系图谱</span>
+                <span class="menu-item">人物关系图谱</span>
             </div>
             <div style="position: absolute; width: 240px; height: 90px; bottom: 10px; left: 30px; font-size: 14px; color: rgb(221, 221, 221); ">
                 <div style="margin-top: 5px; ">深圳杉旗技术有限公司荣誉出品</div>
@@ -159,6 +159,18 @@
                 }
                 if ($(this).text() == "八方随礼") {
                     location.href = "http://127.0.0.1:8000/busi/joinRecordList-1"
+                }
+                if ($(this).text() == "往来汇总表") {
+                    location.href = "http://127.0.0.1:8000/rep/repRelSum"
+                }
+                if ($(this).text() == "往来明细表") {
+                    location.href = "http://127.0.0.1:8000/rep/repRelDetail"
+                }
+                if ($(this).text() == "往来预测报表") {
+                    location.href = "http://127.0.0.1:8000/rep/repRelForecast"
+                }
+                if ($(this).text() == "人物关系图谱") {
+                    location.href = "http://127.0.0.1:8000/rep/repRelMap"
                 }
             });
             {% block subScript %}

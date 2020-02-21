@@ -7,7 +7,7 @@ from django import forms
 from django.core.exceptions import ValidationError
 from utils.pages import Pages
 import json
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 
 # Create your views here.
 
@@ -206,16 +206,26 @@ class FormJoinRecord(Form):
 
 @auth
 def relEventList(request, userID, status=0, pageNo=1):
+    dateFrom = request.GET.get("from", None)
+    dateTo = request.GET.get("to", None)
     status = int(status)
-    if status != 1 and status != 2 and status != 9:
-        dataList = models.RelEvent.objects.filter(user=userID, direction=1)
+    if not dateFrom or not dateTo:
+        if not dateFrom:
+            dateFrom = date.today() - timedelta(days=31)
+        if not dateTo:
+            dateTo = date.today()
     else:
-        dataList = models.RelEvent.objects.filter(user=userID, direction=1, status=status)
+        dateFrom = datetime.strptime(dateFrom, "%Y-%m-%d")
+        dateTo = datetime.strptime(dateTo, "%Y-%m-%d")
+    if status != 1 and status != 2 and status != 9:
+        dataList = models.RelEvent.objects.filter(user=userID, direction=1, eventDate__gte=dateFrom, eventDate__lte=dateTo)
+    else:
+        dataList = models.RelEvent.objects.filter(user=userID, direction=1, eventDate__gte=dateFrom, eventDate__lte=dateTo, status=status)
     cnt = request.COOKIES.get("reccnt_perpage")
     if not cnt:
         cnt = "10"
     page = Pages(len(dataList), int(cnt), "relEventList-%d-" % (status), pageNo)
-    rep = render(request, "business/relEventList.html", {"dataList": dataList[page.startRec:page.endRec], "pagetag": page.pageStr, "status": status, "recCnt": len(dataList)})
+    rep = render(request, "business/relEventList.html", {"dataList": dataList[page.startRec:page.endRec], "from": dateFrom, "to": dateTo, "pagetag": page.pageStr, "status": status, "recCnt": len(dataList)})
     rep.set_cookie("reccnt_perpage", cnt, path="/busi/")
     return rep
 
@@ -235,7 +245,6 @@ def relEventNew(request, userID):
             "status": 2
         }
         obj = FormRelEvent(initial=dic)
-        # obj.person.queryset = base_models.Person.objects.filter(family=base_models.Person.objects.filter(user=userID, relType=0).first().family)
         return render(request, "business/relEventNew.html", {"form": obj})
     elif request.method == "POST":
         obj = FormRelEvent(request.POST)
@@ -416,23 +425,33 @@ def relEventModifyBookDetail(request, userID, subid):
 
 @auth
 def joinRecordList(request, userID, pageNo=1):
+    dateFrom = request.GET.get("from", None)
+    dateTo = request.GET.get("to", None)
     eventType = request.COOKIES.get("joinRecordListEventType")
     formType = request.COOKIES.get("joinRecordListFormType")
+    if not dateFrom or not dateTo:
+        if not dateFrom:
+            dateFrom = date.today() - timedelta(days=31)
+        if not dateTo:
+            dateTo = date.today()
+    else:
+        dateFrom = datetime.strptime(dateFrom, "%Y-%m-%d")
+        dateTo = datetime.strptime(dateTo, "%Y-%m-%d")
     if not eventType or eventType == "0":
         if not formType or formType == "0":
-            dataList = models.JoinRecord.objects.filter(user=userID)
+            dataList = models.JoinRecord.objects.filter(user=userID, event__eventDate__gte=dateFrom, event__eventDate__lte=dateTo)
         else:
-            dataList = models.JoinRecord.objects.filter(user=userID, event__formType=int(formType))
+            dataList = models.JoinRecord.objects.filter(user=userID, event__eventDate__gte=dateFrom, event__eventDate__lte=dateTo, event__formType=int(formType))
     else:
         if not formType or formType == "0":
-            dataList = models.JoinRecord.objects.filter(user=userID, event__eventType=int(eventType))
+            dataList = models.JoinRecord.objects.filter(user=userID, event__eventDate__gte=dateFrom, event__eventDate__lte=dateTo, event__eventType=int(eventType))
         else:
-            dataList = models.JoinRecord.objects.filter(user=userID, event__eventType=int(eventType), event__formType=(int(formType)))
+            dataList = models.JoinRecord.objects.filter(user=userID, event__eventDate__gte=dateFrom, event__eventDate__lte=dateTo, event__eventType=int(eventType), event__formType=(int(formType)))
     cnt = request.COOKIES.get("reccnt_perpage")
     if not cnt:
         cnt = "10"
     page = Pages(len(dataList), int(cnt), "joinRecordList-", pageNo)
-    rep = render(request, "business/joinRecordList.html", {"dataList": dataList[page.startRec:page.endRec], "pagetag": page.pageStr, "recCnt": len(dataList)})
+    rep = render(request, "business/joinRecordList.html", {"dataList": dataList[page.startRec:page.endRec], "from": dateFrom, "to": dateTo, "pagetag": page.pageStr, "recCnt": len(dataList)})
     rep.set_cookie("reccnt_perpage", cnt, path="/busi/")
     return rep
 
