@@ -1,79 +1,59 @@
-{% extends "../frame.html" %}
+{% extends "../extends/frameBaseList.html" %}
 
 
 {% block pageTitle %}家庭资料{% endblock %}
 
 
-{% block subStyle %}
+{% block queryFields %}
+    <select id="queryStatus" selectedValue="{{ status }}" class="right font-size2 inputType" style="width: 80px; margin-right: 10px; ">
+        <option value="9">全部</option>
+        <option value="1">正常</option>
+        <option value="0">失效</option>
+    </select>
 {% endblock %}
 
 
-{% block contents %}
-    <div style="margin: 10px; ">
-        <div style="overflow: hidden; ">
-            <input id="btnNew" class="left font-size2 inputBtn" type="button" value="新增">
-            <input id="btnQuery" class="right font-size2 inputBtn" type="button" value="查询">
-            <select id="queryStatus" selectedValue="{{ status }}" class="right font-size2 inputType" style="width: 80px; margin-right: 10px; ">
-                <option value="9">全部</option>
-                <option value="1">正常</option>
-                <option value="0">失效</option>
-            </select>
-        </div>
-        <div style="margin-top: 10px; ">
-            {% csrf_token %}
-            <table>
-                <thead>
-                <tr>
-                    <th style="width: 50px; ">序号</th>
-                    <th style="width: 120px; ">家长</th>
-                    <th style="width: 140px; ">所在城市/村镇</th>
-                    <th style="width: 240px; ">家庭住址</th>
-                    <th style="width: 230px; ">备注</th>
-                    <th style="width: 160px; ">操作</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for rec in dataList %}
-                    <tr recID="{{ rec.id }}">
-                        <td style="text-align: center; ">{{ forloop.counter }}</td>
-                        <td style="text-align: left; "><a href="http://127.0.0.1:8000/base/familyDetail-{{ rec.id }}">{{ rec.name.name }}</a></td>
-                        {% if rec.location %}
-                            <td>{{ rec.location }}</td>
-                        {% else %}
-                            <td></td>
-                        {% endif %}
-                        {% if rec.address %}
-                            <td>{{ rec.address }}</td>
-                        {% else %}
-                            <td></td>
-                        {% endif %}
-                        {% if rec.remark %}
-                            <td>{{ rec.remark }}</td>
-                        {% else %}
-                            <td></td>
-                        {% endif %}
-                        <td style="text-align: center; "><span class="labelBtn recModify">修改</span><span class="labelBtn recDelete">删除</span></td>
-                    </tr>
-                {% endfor %}
-
-                </tbody>
-            </table>
-            <p>{{ pagetag|safe }}</p>
-            <span class="promptInfo"></span>
-        </div>
-        <div id="dialogDel" class="hide dialogMin">
-            <span>确定要删除当前记录吗？</span>
-            <div style="margin-top: 20px; ">
-                <input id="delCancel" type="button" class="right inputBtn" style="margin-left: 10px; " value="取消">
-                <input id="delOk" type="button" class="right inputBtn" style="margin-left: 10px; " value="确定">
-            </div>
-        </div>
-    </div>
+{% block dataGrid %}
+    <table>
+        <thead>
+        <tr>
+            <th style="width: 50px; ">序号</th>
+            <th style="width: 120px; ">家长</th>
+            <th style="width: 140px; ">所在城市/村镇</th>
+            <th style="width: 240px; ">家庭住址</th>
+            <th style="width: 230px; ">备注</th>
+            <th style="width: 160px; ">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for rec in dataList %}
+            <tr recID="{{ rec.id }}">
+                <td style="text-align: center; ">{{ forloop.counter }}</td>
+                <td style="text-align: left; "><a href="{% url 'app-base:familyDetail' nid=rec.id %}">{{ rec.name.name }}</a></td>
+                {% if rec.location %}
+                    <td>{{ rec.location }}</td>
+                {% else %}
+                    <td></td>
+                {% endif %}
+                {% if rec.address %}
+                    <td>{{ rec.address }}</td>
+                {% else %}
+                    <td></td>
+                {% endif %}
+                {% if rec.remark %}
+                    <td>{{ rec.remark }}</td>
+                {% else %}
+                    <td></td>
+                {% endif %}
+                <td style="text-align: center; "><span class="labelBtn recModify">修改</span><span class="labelBtn recDelete">删除</span></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}
 
 
-{% block subScript %}
-    $("#PAGE_reccnt_perpage_select").val($.cookie("reccnt_perpage"));
+{% block scriptSub %}
     $("#PAGE_reccnt_perpage_select").change(function () {
         $.cookie("reccnt_perpage", $(this).val(), {path: "/base/"});
         location.href = "http://127.0.0.1:8000/base/familyList-" + $("#queryStatus").val() + "-1";
@@ -87,25 +67,16 @@
         location.href = "http://127.0.0.1:8000/base/familyList-" + $("#queryStatus").val() + "-1";
     });
     $("#btnNew").click(function () {
-        location.href = "http://127.0.0.1:8000/base/familyNew";
+        location.href = "{% url 'app-base:familyNew' %}";
     });
     $(".recModify").click(function () {
         location.href = "http://127.0.0.1:8000/base/familyModify-" + $(this).parent().parent().attr("recID")
-    });
-    $(".recDelete").click(function () {
-        $("#dialogDel").attr("recID", $(this).parent().parent().attr("recID"));
-        $(".cover-layer").removeClass("hide");
-        $("#dialogDel").removeClass("hide");
-    });
-    $("#delCancel").click(function () {
-        $(".cover-layer").addClass("hide");
-        $("#dialogDel").addClass("hide");
     });
     $("#delOk").click(function () {
         $(".promptInfo").text("");
         csrf = $('input[name="csrfmiddlewaretoken"]').val();
         $.ajax({
-            url: "familyDelete-" + $(this).parent().parent().attr("recID"),
+            url: "http://127.0.0.1:8000/base/familyDelete-" + $(this).parent().parent().attr("recID"),
             method: "POST",
             data: {"csrfmiddlewaretoken": csrf},
             dataType: "JSON",

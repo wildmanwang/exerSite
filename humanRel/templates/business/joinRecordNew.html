@@ -1,53 +1,11 @@
-{% extends "../frame.html" %}
+{% extends "../extends/frameBusiNew.html" %}
 
 
 {% block pageTitle %}八方随礼 — 新增{% endblock %}
 
 
-{% block subStyle %}
-    <style>
-        table, tr, td{
-            border: none;
-            background-color: rgb(242, 242, 242);
-            font-size: 14px;
-        }
-        tr[class="promptLine"], .promptLine td{
-            height: 20px;
-        }
-        table{
-            border-bottom: #E2E2E2 1px solid;
-        }
-        td{
-            height: 45px;
-        }
-        .groupTitle{
-            background-color: white;
-            padding-left: 50px;
-            height: 30px;
-        }
-        .col1{
-            width: 150px;
-            padding-left: 50px;
-        }
-        .col2{
-            width: 200px;
-        }
-        .col4{
-            width: 600px;
-        }
-        .colRequired{
-            color: red;
-        }
-        .subRemark{
-            font-size: 12px;
-            color: darkgray;
-        }
-    </style>
-{% endblock %}
-
-
-{% block contents %}
-    <form action="http://127.0.0.1:8000/busi/joinRecordNew" method="POST">
+{% block dataFree %}
+    <form action="{% url 'app-busi:joinNew' %}" method="POST">
         {% csrf_token %}
         <table>
             <tr>
@@ -208,8 +166,8 @@
 {% endblock %}
 
 
-{% block subScript %}
+{% block scriptSub %}
     $("#btnCancel").click(function () {
-        location.href = "http://127.0.0.1:8000/busi/joinRecordList-1"
+        location.href = "{% url 'app-busi:joinList' pageNo=1 %}"
     });
 {% endblock %}

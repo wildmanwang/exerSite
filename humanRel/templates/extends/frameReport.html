@@ -1,0 +1,49 @@
+{% extends "../extends/frameMain.html" %}
+
+
+{% block styleFrame %}
+    <link href="/static/css/querySheet.css" type="text/css" rel="stylesheet">
+    {% block styleSub %}
+    {% endblock %}
+{% endblock %}
+
+
+{% block contentsFrame %}
+    <div style="margin: 10px; ">
+        <div class="queryBackground">
+            {% block queryCondition %}
+                <div class="queryGroup">
+                    <div class="queryLabel">查询开始日期：</div>
+                    <input id="dateFrom" type="date" class="queryItem" value="{{ from|date:"Y-m-d" }}">
+                </div>
+                <div class="queryGroup">
+                    <div class="queryLabel">截止日期：</div>
+                    <input id="dateTo" type="date" class="queryItem" value="{{ to|date:"Y-m-d" }}">
+                </div>
+                {% block queryFields %}
+                {% endblock %}
+            {% endblock %}
+        </div>
+        <div style="overflow: hidden; ">
+            <input id="btnQuery" class="queryButton" type="button" value="查询">
+            <input id="btnExport" class="queryButton" type="button" value="导出">
+            <div class="queryDescribe" style="width: 723px; ">
+                <span>共{{ recCnt }}条记录</span>
+            </div>
+        </div>
+        <div style="margin-top: 10px; ">
+            {% csrf_token %}
+            {% block dataGrid %}
+            {% endblock %}
+            <p>{{ pagetag|safe }}</p>
+            <span class="promptInfo"></span>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block scriptFrame %}
+    $("#PAGE_reccnt_perpage_select").val($.cookie("reccnt_perpage"));
+    {% block scriptSub %}
+    {% endblock %}
+{% endblock %}

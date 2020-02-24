@@ -1,89 +1,69 @@
-{% extends "../frame.html" %}
+{% extends "../extends/frameBaseList.html" %}
 
 
 {% block pageTitle %}人员资料{% endblock %}
 
 
-{% block subStyle %}
+{% block queryFields %}
+    <select id="queryStatus" selectedValue="{{ status }}" class="right font-size2 inputType" style="width: 80px; margin-right: 10px; ">
+        <option value="9">全部</option>
+        <option value="1">正常</option>
+        <option value="0">失效</option>
+    </select>
 {% endblock %}
 
 
-{% block contents %}
-    <div style="margin: 10px; ">
-        <div style="overflow: hidden; ">
-            <input id="btnNew" class="left font-size2 inputBtn" type="button" value="新增">
-            <input id="btnQuery" class="right font-size2 inputBtn" type="button" value="查询">
-            <select id="queryStatus" selectedValue="{{ status }}" class="right font-size2 inputType" style="width: 80px; margin-right: 10px; ">
-                <option value="9">全部</option>
-                <option value="1">正常</option>
-                <option value="0">失效</option>
-            </select>
-        </div>
-        <div style="margin-top: 10px; ">
-            {% csrf_token %}
-            <table>
-                <thead>
-                <tr>
-                    <th style="width: 50px; ">序号</th>
-                    <th style="width: 120px; ">姓名</th>
-                    <th style="width: 60px; ">性别</th>
-                    <th style="width: 120px; ">家庭</th>
-                    <th style="width: 120px; ">出生日期</th>
-                    <th style="width: 80px; ">婚姻状况</th>
-                    <th style="width: 120px; ">职业</th>
-                    <th style="width: 100px; ">手机号码</th>
-                    <th style="width: 160px; ">操作</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for rec in dataList %}
-                    <tr recID="{{ rec.id }}">
-                        <td style="text-align: center; ">{{ forloop.counter }}</td>
-                        <td style="text-align: left; "><a href="http://127.0.0.1:8000/base/personDetail-{{ rec.id }}">{{ rec.name }}</a></td>
-                        {% if rec.gender == 1 %}
-                            <td style="text-align: center; ">男</td>
-                        {% else %}
-                            <td style="text-align: center; ">女</td>
-                        {% endif %}
-                        <td style="text-align: left; ">{{ rec.family.name }}</td>
-                        {% if rec.birthDate %}
-                            <td style="text-align: center; ">{{ rec.birthDate|date:"Y-m-d" }}</td>
-                        {% else %}
-                            <td style="text-align: center; "></td>
-                        {% endif %}
-                        {% if rec.Marriage == 1 %}
-                            <td style="text-align: center; ">已婚</td>
-                        {% else %}
-                            <td style="text-align: center; ">未婚</td>
-                        {% endif %}
-                        <td style="text-align: left; ">{{ rec.occupation }}</td>
-                        {% if rec.mobile %}
-                            <td style="text-align: center; ">{{ rec.mobile }}</td>
-                        {% else %}
-                            <td style="text-align: center; "></td>
-                        {% endif %}
-                        <td style="text-align: center; "><span class="labelBtn recModify">修改</span><span class="labelBtn recDelete">删除</span></td>
-                    </tr>
-                {% endfor %}
-
-                </tbody>
-            </table>
-            <p>{{ pagetag|safe }}</p>
-            <span class="promptInfo"></span>
-        </div>
-        <div id="dialogDel" class="hide dialogMin">
-            <span>确定要删除当前记录吗？</span>
-            <div style="margin-top: 20px; ">
-                <input id="delCancel" type="button" class="right inputBtn" style="margin-left: 10px; " value="取消">
-                <input id="delOk" type="button" class="right inputBtn" style="margin-left: 10px; " value="确定">
-            </div>
-        </div>
-    </div>
+{% block dataGrid %}
+    <table>
+        <thead>
+        <tr>
+            <th style="width: 50px; ">序号</th>
+            <th style="width: 120px; ">姓名</th>
+            <th style="width: 60px; ">性别</th>
+            <th style="width: 120px; ">家庭</th>
+            <th style="width: 120px; ">出生日期</th>
+            <th style="width: 80px; ">婚姻状况</th>
+            <th style="width: 120px; ">职业</th>
+            <th style="width: 100px; ">手机号码</th>
+            <th style="width: 160px; ">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for rec in dataList %}
+            <tr recID="{{ rec.id }}">
+                <td style="text-align: center; ">{{ forloop.counter }}</td>
+                <td style="text-align: left; "><a href="{% url 'app-base:personDetail' nid=rec.id %}">{{ rec.name }}</a></td>
+                {% if rec.gender == 1 %}
+                    <td style="text-align: center; ">男</td>
+                {% else %}
+                    <td style="text-align: center; ">女</td>
+                {% endif %}
+                <td style="text-align: left; ">{{ rec.family.name }}</td>
+                {% if rec.birthDate %}
+                    <td style="text-align: center; ">{{ rec.birthDate|date:"Y-m-d" }}</td>
+                {% else %}
+                    <td style="text-align: center; "></td>
+                {% endif %}
+                {% if rec.Marriage == 1 %}
+                    <td style="text-align: center; ">已婚</td>
+                {% else %}
+                    <td style="text-align: center; ">未婚</td>
+                {% endif %}
+                <td style="text-align: left; ">{{ rec.occupation }}</td>
+                {% if rec.mobile %}
+                    <td style="text-align: center; ">{{ rec.mobile }}</td>
+                {% else %}
+                    <td style="text-align: center; "></td>
+                {% endif %}
+                <td style="text-align: center; "><span class="labelBtn recModify">修改</span><span class="labelBtn recDelete">删除</span></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}
 
 
-{% block subScript %}
-    $("#PAGE_reccnt_perpage_select").val($.cookie("reccnt_perpage"));
+{% block scriptSub %}
     $("#PAGE_reccnt_perpage_select").change(function () {
         $.cookie("reccnt_perpage", $(this).val(), {path: "/base/"});
         location.href = "http://127.0.0.1:8000/base/personList-" + $("#queryStatus").val() + "-1";
@@ -97,25 +77,16 @@
         location.href = "http://127.0.0.1:8000/base/personList-" + $("#queryStatus").val() + "-1";
     });
     $("#btnNew").click(function () {
-        location.href = "http://127.0.0.1:8000/base/personNew";
+        location.href = "{% url 'app-base:personNew' %}";
     });
     $(".recModify").click(function () {
         location.href = "http://127.0.0.1:8000/base/personModify-" + $(this).parent().parent().attr("recID")
-    });
-    $(".recDelete").click(function () {
-        $("#dialogDel").attr("recID", $(this).parent().parent().attr("recID"));
-        $(".cover-layer").removeClass("hide");
-        $("#dialogDel").removeClass("hide");
-    });
-    $("#delCancel").click(function () {
-        $(".cover-layer").addClass("hide");
-        $("#dialogDel").addClass("hide");
     });
     $("#delOk").click(function () {
         $(".promptInfo").text("");
         csrf = $('input[name="csrfmiddlewaretoken"]').val();
         $.ajax({
-            url: "personDelete-" + $(this).parent().parent().attr("recID"),
+            url: "http://127.0.0.1:8000/base/personDelete-" + $(this).parent().parent().attr("recID"),
             method: "POST",
             data: {"csrfmiddlewaretoken": csrf},
             dataType: "JSON",

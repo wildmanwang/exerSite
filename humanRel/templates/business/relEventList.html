@@ -1,119 +1,85 @@
-{% extends "../frame.html" %}
+{% extends "../extends/frameBusiList.html" %}
 
 
 {% block pageTitle %}礼宴亲朋{% endblock %}
 
 
-{% block subStyle %}
-    <link href="/static/css/querySheet.css" type="text/css" rel="stylesheet">
-{% endblock %}
-
-
-{% block contents %}
-    <div style="margin: 10px; ">
-        <div class="queryBackground">
-            <div class="queryGroup">
-                <div class="queryLabel">查询开始日期：</div>
-                <input id="dateFrom" type="date" class="queryItem" value="{{ from|date:"Y-m-d" }}">
-            </div>
-            <div class="queryGroup">
-                <div class="queryLabel">截止日期：</div>
-                <input id="dateTo" type="date" class="queryItem" value="{{ to|date:"Y-m-d" }}">
-            </div>
-            <div class="queryGroup">
-                <div class="queryLabel">状态：</div>
-                <select id="queryStatus" selectedValue="{{ status }}" class="queryItem">
-                    <option value="0" selected="selected">全部</option>
-                    <option value="2">计划</option>
-                    <option value="9">完成</option>
-                </select>
-            </div>
-        </div>
-        <div style="overflow: hidden; ">
-            <input id="btnNew" class="queryButton" type="button" value="新增">
-            <input id="btnQuery" class="queryButton" type="button" value="查询">
-            <input id="btnExport" class="queryButton" type="button" value="导出">
-            <div class="queryDescribe">
-                <span>共{{ recCnt }}条记录</span>
-            </div>
-        </div>
-        <div style="margin-top: 10px; ">
-            {% csrf_token %}
-            <table>
-                <thead>
-                <tr>
-                    <th style="width: 50px; ">序号</th>
-                    <th style="width: 120px; ">事件日期</th>
-                    <th style="width: 240px; ">事件简称</th>
-                    <th style="width: 120px; ">当事人</th>
-                    <th style="width: 120px; ">事件类型</th>
-                    <th style="width: 120px; ">宴请类型</th>
-                    <th style="width: 240px; ">事件说明</th>
-                    <th style="width: 160px; ">操作</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for rec in dataList %}
-                    <tr recID="{{ rec.id }}">
-                        <td style="text-align: center; ">{{ forloop.counter }}</td>
-                        <td>{{ rec.eventDate|date:"Y-m-d" }}</td>
-                        <td style="text-align: left; "><a href="http://127.0.0.1:8000/busi/relEventDetail-{{ rec.id }}">{{ rec.eventName }}</a></td>
-                        <td>{{ rec.person.name }}</td>
-                        {% if rec.eventType == 1 %}
-                            <td>结婚</td>
-                        {% elif rec.eventType == 2 %}
-                            <td>生子</td>
-                        {% elif rec.eventType == 3 %}
-                            <td>周岁</td>
-                        {% elif rec.eventType == 4 %}
-                            <td>祝寿</td>
-                        {% elif rec.eventType == 5 %}
-                            <td>考学</td>
-                        {% elif rec.eventType == 6 %}
-                            <td>乔迁</td>
-                        {% elif rec.eventType == 7 %}
-                            <td>身故</td>
-                        {% else %}
-                            <td>其他</td>
-                        {% endif %}
-                        {% if rec.formType == 1 %}
-                            <td>隆重宴请</td>
-                        {% elif rec.formType == 2 %}
-                            <td>亲朋小聚</td>
-                        {% elif rec.formType == 3 %}
-                            <td>低调跳过</td>
-                        {% else %}
-                            <td>待定</td>
-                        {% endif %}
-                        {% if rec.eventDes %}
-                            <td>{{ rec.eventDes }}</td>
-                        {% else %}
-                            <td></td>
-                        {% endif %}
-                        <td style="text-align: center; ">
-                            <span class="labelBtn recModify">修改</span>
-                            <span class="labelBtn recDelete">删除</span>
-                        </td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-            <p>{{ pagetag|safe }}</p>
-            <span class="promptInfo"></span>
-        </div>
-        <div id="dialogDel" class="hide dialogMin">
-            <span>确定要删除当前记录吗？</span>
-            <div style="margin-top: 20px; ">
-                <input id="delCancel" type="button" class="right inputBtn" style="margin-left: 10px; " value="取消">
-                <input id="delOk" type="button" class="right inputBtn" style="margin-left: 10px; " value="确定">
-            </div>
-        </div>
+{% block queryFields %}
+    <div class="queryGroup">
+        <div class="queryLabel">状态：</div>
+        <select id="queryStatus" selectedValue="{{ status }}" class="queryItem">
+            <option value="0" selected="selected">全部</option>
+            <option value="2">计划</option>
+            <option value="9">完成</option>
+        </select>
     </div>
 {% endblock %}
 
 
-{% block subScript %}
-    $("#PAGE_reccnt_perpage_select").val($.cookie("reccnt_perpage"));
+{% block dataGrid %}
+    <table>
+        <thead>
+        <tr>
+            <th style="width: 50px; ">序号</th>
+            <th style="width: 120px; ">事件日期</th>
+            <th style="width: 240px; ">事件简称</th>
+            <th style="width: 120px; ">当事人</th>
+            <th style="width: 120px; ">事件类型</th>
+            <th style="width: 120px; ">宴请类型</th>
+            <th style="width: 240px; ">事件说明</th>
+            <th style="width: 160px; ">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for rec in dataList %}
+            <tr recID="{{ rec.id }}">
+                <td style="text-align: center; ">{{ forloop.counter }}</td>
+                <td>{{ rec.eventDate|date:"Y-m-d" }}</td>
+                <td style="text-align: left; "><a href="{% url 'app-busi:eventDetail' nid=rec.id %}">{{ rec.eventName }}</a></td>
+                <td>{{ rec.person.name }}</td>
+                {% if rec.eventType == 1 %}
+                    <td>结婚</td>
+                {% elif rec.eventType == 2 %}
+                    <td>生子</td>
+                {% elif rec.eventType == 3 %}
+                    <td>周岁</td>
+                {% elif rec.eventType == 4 %}
+                    <td>祝寿</td>
+                {% elif rec.eventType == 5 %}
+                    <td>考学</td>
+                {% elif rec.eventType == 6 %}
+                    <td>乔迁</td>
+                {% elif rec.eventType == 7 %}
+                    <td>身故</td>
+                {% else %}
+                    <td>其他</td>
+                {% endif %}
+                {% if rec.formType == 1 %}
+                    <td>隆重宴请</td>
+                {% elif rec.formType == 2 %}
+                    <td>亲朋小聚</td>
+                {% elif rec.formType == 3 %}
+                    <td>低调跳过</td>
+                {% else %}
+                    <td>待定</td>
+                {% endif %}
+                {% if rec.eventDes %}
+                    <td>{{ rec.eventDes }}</td>
+                {% else %}
+                    <td></td>
+                {% endif %}
+                <td style="text-align: center; ">
+                    <span class="labelBtn recModify">修改</span>
+                    <span class="labelBtn recDelete">删除</span>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+
+{% block scriptSub %}
     $("#PAGE_reccnt_perpage_select").change(function () {
         $.cookie("reccnt_perpage", $(this).val(), {path: "/busi/"});
         location.href = "http://127.0.0.1:8000/busi/relEventList-" + $("#queryStatus").val() + "-1";
@@ -126,33 +92,24 @@
     $("#btnQuery").click(function () {
         sHref = "http://127.0.0.1:8000/busi/relEventList-" + $("#queryStatus").val() + "-1";
         if ($("#dateFrom").val()) {
-            sHref = sHref + "?from=" + $("#dateFrom").val()
+            sHref = sHref + "?from=" + $("#dateFrom").val();
         }
         if ($("#dateTo").val()) {
-            sHref = sHref + "&to=" + $("#dateTo").val()
+            sHref = sHref + "&to=" + $("#dateTo").val();
         }
         location.href = sHref;
     });
     $("#btnNew").click(function () {
-        location.href = "http://127.0.0.1:8000/busi/relEventNew";
+        location.href = "{% url 'app-busi:eventNew' %}";
     });
     $(".recModify").click(function () {
         location.href = "http://127.0.0.1:8000/busi/relEventModify-" + $(this).parent().parent().attr("recID")
-    });
-    $(".recDelete").click(function () {
-        $("#dialogDel").attr("recID", $(this).parent().parent().attr("recID"));
-        $(".cover-layer").removeClass("hide");
-        $("#dialogDel").removeClass("hide");
-    });
-    $("#delCancel").click(function () {
-        $(".cover-layer").addClass("hide");
-        $("#dialogDel").addClass("hide");
     });
     $("#delOk").click(function () {
         $(".promptInfo").text("");
         csrf = $('input[name="csrfmiddlewaretoken"]').val();
         $.ajax({
-            url: "relEventDelete-" + $(this).parent().parent().attr("recID"),
+            url: "http://127.0.0.1:8000/busi/relEventDelete-" + $(this).parent().parent().attr("recID"),
             method: "POST",
             data: {"csrfmiddlewaretoken": csrf},
             dataType: "JSON",

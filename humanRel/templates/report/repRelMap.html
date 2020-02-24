@@ -1,81 +1,63 @@
-{% extends "../frame.html" %}
+{% extends "../extends/frameReport.html" %}
 
 
 {% block pageTitle %}人物关系图谱{% endblock %}
 
 
-{% block subStyle %}
-    <link href="/static/css/querySheet.css" type="text/css" rel="stylesheet">
-{% endblock %}
-
-
-{% block contents %}
-    <div style="margin: 10px; ">
-        <div class="queryBackground">
-            <div class="queryGroup">
-                <div class="queryLabel">人员1：</div>
-                <select id="queryPerson1" selectedValue="{{ person1 }}" class="queryItem">
-                    <option value="" selected="selected">（未选择）</option>
-                    {% for person in personList %}
-                        <option value="{{ person.id }}">{{ person.name }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <div class="queryGroup">
-                <div class="queryLabel">人员2：</div>
-                <select id="queryPerson2" selectedValue="{{ person2 }}" class="queryItem">
-                    <option value="" selected="selected">（未选择）</option>
-                    {% for person in personList %}
-                        <option value="{{ person.id }}">{{ person.name }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-        </div>
-        <div style="overflow: hidden; ">
-            <input id="btnQuery" class="queryButton" type="button" value="查询">
-            <input id="btnExport" class="queryButton" type="button" value="导出">
-            <div class="queryDescribe" style="width: 723px; ">
-                <span>共{{ recCnt }}条记录</span>
-            </div>
-        </div>
-        <div style="margin-top: 10px; ">
-            {% csrf_token %}
-            <table id="repData" pageNo="{{ pageNo }}">
-                <thead>
-                <tr>
-                    <th style="width: 50px; ">序号</th>
-                    <th style="width: 120px; ">家庭</th>
-                    <th style="width: 120px; ">人员</th>
-                    <th style="width: 160px; ">关系</th>
-                    <th style="width: 120px; ">目标人员</th>
-                    <th style="width: 370px; "></th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for rec in dataList %}
-                    <tr>
-                        <td style="text-align: center; "></td>
-                        <td style="text-align: left; "></td>
-                        <td style="text-align: left; "></td>
-                        <td style="text-align: left; "></td>
-                        <td style="text-align: left; "></td>
-                        <td></td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-            <p>{{ pagetag|safe }}</p>
-            <span class="promptInfo"></span>
-        </div>
+{% block queryCondition %}
+    <div class="queryGroup">
+        <div class="queryLabel">人员1：</div>
+        <select id="queryPerson1" selectedValue="{{ person1 }}" class="queryItem">
+            <option value="" selected="selected">（未选择）</option>
+            {% for person in personList %}
+                <option value="{{ person.id }}">{{ person.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="queryGroup">
+        <div class="queryLabel">人员2：</div>
+        <select id="queryPerson2" selectedValue="{{ person2 }}" class="queryItem">
+            <option value="" selected="selected">（未选择）</option>
+            {% for person in personList %}
+                <option value="{{ person.id }}">{{ person.name }}</option>
+            {% endfor %}
+        </select>
     </div>
 {% endblock %}
 
 
-{% block subScript %}
-    $("#PAGE_reccnt_perpage_select").val($.cookie("reccnt_perpage"));
+{% block dataGrid %}
+    <table id="repData" pageNo="{{ pageNo }}">
+        <thead>
+        <tr>
+            <th style="width: 50px; ">序号</th>
+            <th style="width: 120px; ">家庭</th>
+            <th style="width: 120px; ">人员</th>
+            <th style="width: 160px; ">关系</th>
+            <th style="width: 120px; ">目标人员</th>
+            <th style="width: 370px; "></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for rec in dataList %}
+            <tr>
+                <td style="text-align: center; "></td>
+                <td style="text-align: left; "></td>
+                <td style="text-align: left; "></td>
+                <td style="text-align: left; "></td>
+                <td style="text-align: left; "></td>
+                <td></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+
+{% block scriptSub %}
     $("#PAGE_reccnt_perpage_select").change(function () {
         $.cookie("reccnt_perpage", $(this).val(), {path: "/rep/"});
-        sHref = "http://127.0.0.1:8000/rep/repRelMap";
+        sHref = "{% url 'app-rep:relMap' %}";
         sHref = sHref + "?person1=" + $("#queryPerson1").val();
         sHref = sHref + "&person2=" + $("#queryPerson2").val();
         location.href = sHref;
@@ -86,7 +68,7 @@
         }
     });
     $("#btnQuery").click(function () {
-        sHref = "http://127.0.0.1:8000/rep/repRelMap";
+        sHref = "{% url 'app-rep:relMap' %}";
         sHref = sHref + "?person1=" + $("#queryPerson1").val();
         sHref = sHref + "&person2=" + $("#queryPerson2").val();
         location.href = sHref;

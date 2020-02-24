@@ -1,13 +1,14 @@
-{% extends "../frame.html" %}
+{% extends "../extends/frameBusiNew.html" %}
 
 
 {% block pageTitle %}礼宴亲朋 — {{ eventName }}的礼簿 — 新增{% endblock %}
 
 
-{% block subStyle %}
+{% block styleSub %}
     <style>
         table, tr, td{
             border: none;
+            background-color: white;
         }
         .labelSpc{
             font-size: 20px;
@@ -45,12 +46,12 @@
 {% endblock %}
 
 
-{% block contents %}
+{% block dataFree %}
     <div style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; background-color: white; ">
         <div style="margin-top: 70px; margin-left: 50px; ">
-            <form action="http://127.0.0.1:8000/busi/relEventModify/bookNew-{{ id }}" method="POST">
+            <form action="{% url 'app-busi:bookNew' pid=pid %}" method="POST">
                 {% csrf_token %}
-                <table id="recTable" recID="{{ id }}">
+                <table id="recTable" recID="{{ pid }}">
                     <tr>
                         <td style="width: 360px; "><label for="joinFamily" class="labelSpc">今收到：</label></td>
                         <td style="width: 300px; "></td>
@@ -97,7 +98,7 @@
 {% endblock %}
 
 
-{% block subScript %}
+{% block scriptSub %}
     $("#btnReturn").click(function () {
         location.href = "http://127.0.0.1:8000/busi/relEventModify/bookList-" + $("#recTable").attr("recID") + "-0-1"
     });

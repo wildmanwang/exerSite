@@ -1,0 +1,50 @@
+{% extends "../extends/frameMain.html" %}
+
+
+{% block styleFrame %}
+    <link href="/static/css/querySheet.css" type="text/css" rel="stylesheet">
+    {% block styleSub %}
+    {% endblock %}
+{% endblock %}
+
+
+{% block contentsFrame %}
+    <div style="margin: 10px; ">
+        <div style="overflow: hidden; ">
+            <input id="btnNew" class="left font-size2 inputBtn" type="button" value="新增">
+            <input id="btnQuery" class="right font-size2 inputBtn" type="button" value="查询">
+            {% block queryFields %}
+            {% endblock %}
+        </div>
+        <div style="margin-top: 10px; ">
+            {% csrf_token %}
+            {% block dataGrid %}
+            {% endblock %}
+            <p>{{ pagetag|safe }}</p>
+            <span class="promptInfo"></span>
+        </div>
+        <div id="dialogDel" class="hide dialogMin">
+            <span>确定要删除当前记录吗？</span>
+            <div style="margin-top: 20px; ">
+                <input id="delCancel" type="button" class="right inputBtn" style="margin-left: 10px; " value="取消">
+                <input id="delOk" type="button" class="right inputBtn" style="margin-left: 10px; " value="确定">
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block scriptFrame %}
+    $("#PAGE_reccnt_perpage_select").val($.cookie("reccnt_perpage"));
+    $(".recDelete").click(function () {
+        $("#dialogDel").attr("recID", $(this).parent().parent().attr("recID"));
+        $(".cover-layer").removeClass("hide");
+        $("#dialogDel").removeClass("hide");
+    });
+    $("#delCancel").click(function () {
+        $(".cover-layer").addClass("hide");
+        $("#dialogDel").addClass("hide");
+    });
+    {% block scriptSub %}
+    {% endblock %}
+{% endblock %}

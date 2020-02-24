@@ -1,4 +1,4 @@
-from django.shortcuts import render, HttpResponse, redirect
+from django.shortcuts import render, HttpResponse, redirect, reverse
 from apps.baseinfo import models
 from apps.sysmanager.models import User
 from apps.sysmanager.views import auth
@@ -215,19 +215,19 @@ def personNew(request, userID):
         obj.cleaned_data.pop("id")
         obj.cleaned_data["user_id"] = userID
         models.Person.objects.create(**obj.cleaned_data)
-        return redirect("http://127.0.0.1:8000/base/personList-1-1")
+        return redirect(reverse("app-base:personList", args=(1, 1, )))
 
 
 @auth
-def personDelete(request, userID, id):
+def personDelete(request, userID, nid):
     rtn = {
         "result": False,
         "data": None,
         "info": None
     }
-    rec = models.Person.objects.filter(id=id).first()
+    rec = models.Person.objects.filter(id=nid).first()
     if not rec:
-        rtn["info"] = "查无此记录%d" % (id)
+        rtn["info"] = "查无此记录%d" % (nid)
     else:
         rec.delete()
         rtn["result"] = True
@@ -235,9 +235,9 @@ def personDelete(request, userID, id):
 
 
 @auth
-def personModify(request, userID, id):
+def personModify(request, userID, nid):
     if request.method == "GET":
-        rec = models.Person.objects.filter(id=id).first()
+        rec = models.Person.objects.filter(id=nid).first()
         dic = {
             "id": rec.id,
             "user_id": userID,
@@ -261,19 +261,19 @@ def personModify(request, userID, id):
             "remark": rec.remark
         }
         obj = FormPerson(initial=dic)
-        return render(request, "baseinfo/personModify.html", {"form": obj, "id": id})
+        return render(request, "baseinfo/personModify.html", {"form": obj, "nid": nid})
     elif request.method == "POST":
         obj = FormPerson(request.POST)
         res = obj.is_valid()
         if not res:
-            return render(request, "baseinfo/personModify.html", {"form": obj, "id": id})
-        models.Person.objects.filter(id=id).update(**obj.cleaned_data)
-        return redirect("http://127.0.0.1:8000/base/personList-1-1")
+            return render(request, "baseinfo/personModify.html", {"form": obj, "nid": nid})
+        models.Person.objects.filter(id=nid).update(**obj.cleaned_data)
+        return redirect(reverse("app-base:personList", args=(1, 1, )))
 
 
 @auth
-def personDetail(request, userID, id):
-    rec = models.Person.objects.filter(id=id).first()
+def personDetail(request, userID, nid):
+    rec = models.Person.objects.filter(id=nid).first()
     obj = FormPerson()
     return render(request, "baseinfo/personDetail.html", {"form": obj, "rec": rec})
 
@@ -305,21 +305,21 @@ def familyNew(request, userID):
         if res:
             obj.cleaned_data["user_id"] = userID
             models.Family.objects.create(**obj.cleaned_data)
-            return redirect("http://127.0.0.1:8000/base/familyList-1-1")
+            return redirect(reverse("app-base:familyList", args=(1, 1, )))
         else:
             return render(request, "baseinfo/familyNew.html", {"form": obj})
 
 
 @auth
-def familyDelete(request, userID, id):
+def familyDelete(request, userID, nid):
     rtn = {
         "result": False,
         "data": None,
         "info": None
     }
-    rec = models.Family.objects.filter(id=id).first()
+    rec = models.Family.objects.filter(id=nid).first()
     if not rec:
-        rtn["info"] = "查无此记录%d" % (id)
+        rtn["info"] = "查无此记录%d" % (nid)
     else:
         rec.delete()
         rtn["result"] = True
@@ -327,9 +327,9 @@ def familyDelete(request, userID, id):
 
 
 @auth
-def familyModify(request, userID, id):
+def familyModify(request, userID, nid):
     if request.method == "GET":
-        rec = models.Family.objects.filter(id=id).first()
+        rec = models.Family.objects.filter(id=nid).first()
         dic = {
             "name": rec.name,
             "location": rec.location,
@@ -338,19 +338,19 @@ def familyModify(request, userID, id):
             "remark": rec.remark
         }
         obj = FormFamily(initial=dic)
-        return render(request, "baseinfo/familyModify.html", {"form": obj, "id": id})
+        return render(request, "baseinfo/familyModify.html", {"form": obj, "nid": nid})
     elif request.method == "POST":
         obj = FormFamily(request.POST)
         res = obj.is_valid()
         if res:
-            models.Family.objects.filter(id=id).update(**obj.cleaned_data)
-            return redirect("http://127.0.0.1:8000/base/familyList-1-1")
+            models.Family.objects.filter(id=nid).update(**obj.cleaned_data)
+            return redirect(reverse("app-base:familyList", args=(1, 1, )))
         else:
-            return render(request, "baseinfo/familyModify.html", {"form": obj, "id": id})
+            return render(request, "baseinfo/familyModify.html", {"form": obj, "nid": nid})
 
 
 @auth
-def familyDetail(request, userID, id):
-    rec = models.Family.objects.filter(id=id).first()
+def familyDetail(request, userID, nid):
+    rec = models.Family.objects.filter(id=nid).first()
     obj = FormFamily()
     return render(request, "baseinfo/familyDetail.html", {"form": obj, "rec": rec})

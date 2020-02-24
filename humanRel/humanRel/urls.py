@@ -18,8 +18,8 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('sys/', include("apps.sysmanager.urls")),
-    path('base/', include("apps.baseinfo.urls")),
-    path('busi/', include("apps.business.urls")),
-    path('rep/', include("apps.report.urls")),
+    path('sys/', include(("apps.sysmanager.urls", "app-sys"), namespace="app-sys")),
+    path('base/', include(("apps.baseinfo.urls", "app-base"), namespace="app-base")),
+    path('busi/', include(("apps.business.urls", "app-busi"), namespace="app-busi")),
+    path('rep/', include(("apps.report.urls", "app-rep"), namespace="app-rep")),
 ]

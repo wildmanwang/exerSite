@@ -1,11 +1,10 @@
-{% extends "../frame.html" %}
+{% extends "../extends/frameBusiList.html" %}
 
 
 {% block pageTitle %}礼宴亲朋 — {{ eventName }}的礼簿{% endblock %}
 
 
-{% block subStyle %}
-    <link href="/static/css/querySheet.css" type="text/css" rel="stylesheet">
+{% block styleSub %}
     <style>
         .tabHeader{
             display: inline-block;
@@ -34,143 +33,118 @@
 {% endblock %}
 
 
-{% block contents %}
-    <div style="margin: 10px; ">
-        <div style="overflow: hidden; ">
-            <input id="btnNew" class="queryButton" type="button" value="新增">
-            <input id="btnExport" class="queryButton" type="button" value="导出">
-            <input id="btnReturn" class="queryButton" type="button" value="返回">
-            <div class="queryDescribe">
-                <span>共{{ recCnt }}条记录</span>
-            </div>
-        </div>
-        <div style="margin-top: 10px; background-color: #EEEEEE; ">
-            {% if relNumber.1 %}
-                {% if relType == 1 %}
-                    <span class="tabHeader tabActive"><a href="http://127.0.0.1:8000/busi/relEventModify/bookList-{{ id }}-1-1">族亲[<span class="tabNumber">{{ relNumber.1 }}</span>]</a></span>
-                {% else %}
-                    <span class="tabHeader"><a href="http://127.0.0.1:8000/busi/relEventModify/bookList-{{ id }}-1-1">族亲[<span>{{ relNumber.1 }}</a>]</span></span>
-                {% endif %}
+{% block queryCondition %}
+{% endblock %}
+
+
+{% block dataGrid %}
+    <div style="margin-top: 10px; background-color: #EEEEEE; ">
+        {% if relNumber.1 %}
+            {% if relType == 1 %}
+                <span class="tabHeader tabActive"><a href="{% url 'app-busi:bookList' pid=pid relType=1 pageNo=1 %}">族亲[<span class="tabNumber">{{ relNumber.1 }}</span>]</a></span>
+            {% else %}
+                <span class="tabHeader"><a href="{% url 'app-busi:bookList' pid=pid relType=1 pageNo=1 %}">族亲[<span>{{ relNumber.1 }}</a>]</span></span>
             {% endif %}
-            {% if relNumber.2 %}
-                {% if relType == 2 %}
-                    <span class="tabHeader tabActive"><a href="http://127.0.0.1:8000/busi/relEventModify/bookList-{{ id }}-2-1">姻亲[<span class="tabNumber">{{ relNumber.2 }}</span>]</a></span>
-                {% else %}
-                    <span class="tabHeader"><a href="http://127.0.0.1:8000/busi/relEventModify/bookList-{{ id }}-2-1">姻亲[<span>{{ relNumber.2 }}</span>]</a></span>
-                {% endif %}
+        {% endif %}
+        {% if relNumber.2 %}
+            {% if relType == 2 %}
+                <span class="tabHeader tabActive"><a href="{% url 'app-busi:bookList' pid=pid relType=2 pageNo=1 %}">姻亲[<span class="tabNumber">{{ relNumber.2 }}</span>]</a></span>
+            {% else %}
+                <span class="tabHeader"><a href="{% url 'app-busi:bookList' pid=pid relType=2 pageNo=1 %}">姻亲[<span>{{ relNumber.2 }}</span>]</a></span>
             {% endif %}
-            {% if relNumber.3 %}
-                {% if relType == 3 %}
-                    <span class="tabHeader tabActive"><a href="http://127.0.0.1:8000/busi/relEventModify/bookList-{{ id }}-3-1">同学[<span class="tabNumber">{{ relNumber.3 }}</span>]</a></span>
-                {% else %}
-                    <span class="tabHeader"><a href="http://127.0.0.1:8000/busi/relEventModify/bookList-{{ id }}-3-1">同学[<span>{{ relNumber.3 }}</span>]</a></span>
-                {% endif %}
+        {% endif %}
+        {% if relNumber.3 %}
+            {% if relType == 3 %}
+                <span class="tabHeader tabActive"><a href="{% url 'app-busi:bookList' pid=pid relType=3 pageNo=1 %}">同学[<span class="tabNumber">{{ relNumber.3 }}</span>]</a></span>
+            {% else %}
+                <span class="tabHeader"><a href="{% url 'app-busi:bookList' pid=pid relType=3 pageNo=1 %}">同学[<span>{{ relNumber.3 }}</span>]</a></span>
             {% endif %}
-            {% if relNumber.4 %}
-                {% if relType == 4 %}
-                    <span class="tabHeader tabActive"><a href="http://127.0.0.1:8000/busi/relEventModify/bookList-{{ id }}-4-1">朋友[<span class="tabNumber">{{ relNumber.4 }}</span>]</a></span>
-                {% else %}
-                    <span class="tabHeader"><a href="http://127.0.0.1:8000/busi/relEventModify/bookList-{{ id }}-4-1">朋友[<span>{{ relNumber.4 }}</span>]</a></span>
-                {% endif %}
+        {% endif %}
+        {% if relNumber.4 %}
+            {% if relType == 4 %}
+                <span class="tabHeader tabActive"><a href="{% url 'app-busi:bookList' pid=pid relType=4 pageNo=1 %}">朋友[<span class="tabNumber">{{ relNumber.4 }}</span>]</a></span>
+            {% else %}
+                <span class="tabHeader"><a href="{% url 'app-busi:bookList' pid=pid relType=4 pageNo=1 %}">朋友[<span>{{ relNumber.4 }}</span>]</a></span>
             {% endif %}
-            {% if relNumber.5 %}
-                {% if relType == 5 %}
-                    <span class="tabHeader tabActive"><a href="http://127.0.0.1:8000/busi/relEventModify/bookList-{{ id }}-5-1">同事[<span class="tabNumber">{{ relNumber.5 }}</span>]</a></span>
-                {% else %}
-                    <span class="tabHeader"><a href="http://127.0.0.1:8000/busi/relEventModify/bookList-{{ id }}-5-1">同事[<span>{{ relNumber.5 }}</span>]</a></span>
-                {% endif %}
+        {% endif %}
+        {% if relNumber.5 %}
+            {% if relType == 5 %}
+                <span class="tabHeader tabActive"><a href="{% url 'app-busi:bookList' pid=pid relType=5 pageNo=1 %}">同事[<span class="tabNumber">{{ relNumber.5 }}</span>]</a></span>
+            {% else %}
+                <span class="tabHeader"><a href="{% url 'app-busi:bookList' pid=pid relType=5 pageNo=1 %}">同事[<span>{{ relNumber.5 }}</span>]</a></span>
             {% endif %}
-            {% if relNumber.6 %}
-                {% if relType == 6 %}
-                    <span class="tabHeader tabActive"><a href="http://127.0.0.1:8000/busi/relEventModify/bookList-{{ id }}-6-1">战友[<span class="tabNumber">{{ relNumber.6 }}</span>]</a></span>
-                {% else %}
-                    <span class="tabHeader"><a href="http://127.0.0.1:8000/busi/relEventModify/bookList-{{ id }}-6-1">战友[<span>{{ relNumber.6 }}</span>]</a></span>
-                {% endif %}
+        {% endif %}
+        {% if relNumber.6 %}
+            {% if relType == 6 %}
+                <span class="tabHeader tabActive"><a href="{% url 'app-busi:bookList' pid=pid relType=6 pageNo=1 %}">战友[<span class="tabNumber">{{ relNumber.6 }}</span>]</a></span>
+            {% else %}
+                <span class="tabHeader"><a href="{% url 'app-busi:bookList' pid=pid relType=6 pageNo=1 %}">战友[<span>{{ relNumber.6 }}</span>]</a></span>
             {% endif %}
-            {% if relNumber.7 %}
-                {% if relType == 7 %}
-                    <span class="tabHeader tabActive"><a href="http://127.0.0.1:8000/busi/relEventModify/bookList-{{ id }}-7-1">街坊[<span class="tabNumber">{{ relNumber.7 }}</span>]</a></span>
-                {% else %}
-                    <span class="tabHeader"><a href="http://127.0.0.1:8000/busi/relEventModify/bookList-{{ id }}-7-1">街坊[<span>{{ relNumber.7 }}</span>]</a></span>
-                {% endif %}
+        {% endif %}
+        {% if relNumber.7 %}
+            {% if relType == 7 %}
+                <span class="tabHeader tabActive"><a href="{% url 'app-busi:bookList' pid=pid relType=7 pageNo=1 %}">街坊[<span class="tabNumber">{{ relNumber.7 }}</span>]</a></span>
+            {% else %}
+                <span class="tabHeader"><a href="{% url 'app-busi:bookList' pid=pid relType=7 pageNo=1 %}">街坊[<span>{{ relNumber.7 }}</span>]</a></span>
             {% endif %}
-            {% if relNumber.99 %}
-                {% if relType == 99 %}
-                    <span class="tabHeader tabActive"><a href="http://127.0.0.1:8000/busi/relEventModify/bookList-{{ id }}-99-1">其他[<span class="tabNumber">{{ relNumber.99 }}</span>]</a></span>
-                {% else %}
-                    <span class="tabHeader"><a href="http://127.0.0.1:8000/busi/relEventModify/bookList-{{ id }}-99-1">其他[<span>{{ relNumber.99 }}</span>]</a></span>
-                {% endif %}
+        {% endif %}
+        {% if relNumber.99 %}
+            {% if relType == 99 %}
+                <span class="tabHeader tabActive"><a href="{% url 'app-busi:bookList' pid=pid relType=99 pageNo=1 %}">其他[<span class="tabNumber">{{ relNumber.99 }}</span>]</a></span>
+            {% else %}
+                <span class="tabHeader"><a href="{% url 'app-busi:bookList' pid=pid relType=99 pageNo=1 %}">其他[<span>{{ relNumber.99 }}</span>]</a></span>
             {% endif %}
-            <div style="margin-bottom: 4px; ">
-                {% csrf_token %}
-                <table id="recTable" recID="{{ id }}">
-                    <thead>
-                    <tr>
-                        <th style="width: 50px; ">序号</th>
-                        <th style="width: 160px; ">家庭</th>
-                        <th style="width: 120px; ">礼金</th>
-                        <th style="width: 120px; ">其他支出</th>
-                        <th style="width: 330px; ">备注</th>
-                        <th style="width: 160px; ">操作</th>
+        {% endif %}
+        <div style="margin-bottom: 4px; ">
+            <table id="recTable" recID="{{ pid }}" relType="{{ relType }}">
+                <thead>
+                <tr>
+                    <th style="width: 50px; ">序号</th>
+                    <th style="width: 160px; ">家庭</th>
+                    <th style="width: 120px; ">礼金</th>
+                    <th style="width: 120px; ">其他支出</th>
+                    <th style="width: 330px; ">备注</th>
+                    <th style="width: 160px; ">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for rec in dataList %}
+                    <tr recID="{{ rec.id }}">
+                        <td style="text-align: center; ">{{ forloop.counter }}</td>
+                        <td><a href="{% url 'app-busi:bookDetail' subid=rec.id %}">{{ rec.joinFamily }}</a></td>
+                        <td>{{ rec.amtBook }}</td>
+                        <td>{{ rec.amtOther }}</td>
+                        <td>{{ rec.remark }}</td>
+                        <td style="text-align: center; "><span class="labelBtn recModify">修改</span><span class="labelBtn recDelete">删除</span></td>
                     </tr>
-                    </thead>
-                    <tbody>
-                    {% for rec in dataList %}
-                        <tr recID="{{ rec.id }}">
-                            <td style="text-align: center; ">{{ forloop.counter }}</td>
-                            <td><a href="http://127.0.0.1:8000/busi/relEventModify/bookDetail-{{ rec.id }}">{{ rec.joinFamily }}</a></td>
-                            <td>{{ rec.amtBook }}</td>
-                            <td>{{ rec.amtOther }}</td>
-                            <td>{{ rec.remark }}</td>
-                            <td style="text-align: center; "><span class="labelBtn recModify">修改</span><span class="labelBtn recDelete">删除</span></td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-                <p>{{ pagetag|safe }}</p>
-                <span class="promptInfo"></span>
-            </div>
-        </div>
-        <div id="dialogDel" class="hide dialogMin">
-            <span>确定要删除当前记录吗？</span>
-            <div style="margin-top: 20px; ">
-                <input id="delCancel" type="button" class="right inputBtn" style="margin-left: 10px; " value="取消">
-                <input id="delOk" type="button" class="right inputBtn" style="margin-left: 10px; " value="确定">
-            </div>
+                {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
 {% endblock %}
 
 
-{% block subScript %}
-    $("#PAGE_reccnt_perpage_select").val($.cookie("reccnt_perpage"));
+{% block scriptSub %}
+    $("#btnQuery").val("返回");
     $("#PAGE_reccnt_perpage_select").change(function () {
         $.cookie("reccnt_perpage", $(this).val(), {path: "/busi/"});
-        location.href = "http://127.0.0.1:8000/busi/joinRecordList-1";
+        location.href = "http://127.0.0.1:8000/busi/relEventModify/bookList-" + $("#recTable").attr("recID") + "-" + $("#recTable").attr("relType") + "-1";
+    });
+    $("#btnQuery").click(function () {
+        location.href = "http://127.0.0.1:8000/busi/relEventModify-" + $("#recTable").attr("recID")
     });
     $("#btnNew").click(function () {
         location.href = "http://127.0.0.1:8000/busi/relEventModify/bookNew-" + $("#recTable").attr("recID");
     });
-    $("#btnReturn").click(function () {
-        location.href = "http://127.0.0.1:8000/busi/relEventModify-" + $("#recTable").attr("recID")
-    });
     $(".recModify").click(function () {
         location.href = "http://127.0.0.1:8000/busi/relEventModify/bookModify-" + $(this).parent().parent().attr("recID")
-    });
-    $(".recDelete").click(function () {
-        $("#dialogDel").attr("recID", $(this).parent().parent().attr("recID"));
-        $(".cover-layer").removeClass("hide");
-        $("#dialogDel").removeClass("hide");
-    });
-    $("#delCancel").click(function () {
-        $(".cover-layer").addClass("hide");
-        $("#dialogDel").addClass("hide");
     });
     $("#delOk").click(function () {
         $(".promptInfo").text("");
         csrf = $('input[name="csrfmiddlewaretoken"]').val();
         $.ajax({
-            url: "relEventModify/bookDelete-" + $(this).parent().parent().attr("recID"),
+            url: "http://127.0.0.1:8000/busi/relEventModify/bookDelete-" + $(this).parent().parent().attr("recID"),
             method: "POST",
             data: {"csrfmiddlewaretoken": csrf},
             dataType: "JSON",

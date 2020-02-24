@@ -1,8 +1,9 @@
-from django.shortcuts import render, HttpResponse, redirect
+from django.shortcuts import render, HttpResponse, redirect, reverse
 from apps.sysmanager.models import User
 from apps.baseinfo.models import Person
 from django.forms import Form, fields, widgets
 from django import forms
+import json
 
 # Create your views here.
 
@@ -62,7 +63,7 @@ def register(request):
         if res:
             obj.cleaned_data.pop("reloginPW")
             User.objects.create(**obj.cleaned_data)
-            return redirect("sys/index")
+            return redirect(reverse("app-sys:index"))
         else:
             return render(request, "sysmanager/register.html", {"form": obj})
 
@@ -85,19 +86,33 @@ def login(request):
             return render(request, "sysmanager/login.html", {"info": "密码错误"})
         request.session.set_expiry(36000)
         request.session["LoginUser"] = username
-        return redirect("http://127.0.0.1:8000/sys/index")
+        return redirect(reverse("app-sys:index"))
     else:
         return HttpResponse("无效的请求方式：%s" % (request.method))
+
+
+def logout(request):
+    rtn = {
+        "result": False,
+        "data": None,
+        "info": None
+    }
+    try:
+        del request.session["LoginUser"]
+        rtn["result"] = True
+    except Exception as e:
+        pass
+    return HttpResponse(json.dumps(rtn))
 
 
 def auth(func):
     def inner(request, *args, **kwargs):
         userName = request.session.get("LoginUser", None)
         if not userName:
-            return redirect("sys/login/")
+            return redirect(reverse("app-sys:login"))
         user = User.objects.filter(name=userName).first()
         if not user:
-            return redirect("sys/login/")
+            return redirect(reverse("app-sys:login"))
         return func(request, user.id, *args, **kwargs)
     return inner
 
@@ -117,13 +132,13 @@ def set(request, userID):
             "person": rec.person
         }
         obj = FormUser(initial=dic)
-        return render(request, "sysmanager/set.html", {"form": obj, "id": userID})
+        return render(request, "sysmanager/set.html", {"form": obj, "userID": userID})
     elif request.method == "POST":
         obj = FormUser(request.POST)
         res = obj.is_valid()
         if res:
             obj.changed_data.pop("id")
             User.objects.filter(id=userID).update(**obj.cleaned_data)
-            return redirect("http://127.0.0.1:8000/sys/index")
+            return redirect(reverse("app-sys:index"))
         else:
-            return render(request, "sysmanager/set.html", {"form": obj, "id": userID})
+            return render(request, "sysmanager/set.html", {"form": obj, "userID": userID})

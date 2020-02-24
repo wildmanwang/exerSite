@@ -1,117 +1,91 @@
-{% extends "../frame.html" %}
+{% extends "../extends/frameReport.html" %}
 
 
 {% block pageTitle %}往来明细表{% endblock %}
 
 
-{% block subStyle %}
-    <link href="/static/css/querySheet.css" type="text/css" rel="stylesheet">
-{% endblock %}
-
-
-{% block contents %}
-    <div style="margin: 10px; ">
-        <div class="queryBackground">
-            <div class="queryGroup">
-                <div class="queryLabel">查询开始日期：</div>
-                <input id="dateFrom" type="date" class="queryItem" value="{{ from|date:"Y-m-d" }}">
-            </div>
-            <div class="queryGroup">
-                <div class="queryLabel">截止日期：</div>
-                <input id="dateTo" type="date" class="queryItem" value="{{ to|date:"Y-m-d" }}">
-            </div>
-            <div class="queryGroup">
-                <div class="queryLabel">事件类型：</div>
-                <select id="queryEventType" selectedValue="{{ eventType }}" class="queryItem">
-                    <option value="0" selected="selected">全部</option>
-                    <option value="1">结婚</option>
-                    <option value="2">生子</option>
-                    <option value="3">周岁</option>
-                    <option value="4">祝寿</option>
-                    <option value="5">考学</option>
-                    <option value="6">乔迁</option>
-                    <option value="7">身故</option>
-                    <option value="99">其他</option>
-                </select>
-            </div>
-        </div>
-        <div style="overflow: hidden; ">
-            <input id="btnQuery" class="queryButton" type="button" value="查询">
-            <input id="btnExport" class="queryButton" type="button" value="导出">
-            <div class="queryDescribe" style="width: 723px; ">
-                <span>共{{ recCnt }}条记录</span>
-            </div>
-        </div>
-        <div style="margin-top: 10px; ">
-            {% csrf_token %}
-            <table id="repData" pageNo="{{ pageNO }}">
-                <thead>
-                <tr>
-                    <th style="width: 50px; ">序号</th>
-                    <th style="width: 100px; ">日期</th>
-                    <th style="width: 140px; ">事件简称</th>
-                    <th style="width: 80px; ">家庭</th>
-                    <th style="width: 80px; ">当事人</th>
-                    <th style="width: 80px; ">事件类型</th>
-                    <th style="width: 80px; ">宴请类型</th>
-                    <th style="width: 80px; ">礼金</th>
-                    <th style="width: 80px; ">其他支出</th>
-                    <th style="width: 160px; ">备注</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for rec in dataList %}
-                    <tr>
-                        <td style="text-align: center; ">{{ forloop.counter }}</td>
-                        <td style="text-align: center; ">{{ rec.event.eventDate|date:"Y-m-d" }}</td>
-                        <td style="text-align: left; ">{{ rec.event.eventName }}</td>
-                        <td style="text-align: left; ">{{ rec.event.family }}</td>
-                        <td style="text-align: left; ">{{ rec.event.person }}</td>
-                        {% if rec.event.eventType == 1 %}
-                            <td style="text-align: center; ">结婚</td>
-                        {% elif rec.event.eventType == 2 %}
-                            <td style="text-align: center; ">生子</td>
-                        {% elif rec.event.eventType == 3 %}
-                            <td style="text-align: center; ">周岁</td>
-                        {% elif rec.event.eventType == 4 %}
-                            <td style="text-align: center; ">祝寿</td>
-                        {% elif rec.event.eventType == 5 %}
-                            <td style="text-align: center; ">考学</td>
-                        {% elif rec.event.eventType == 6 %}
-                            <td style="text-align: center; ">乔迁</td>
-                        {% elif rec.event.eventType == 7 %}
-                            <td style="text-align: center; ">身故</td>
-                        {% else %}
-                            <td style="text-align: center; ">其他</td>
-                        {% endif %}
-                        {% if rec.event.formType == 1 %}
-                            <td style="text-align: center; ">隆重宴请</td>
-                        {% elif rec.event.formType == 2 %}
-                            <td style="text-align: center; ">亲朋小聚</td>
-                        {% elif rec.event.formType == 3 %}
-                            <td style="text-align: center; ">低调跳过</td>
-                        {% else %}
-                            <td style="text-align: center; ">其他</td>
-                        {% endif %}
-                        <td style="text-align: right; ">{{ rec.amtBook }}</td>
-                        <td style="text-align: right; ">{{ rec.amtOther }}</td>
-                        <td style="text-align: left; ">{{ rec.remark }}</td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-            <p>{{ pagetag|safe }}</p>
-            <span class="promptInfo"></span>
-        </div>
+{% block queryFields %}
+    <div class="queryGroup">
+        <div class="queryLabel">事件类型：</div>
+        <select id="queryEventType" selectedValue="{{ eventType }}" class="queryItem">
+            <option value="0" selected="selected">全部</option>
+            <option value="1">结婚</option>
+            <option value="2">生子</option>
+            <option value="3">周岁</option>
+            <option value="4">祝寿</option>
+            <option value="5">考学</option>
+            <option value="6">乔迁</option>
+            <option value="7">身故</option>
+            <option value="99">其他</option>
+        </select>
     </div>
 {% endblock %}
 
 
-{% block subScript %}
-    $("#PAGE_reccnt_perpage_select").val($.cookie("reccnt_perpage"));
+{% block dataGrid %}
+    <table id="repData" pageNo="{{ pageNO }}">
+        <thead>
+        <tr>
+            <th style="width: 50px; ">序号</th>
+            <th style="width: 100px; ">日期</th>
+            <th style="width: 140px; ">事件简称</th>
+            <th style="width: 80px; ">家庭</th>
+            <th style="width: 80px; ">当事人</th>
+            <th style="width: 80px; ">事件类型</th>
+            <th style="width: 80px; ">宴请类型</th>
+            <th style="width: 80px; ">礼金</th>
+            <th style="width: 80px; ">其他支出</th>
+            <th style="width: 160px; ">备注</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for rec in dataList %}
+            <tr>
+                <td style="text-align: center; ">{{ forloop.counter }}</td>
+                <td style="text-align: center; ">{{ rec.event.eventDate|date:"Y-m-d" }}</td>
+                <td style="text-align: left; ">{{ rec.event.eventName }}</td>
+                <td style="text-align: left; ">{{ rec.event.family }}</td>
+                <td style="text-align: left; ">{{ rec.event.person }}</td>
+                {% if rec.event.eventType == 1 %}
+                    <td style="text-align: center; ">结婚</td>
+                {% elif rec.event.eventType == 2 %}
+                    <td style="text-align: center; ">生子</td>
+                {% elif rec.event.eventType == 3 %}
+                    <td style="text-align: center; ">周岁</td>
+                {% elif rec.event.eventType == 4 %}
+                    <td style="text-align: center; ">祝寿</td>
+                {% elif rec.event.eventType == 5 %}
+                    <td style="text-align: center; ">考学</td>
+                {% elif rec.event.eventType == 6 %}
+                    <td style="text-align: center; ">乔迁</td>
+                {% elif rec.event.eventType == 7 %}
+                    <td style="text-align: center; ">身故</td>
+                {% else %}
+                    <td style="text-align: center; ">其他</td>
+                {% endif %}
+                {% if rec.event.formType == 1 %}
+                    <td style="text-align: center; ">隆重宴请</td>
+                {% elif rec.event.formType == 2 %}
+                    <td style="text-align: center; ">亲朋小聚</td>
+                {% elif rec.event.formType == 3 %}
+                    <td style="text-align: center; ">低调跳过</td>
+                {% else %}
+                    <td style="text-align: center; ">其他</td>
+                {% endif %}
+                <td style="text-align: right; ">{{ rec.amtBook }}</td>
+                <td style="text-align: right; ">{{ rec.amtOther }}</td>
+                <td style="text-align: left; ">{{ rec.remark }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+
+{% block scriptSub %}
     $("#PAGE_reccnt_perpage_select").change(function () {
         $.cookie("reccnt_perpage", $(this).val(), {path: "/rep/"});
-        sHref = "http://127.0.0.1:8000/rep/repRelDetail";
+        sHref = "{% url 'app-rep:relDetail' %}";
         sHref = sHref + "?from=" + $("#dateFrom").val();
         sHref = sHref + "&to=" + $("#dateTo").val();
         sHref = sHref + "&eventType=" + $("#queryEventType").val();
@@ -124,7 +98,7 @@
         }
     });
     $("#btnQuery").click(function () {
-        sHref = "http://127.0.0.1:8000/rep/repRelDetail"
+        sHref = "{% url 'app-rep:relDetail' %}"
         sHref = sHref + "?from=" + $("#dateFrom").val();
         sHref = sHref + "&to=" + $("#dateTo").val();
         sHref = sHref + "&eventType=" + $("#queryEventType").val();

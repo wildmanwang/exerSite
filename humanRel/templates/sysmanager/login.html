@@ -1,19 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>登录人情簿</title>
-    <link href="/static/css/commons.css" type="text/css" rel="stylesheet" />
+{% extends "../extends/frame.html" %}
+
+
+{% block styleMain %}
     <style>
         #i1, #i2{
             border: rgb(221, 221, 221) 1px solid;
             border-radius: 4px;
-            width: 318px;
+            width: 280px;
             height: 40px;
+            padding-left: 38px;
             font-size: 16px;
-        }
-        #i1{
-            margin-top: 40px;
         }
         #i3{
             border: none;
@@ -28,32 +24,37 @@
             font-size: 12px;
         }
     </style>
-</head>
-<body>
-    <div style="height: 74px; margin-top: 200px; ">
-        <div style="width: 320px; height: 74px; padding: 0 80px; margin: 0 auto; ">
-            <img src="/static/images/contact.png">
-            <span style="font-size: 48px; color: cornflowerblue; vertical-align: bottom; ">人情</span>
-            <span style="font-size: 48px; font-style: italic; color: rgb(255, 153, 0); vertical-align: bottom; ">簿</span>
-            <img src="/static/images/write.png">
-        </div>
+{% endblock %}
+
+{% block contentsMain %}
+    <div style="margin-top: 200px; "></div>
+    <div style="width: 320px; padding: 0 80px; margin: 10px auto; ">
+        {% include "../include/relFlag.html" %}
     </div>
     <div style="height: 240px; background-color: #F9F9F9; ">
-        <div style="width: 320px; height: 240px; padding: 0 80px; margin: 0 auto; background-color: #F2F2F2; ">
-            <form action="http://127.0.0.1:8000/sys/login/" method="POST">
+        <div style="width: 320px; height: 240px; padding: 0 80px; margin: 0 auto; background-color: #F2F2F2; overflow: hidden; ">
+            <form action="{% url 'app-sys:login' %}" method="POST">
                 {% csrf_token %}
-                <p><input id="i1" type="text" name="username" placeholder="请输入用户名" /></p>
-                <input id="i2" type="password" name="userpw" placeholder="请输入密码" />
+                <div></div>
+                <div style="width: 320px; margin-top: 40px; position: relative; ">
+                    <input id="i1" type="text" name="username" placeholder="请输入用户名" />
+                    <div style="display: inline-block; width: 24px; height: 24px; background-image: url('/static/images/login.png'); background-position-y: 0; position: absolute; left: 10px; top: 10px;"></div>
+                </div>
+                <div style="width: 320px; margin-top: 20px; position: relative; ">
+                    <input id="i2" type="password" name="userpw" placeholder="请输入密码" />
+                    <div style="display: inline-block; width: 24px; height: 24px; background-image: url('/static/images/login.png'); background-position-y: -24px; position: absolute; left: 10px; top: 10px;"></div>
+                </div>
                 <label class="promptInfo">{{ info }}</label>
-                <p><input id="i3" type="submit" value="登录" /></p>
+                <div style="width: 320px; margin-top: 20px; ">
+                    <input id="i3" type="submit" value="登录" /></p>
+                </div>
             </form>
         </div>
     </div>
     <div>
         <div style="width: 320px; padding: 0 80px; margin: 0 auto; ">
-            <p><a href="http://127.0.0.1:8000/sys/register">注册新用户</a></p>
+            <p><a href="{% url 'app-sys:register' %}">注册新用户</a></p>
             <p><a href="">忘记密码？</a></p>
         </div>
     </div>
-</body>
-</html>
+{% endblock %}

@@ -1,87 +1,61 @@
-{% extends "../frame.html" %}
+{% extends "../extends/frameReport.html" %}
 
 
 {% block pageTitle %}往来汇总表{% endblock %}
 
 
-{% block subStyle %}
-    <link href="/static/css/querySheet.css" type="text/css" rel="stylesheet">
-{% endblock %}
-
-
-{% block contents %}
-    <div style="margin: 10px; ">
-        <div class="queryBackground">
-            <div class="queryGroup">
-                <div class="queryLabel">查询开始日期：</div>
-                <input id="dateFrom" type="date" class="queryItem" value="{{ from|date:"Y-m-d" }}">
-            </div>
-            <div class="queryGroup">
-                <div class="queryLabel">截止日期：</div>
-                <input id="dateTo" type="date" class="queryItem" value="{{ to|date:"Y-m-d" }}">
-            </div>
-            <div class="queryGroup">
-                <div class="queryLabel">事件类型：</div>
-                <select id="queryEventType" selectedValue="{{ eventType }}" class="queryItem">
-                    <option value="0" selected="selected">全部</option>
-                    <option value="1">结婚</option>
-                    <option value="2">生子</option>
-                    <option value="3">周岁</option>
-                    <option value="4">祝寿</option>
-                    <option value="5">考学</option>
-                    <option value="6">乔迁</option>
-                    <option value="7">身故</option>
-                    <option value="99">其他</option>
-                </select>
-            </div>
-        </div>
-        <div style="overflow: hidden; ">
-            <input id="btnQuery" class="queryButton" type="button" value="查询">
-            <input id="btnExport" class="queryButton" type="button" value="导出">
-            <div class="queryDescribe" style="width: 723px; ">
-                <span>共{{ recCnt }}条记录</span>
-            </div>
-        </div>
-        <div style="margin-top: 10px; ">
-            {% csrf_token %}
-            <table id="repData" pageNo="{{ pageNo }}">
-                <thead>
-                <tr>
-                    <th style="width: 50px; ">序号</th>
-                    <th style="width: 120px; ">家庭</th>
-                    <th style="width: 120px; ">宴请次数</th>
-                    <th style="width: 120px; ">随礼次数</th>
-                    <th style="width: 120px; ">随礼金额</th>
-                    <th style="width: 120px; ">其他金额</th>
-                    <th style="width: 290px; "></th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for rec in dataList %}
-                    <tr>
-                        <td style="text-align: center; ">{{ forloop.counter }}</td>
-                        <td style="text-align: left; ">{{ rec.event__family__name__name }}</td>
-                        <td style="text-align: right; ">{{ rec.timesRel }}</td>
-                        <td style="text-align: right; ">{{ rec.timesJoin }}</td>
-                        <td style="text-align: right; ">{{ rec.amtJoin }}</td>
-                        <td style="text-align: right; ">{{ rec.amtOther }}</td>
-                        <td></td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-            <p>{{ pagetag|safe }}</p>
-            <span class="promptInfo"></span>
-        </div>
+{% block queryFields %}
+    <div class="queryGroup">
+        <div class="queryLabel">事件类型：</div>
+        <select id="queryEventType" selectedValue="{{ eventType }}" class="queryItem">
+            <option value="0" selected="selected">全部</option>
+            <option value="1">结婚</option>
+            <option value="2">生子</option>
+            <option value="3">周岁</option>
+            <option value="4">祝寿</option>
+            <option value="5">考学</option>
+            <option value="6">乔迁</option>
+            <option value="7">身故</option>
+            <option value="99">其他</option>
+        </select>
     </div>
 {% endblock %}
 
 
-{% block subScript %}
-    $("#PAGE_reccnt_perpage_select").val($.cookie("reccnt_perpage"));
+{% block dataGrid %}
+    <table id="repData" pageNo="{{ pageNo }}">
+        <thead>
+        <tr>
+            <th style="width: 50px; ">序号</th>
+            <th style="width: 120px; ">家庭</th>
+            <th style="width: 120px; ">宴请次数</th>
+            <th style="width: 120px; ">随礼次数</th>
+            <th style="width: 120px; ">随礼金额</th>
+            <th style="width: 120px; ">其他金额</th>
+            <th style="width: 290px; "></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for rec in dataList %}
+            <tr>
+                <td style="text-align: center; ">{{ forloop.counter }}</td>
+                <td style="text-align: left; ">{{ rec.event__family__name__name }}</td>
+                <td style="text-align: right; ">{{ rec.timesRel }}</td>
+                <td style="text-align: right; ">{{ rec.timesJoin }}</td>
+                <td style="text-align: right; ">{{ rec.amtJoin }}</td>
+                <td style="text-align: right; ">{{ rec.amtOther }}</td>
+                <td></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+
+{% block scriptSub %}
     $("#PAGE_reccnt_perpage_select").change(function () {
         $.cookie("reccnt_perpage", $(this).val(), {path: "/rep/"});
-        sHref = "http://127.0.0.1:8000/rep/repRelSum";
+        sHref = "{% url 'app-rep:relSum' %}";
         sHref = sHref + "?from=" + $("#dateFrom").val();
         sHref = sHref + "&to=" + $("#dateTo").val();
         sHref = sHref + "&eventType=" + $("#queryEventType").val();
@@ -94,7 +68,7 @@
         }
     });
     $("#btnQuery").click(function () {
-        sHref = "http://127.0.0.1:8000/rep/repRelSum";
+        sHref = "{% url 'app-rep:relSum' %}";
         sHref = sHref + "?from=" + $("#dateFrom").val();
         sHref = sHref + "&to=" + $("#dateTo").val();
         sHref = sHref + "&eventType=" + $("#queryEventType").val();

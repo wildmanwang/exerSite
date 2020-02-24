@@ -1,9 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>注册</title>
-    <link href="/static/css/commons.css" type="text/css" rel="stylesheet">
+{% extends "../extends/frame.html" %}
+
+
+{% block styleMain %}
     <style>
         .regType{
             font-size: 16px;
@@ -38,11 +36,16 @@
             height: 50px;
         }
     </style>
-</head>
-<body>
+{% endblock %}
+
+
+{% block contentsMain %}
     <div style="width: 440px; padding: 40px 40px 60px 40px; margin: 120px auto; background-color: rgb(245, 255, 235); border: rgb(242, 252, 232) 1px solid; ">
-        <div style="text-align: center; margin-bottom: 30px; font-size: 20px; "><span style="color: cornflowerblue; ">人情</span><span style="font-style: italic; color: rgb(255, 153, 0); ">簿</span> 新用户注册</div>
-        <form id="regForm" action="http://127.0.0.1:8000/sys/register" method="POST">
+        <div style="width: 186px; padding: 0 80px; margin: 0 auto; ">
+            {% include "../include/relFlag.html" %}
+        </div>
+        <div style="text-align: center; margin: 10px 0 20px 0; font-size: 20px; ">新用户注册</div>
+        <form id="regForm" action="{% url 'app-sys:register' %}" method="POST">
             {% csrf_token %}
             <table>
                 <tr>
@@ -76,8 +79,7 @@
             {% endif %}
             <p><label class="inputLabel" for="i7"></label><input class="regOther" type="checkbox" name="greeitem" value="agreed"><span style="font-size: 14px; ">我已阅读并同意<a href="">《人情簿用户使用协议》</a></span></p>
             <p><label class="inputLabel"></label><input class="regButton" type="submit" value="提交" style="background-color: rgb(18, 150, 219); font-size: 18px; color: white; border: rgb(18, 150, 219) 1px solid; border-radius: 4px; "></p>
-            <p><label class="inputLabel"></label><a style="font-size: 14px; " href="http://127.0.0.1:8000/sys/login/">已有用户登录</a></p>
+            <p><label class="inputLabel"></label><a style="font-size: 14px; " href="{% url 'app-sys:login' %}">已有用户登录</a></p>
         </form>
     </div>
-</body>
-</html>
+{% endblock %}

@@ -1,85 +1,47 @@
-{% extends "../frame.html" %}
+{% extends "../extends/frameBusiDetail.html" %}
 
 
 {% block pageTitle %}礼宴亲朋 — {{ eventName }}的礼簿 — 查看{% endblock %}
 
 
-{% block subStyle %}
-    <style>
-        table, tr, td{
-            border: none;
-            background-color: rgb(242, 242, 242);
-            font-size: 14px;
-        }
-        table{
-            border-bottom: #E2E2E2 1px solid;
-        }
-        td{
-            height: 30px;
-        }
-        .groupTitle{
-            background-color: white;
-            padding-left: 50px;
-            height: 30px;
-        }
-        .col1{
-            width: 150px;
-            padding-left: 50px;
-        }
-        .col2{
-            width: 200px;
-        }
-        .col4{
-            width: 600px;
-        }
-        .subRemark{
-            font-size: 12px;
-            color: darkgray;
-        }
-    </style>
+{% block dataFree %}
+    <table id="recTable" recID="{{ rec.event.id }}">
+        <tr>
+            <td class="groupTitle" colspan="3">礼簿</td>
+        </tr>
+        <tr>
+            <td class="col1">{{ form.joinFamily.label }}</td>
+            <td class="col2">{{ rec.joinFamily }}</td>
+            <td class="col4"><div class="subRemark">请选择来礼的家庭</div><div class="subRemark"></div></td>
+        </tr>
+        <tr>
+            <td class="col1">{{ form.amtBook.label }}</td>
+            <td class="col2">{{ rec.amtBook }}</td>
+            <td class="col4"><div class="subRemark">请填写来礼的金额</div><div class="subRemark"></div></td>
+        </tr>
+        <tr>
+            <td class="col1">{{ form.amtOther.label }}</td>
+            <td class="col2">{{ rec.amtOther }}</td>
+            <td class="col4"><div class="subRemark">请填写其他支出</div><div class="subRemark">默认为没有</div></td>
+        </tr>
+        <tr>
+            <td class="col1">{{ form.recTime.label }}</td>
+            <td class="col2">{{ rec.recTime|date:"Y-m-d H:i:s" }}</td>
+            <td class="col4"><div class="subRemark">录入的时间</div><div class="subRemark"></div></td>
+        </tr>
+        <tr>
+            <td class="col1">{{ form.remark.label }}</td>
+            <td class="col2">{{ rec.remark }}</td>
+            <td class="col4"><div class="subRemark">其他信息</div><div class="subRemark"></div></td>
+        </tr>
+    </table>
+    <p>
+        <input id="btnOk" class="inputBtn" type="button" value="返回" style="margin-left: 196px; ">
+    </p>
 {% endblock %}
 
 
-{% block contents %}
-    <form action="http://127.0.0.1:8000/base/familyDetail-{{ rec.id }}" method="POST">
-        <table id="recTable" recID="{{ rec.event.id }}">
-            <tr>
-                <td class="groupTitle" colspan="3">礼簿</td>
-            </tr>
-            <tr>
-                <td class="col1">{{ form.joinFamily.label }}</td>
-                <td class="col2">{{ rec.joinFamily }}</td>
-                <td class="col4"><div class="subRemark">请选择来礼的家庭</div><div class="subRemark"></div></td>
-            </tr>
-            <tr>
-                <td class="col1">{{ form.amtBook.label }}</td>
-                <td class="col2">{{ rec.amtBook }}</td>
-                <td class="col4"><div class="subRemark">请填写来礼的金额</div><div class="subRemark"></div></td>
-            </tr>
-            <tr>
-                <td class="col1">{{ form.amtOther.label }}</td>
-                <td class="col2">{{ rec.amtOther }}</td>
-                <td class="col4"><div class="subRemark">请填写其他支出</div><div class="subRemark">默认为没有</div></td>
-            </tr>
-            <tr>
-                <td class="col1">{{ form.recTime.label }}</td>
-                <td class="col2">{{ rec.recTime|date:"Y-m-d H:i:s" }}</td>
-                <td class="col4"><div class="subRemark">录入的时间</div><div class="subRemark"></div></td>
-            </tr>
-            <tr>
-                <td class="col1">{{ form.remark.label }}</td>
-                <td class="col2">{{ rec.remark }}</td>
-                <td class="col4"><div class="subRemark">其他信息</div><div class="subRemark"></div></td>
-            </tr>
-        </table>
-        <p>
-            <input id="btnOk" class="inputBtn" type="button" value="返回" style="margin-left: 196px; ">
-        </p>
-    </form>
-{% endblock %}
-
-
-{% block subScript %}
+{% block scriptSub %}
     $("#btnOk").click(function () {
         location.href = "http://127.0.0.1:8000/busi/relEventModify/bookList-" + $("#recTable").attr("recID") + "-0-1"
     });

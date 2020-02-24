@@ -1,4 +1,4 @@
-from django.shortcuts import render, HttpResponse, redirect
+from django.shortcuts import render, HttpResponse, redirect, reverse
 from apps.business import models
 from apps.baseinfo import models as base_models
 from apps.sysmanager.views import auth
@@ -252,21 +252,21 @@ def relEventNew(request, userID):
         if res:
             obj.cleaned_data["user_id"] = userID
             models.RelEvent.objects.create(**obj.cleaned_data)
-            return redirect("http://127.0.0.1:8000/busi/relEventList-0-1")
+            return redirect(reverse("app-busi:eventList", args=(0, 1, )))
         else:
             return render(request, "business/relEventNew.html", {"form": obj})
 
 
 @auth
-def relEventDelete(request, userID, id):
+def relEventDelete(request, userID, nid):
     rtn = {
         "result": False,
         "data": None,
         "info": None
     }
-    rec = models.RelEvent.objects.filter(id=id).first()
+    rec = models.RelEvent.objects.filter(id=nid).first()
     if not rec:
-        rtn["info"] = "查无此记录%d" % (id)
+        rtn["info"] = "查无此记录%d" % (nid)
     else:
         rec.delete()
         rtn["result"] = True
@@ -274,9 +274,9 @@ def relEventDelete(request, userID, id):
 
 
 @auth
-def relEventModify(request, userID, id):
+def relEventModify(request, userID, nid):
     if request.method == "GET":
-        rec = models.RelEvent.objects.filter(id=id).first()
+        rec = models.RelEvent.objects.filter(id=nid).first()
         dic = {
             "eventDate": rec.eventDate,
             "eventName": rec.eventName,
@@ -298,32 +298,32 @@ def relEventModify(request, userID, id):
             "remark": rec.remark
         }
         obj = FormRelEvent(initial=dic)
-        return render(request, "business/relEventModify.html", {"form": obj, "id": id})
+        return render(request, "business/relEventModify.html", {"form": obj, "nid": nid})
     elif request.method == "POST":
         obj = FormRelEvent(request.POST)
         res = obj.is_valid()
         if res:
-            models.RelEvent.objects.filter(id=id).update(**obj.cleaned_data)
-            return redirect("http://127.0.0.1:8000/busi/relEventList-0-1")
+            models.RelEvent.objects.filter(id=nid).update(**obj.cleaned_data)
+            return redirect(reverse("app-busi:eventList", args=(0, 1, )))
         else:
-            return render(request, "business/relEventModify.html", {"form": obj, "id": id})
+            return render(request, "business/relEventModify.html", {"form": obj, "nid": nid})
 
 
 @auth
-def relEventDetail(request, userID, id):
-    rec = models.RelEvent.objects.filter(id=id).first()
+def relEventDetail(request, userID, nid):
+    rec = models.RelEvent.objects.filter(id=nid).first()
     obj = FormRelEvent()
     return render(request, "business/relEventDetail.html", {"form": obj, "rec": rec})
 
 
 @auth
-def relEventModifyBookList(request, userID, id, relType=0, pageNo=1):
+def relEventModifyBookList(request, userID, pid, relType=0, pageNo=1):
     dicNumber = {1:0}
     recSum = 0
     dataList = []
     relType = int(relType)
     for i in [1,2,3,4,5,6,7,99]:
-        dataList0 = models.JoinRecord.objects.filter(event=id, joinFamily__name__relType=i)
+        dataList0 = models.JoinRecord.objects.filter(event=pid, joinFamily__name__relType=i)
         dicNumber[i] = len(dataList0)
         recSum += len(dataList0)
         if relType == 0:
@@ -332,14 +332,14 @@ def relEventModifyBookList(request, userID, id, relType=0, pageNo=1):
                 relType = i
         elif relType == i:
             dataList = dataList0
-    eventName = models.RelEvent.objects.filter(id=id).first().eventName
+    eventName = models.RelEvent.objects.filter(id=pid).first().eventName
     cnt = request.COOKIES.get("reccnt_perpage")
     if not cnt:
         cnt = "10"
-    page = Pages(len(dataList), int(cnt), "relEventModify-%s/bookList-" % (id), pageNo)
+    page = Pages(len(dataList), int(cnt), "relEventModify-%s/bookList-" % (pid), pageNo)
     rep = render(request, "business/relEventModifyBookList.html", {
         "dataList": dataList[page.startRec:page.endRec],
-        "id": id,
+        "pid": pid,
         "eventName": eventName,
         "relNumber": dicNumber,
         "relType": relType,
@@ -351,28 +351,28 @@ def relEventModifyBookList(request, userID, id, relType=0, pageNo=1):
 
 
 @auth
-def relEventModifyBookNew(request, userID, id):
-    event = models.RelEvent.objects.filter(id=id).first()
+def relEventModifyBookNew(request, userID, pid):
+    event = models.RelEvent.objects.filter(id=pid).first()
     if request.method == "GET":
         dic = {
-            "event": models.RelEvent.objects.filter(id=id).first().id,
+            "event": models.RelEvent.objects.filter(id=pid).first().id,
             "recTime": datetime.now()
         }
         obj = FormJoinRecordSpec(initial=dic)
         lastList = models.JoinRecord.objects.filter(event=event).order_by("-recTime")[:5]
-        return render(request, "business/relEventModifyBookNew.html", {"form": obj, "id": id, "eventName": event.eventName, "lastList": lastList})
+        return render(request, "business/relEventModifyBookNew.html", {"form": obj, "pid": pid, "eventName": event.eventName, "lastList": lastList})
     elif request.method == "POST":
         obj = FormJoinRecordSpec(request.POST)
         res = obj.is_valid()
         if not res:
-            return render(request, "business/relEventModifyBookNew.html", {"form": obj, "id": id, "eventName": event.eventName})
+            return render(request, "business/relEventModifyBookNew.html", {"form": obj, "pid": pid, "eventName": event.eventName})
         obj.cleaned_data["user_id"] = userID
         obj.cleaned_data["event"] = event
         obj.cleaned_data["amtOther"] = 0.00
         obj.cleaned_data["recTime"] = datetime.now()
         obj.cleaned_data["remark"] = ""
         models.JoinRecord.objects.create(**obj.cleaned_data)
-        return redirect("http://127.0.0.1:8000/busi/relEventModify/bookNew-%s" % (id))
+        return redirect(reverse("app-busi:bookNew", args=(pid, )))
 
 
 @auth
@@ -384,7 +384,7 @@ def relEventModifyBookDelete(request, userID, subid):
     }
     rec = models.JoinRecord.objects.filter(id=subid).first()
     if not rec:
-        rtn["info"] = "查无此记录%d" % (id)
+        rtn["info"] = "查无此记录%d" % (subid)
     else:
         rec.delete()
         rtn["result"] = True
@@ -406,14 +406,14 @@ def relEventModifyBookModify(request, userID, subid):
             "remark": rec.remark
         }
         obj = FormJoinRecord(initial=dic)
-        return render(request, "business/relEventModifyBookModify.html", {"form": obj, "eventName": rec.event.eventName, "id": rec.event.id, "subid": subid})
+        return render(request, "business/relEventModifyBookModify.html", {"form": obj, "eventName": rec.event.eventName, "pid": rec.event.id, "subid": subid})
     elif request.method == "POST":
         obj = FormJoinRecord(request.POST)
         res = obj.is_valid()
         if not res:
-            return render(request, "business/relEventModifyBookModify.html", {"form": obj, "eventName": rec.event.eventName, "id": rec.event.id, "subid": subid})
+            return render(request, "business/relEventModifyBookModify.html", {"form": obj, "eventName": rec.event.eventName, "pid": rec.event.id, "subid": subid})
         models.JoinRecord.objects.filter(id=subid).update(**obj.cleaned_data)
-        return redirect("http://127.0.0.1:8000/busi/relEventModify/bookList-%d-0-1" % (rec.event.id))
+        return redirect(reverse("app-busi:bookList", args=(rec.event.id, 0, 1, )))
 
 
 @auth
@@ -490,19 +490,19 @@ def joinRecordNew(request, userID):
         objRecord.cleaned_data["user_id"] = userID
         objRecord.cleaned_data["event"] = newEvent
         models.JoinRecord.objects.create(**objRecord.cleaned_data)
-        return redirect("http://127.0.0.1:8000/busi/joinRecordList-1")
+        return redirect(reverse("app-busi:joinList", args=(1, )))
 
 
 @auth
-def joinRecordDelete(request, userID, id):
+def joinRecordDelete(request, userID, nid):
     rtn = {
         "result": False,
         "data": None,
         "info": None
     }
-    rec = models.JoinRecord.objects.filter(id=id).first()
+    rec = models.JoinRecord.objects.filter(id=nid).first()
     if not rec:
-        rtn["info"] = "查无此记录%d" % (id)
+        rtn["info"] = "查无此记录%d" % (nid)
     else:
         rec.delete()
         rtn["result"] = True
@@ -510,9 +510,9 @@ def joinRecordDelete(request, userID, id):
 
 
 @auth
-def joinRecordModify(request, userID, id):
+def joinRecordModify(request, userID, nid):
     if request.method == "GET":
-        recRecord = models.JoinRecord.objects.filter(id=id).first()
+        recRecord = models.JoinRecord.objects.filter(id=nid).first()
         dicRecord = {
             "event": recRecord.event,
             "joinFamily": recRecord.joinFamily,
@@ -543,24 +543,24 @@ def joinRecordModify(request, userID, id):
             "remark": recEvent.remark
         }
         objEvent = FormRelEvent(initial=dicEvent)
-        return render(request, "business/joinRecordModify.html", {"formRecord": objRecord, "formEvent": objEvent, "id": id})
+        return render(request, "business/joinRecordModify.html", {"formRecord": objRecord, "formEvent": objEvent, "nid": nid})
     elif request.method == "POST":
         objEvent = FormRelEvent(request.POST)
         objRecord = FormJoinRecord(request.POST)
         res = objRecord.is_valid()
         if not res:
-            return render(request, "business/joinRecordModify.html", {"formRecord": objRecord, "formEvent": objEvent, "id": id})
-        models.JoinRecord.objects.filter(id=id).update(**objRecord.cleaned_data)
+            return render(request, "business/joinRecordModify.html", {"formRecord": objRecord, "formEvent": objEvent, "nid": nid})
+        models.JoinRecord.objects.filter(id=nid).update(**objRecord.cleaned_data)
         res = objEvent.is_valid()
         if not res:
-            return render(request, "business/joinRecordModify.html", {"formRecord": objRecord, "formEvent": objEvent, "id": id})
-        models.RelEvent.objects.filter(id=models.JoinRecord.objects.filter(id=id).first().event.id).update(**objEvent.cleaned_data)
-        return redirect("http://127.0.0.1:8000/busi/joinRecordList-1")
+            return render(request, "business/joinRecordModify.html", {"formRecord": objRecord, "formEvent": objEvent, "nid": nid})
+        models.RelEvent.objects.filter(id=models.JoinRecord.objects.filter(id=nid).first().event.id).update(**objEvent.cleaned_data)
+        return redirect(reverse("app-busi:joinList", args=(1, )))
 
 
 @auth
-def joinRecordDetail(request, userID, id):
-    recRecord = models.JoinRecord.objects.filter(id=id).first()
+def joinRecordDetail(request, userID, nid):
+    recRecord = models.JoinRecord.objects.filter(id=nid).first()
     dicRecord = {
         "event": recRecord.event,
         "joinFamily": recRecord.joinFamily,
