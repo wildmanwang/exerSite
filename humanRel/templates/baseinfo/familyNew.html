@@ -1,56 +1,35 @@
 {% extends "../extends/frameBaseNew.html" %}
 
 
-{% block pageTitle %}人员资料 — 新增{% endblock %}
+{% block pageTitle %}家庭资料 — 新增{% endblock %}
 
 
 {% block dataFree %}
     <form action="{% url 'app-base:familyNew' %}" method="POST">
         {% csrf_token %}
         <table>
+            {% if form.non_field_errors %}
+                <tr class="promptLine">
+                    <td class="col1 promptInfo"><label>错误：</label></td>
+                    <td class="promptInfo" colspan="2">{{ form.non_field_errors.0 }}</td>
+                </tr>
+            {% endif %}
             <tr>
                 <td class="groupTitle" colspan="3">家庭资料</td>
             </tr>
-            <tr>
-                <td class="col1 colRequired">{{ form.name.label_tag }}</td>
-                <td class="col2">{{ form.name }}</td>
-                <td class="col4"><div class="subRemark">请填写真实姓名</div><div class="subRemark">以便人员识别</div></td>
-            </tr>
-            {% if form.name.errors %}
-            <tr class="promptLine"><td></td><td class="promptInfo" colspan="2">{{ form.errors.name.0 }}</td></tr>
-            {% endif %}
-            <tr>
-                <td class="col1">{{ form.location.label_tag }}</td>
-                <td class="col2">{{ form.location }}</td>
-                <td class="col4"><div class="subRemark">请填写所在城市或者村</div><div class="subRemark">用于地域分类</div></td>
-            </tr>
-            {% if form.location.errors %}
-            <tr class="promptLine"><td></td><td class="promptInfo" colspan="2">{{ form.errors.location.0 }}</td></tr>
-            {% endif %}
-            <tr>
-                <td class="col1">{{ form.address.label_tag }}</td>
-                <td class="col2">{{ form.address }}</td>
-                <td class="col4"><div class="subRemark">请填写家庭详细住址</div><div class="subRemark">各家庭成员共用</div></td>
-            </tr>
-            {% if form.address.errors %}
-            <tr class="promptLine"><td></td><td class="promptInfo" colspan="2">{{ form.errors.address.0 }}</td></tr>
-            {% endif %}
-            <tr class="hide colRequired">
-                <td class="col1">{{ form.status.label_tag }}</td>
-                <td class="col2">{{ form.status }}</td>
-                <td class="col4"><div class="subRemark">正常状态才能被选择</div><div class="subRemark">正常状态才能产生事件</div></td>
-            </tr>
-            {% if form.status.errors %}
-            <tr class="promptLine"><td></td><td class="promptInfo" colspan="2">{{ form.errors.status.0 }}</td></tr>
-            {% endif %}
-            <tr>
-                <td class="col1">{{ form.remark.label_tag }}</td>
-                <td class="col2">{{ form.remark }}</td>
-                <td class="col4"><div class="subRemark">其他信息</div><div class="subRemark"></div></td>
-            </tr>
-            {% if form.remark.errors %}
-            <tr class="promptLine"><td></td><td class="promptInfo" colspan="2">{{ form.errors.remark.0 }}</td></tr>
-            {% endif %}
+            {% for col in form %}
+                <tr>
+                    <td class="col1"><label for="{{ col.id_for_label }}">{{ col.label }}：</label></td>
+                    <td class="col2">{{ col }}</td>
+                    <td class="col4"><div class="subRemark">{{ col.help_text.0 }}</div><div class="subRemark">{{ col.help_text.1 }}</div></td>
+                </tr>
+                {% if col.errors %}
+                    <tr class="promptLine">
+                        <td class="col1 promptInfo"><label>错误：</label></td>
+                        <td class="promptInfo" colspan="2">{{ col.errors.0 }}</td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
         </table>
         <p>
             <input class="inputBtn" type="submit" value="提交" style="margin-left: 196px; ">

@@ -7,4 +7,5 @@ urlpatterns = [
     re_path('logout', views.logout, name="logout"),
     re_path('index$', views.index, name="index"),
     re_path('set$', views.set, name="set"),
+    re_path('check_code$', views.check_code, name="check_code"),
 ]

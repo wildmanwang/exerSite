@@ -72,6 +72,11 @@ def login(request):
     if request.method == "GET":
         return render(request, "sysmanager/login.html", {"info": ""})
     elif request.method == "POST":
+        checkcode = request.POST.get("checkcode", None)
+        if not checkcode:
+            return render(request, "sysmanager/login.html", {"info": "请输入验证码"})
+        if checkcode.upper() != request.session["CheckCode"].upper():
+            return render(request, "sysmanager/login.html", {"info": "验证码错误"})
         username = request.POST.get("username", None)
         userpw = request.POST.get("userpw", None)
         if not username:
@@ -142,3 +147,18 @@ def set(request, userID):
             return redirect(reverse("app-sys:index"))
         else:
             return render(request, "sysmanager/set.html", {"form": obj, "userID": userID})
+
+
+def check_code(request):
+    """
+    返回验证码图片
+    :param request:
+    :return:
+    """
+    from io import BytesIO
+    from utils.check_code import create_validate_code
+    img, code = create_validate_code((148, 40))
+    stream = BytesIO()
+    img.save(stream, 'PNG')
+    request.session["CheckCode"] = code
+    return HttpResponse(stream.getvalue())

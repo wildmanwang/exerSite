@@ -9,31 +9,19 @@
         <tr>
             <td class="groupTitle" colspan="3">礼簿</td>
         </tr>
-        <tr>
-            <td class="col1">{{ form.joinFamily.label }}</td>
-            <td class="col2">{{ rec.joinFamily }}</td>
-            <td class="col4"><div class="subRemark">请选择来礼的家庭</div><div class="subRemark"></div></td>
-        </tr>
-        <tr>
-            <td class="col1">{{ form.amtBook.label }}</td>
-            <td class="col2">{{ rec.amtBook }}</td>
-            <td class="col4"><div class="subRemark">请填写来礼的金额</div><div class="subRemark"></div></td>
-        </tr>
-        <tr>
-            <td class="col1">{{ form.amtOther.label }}</td>
-            <td class="col2">{{ rec.amtOther }}</td>
-            <td class="col4"><div class="subRemark">请填写其他支出</div><div class="subRemark">默认为没有</div></td>
-        </tr>
-        <tr>
-            <td class="col1">{{ form.recTime.label }}</td>
-            <td class="col2">{{ rec.recTime|date:"Y-m-d H:i:s" }}</td>
-            <td class="col4"><div class="subRemark">录入的时间</div><div class="subRemark"></div></td>
-        </tr>
-        <tr>
-            <td class="col1">{{ form.remark.label }}</td>
-            <td class="col2">{{ rec.remark }}</td>
-            <td class="col4"><div class="subRemark">其他信息</div><div class="subRemark"></div></td>
-        </tr>
+        {% for col in form %}
+            <tr class="{% if col.label == "事件" %}hide{% endif %}">
+                <td class="col1">{{ col.label }}</td>
+                {% if col.label == "出席家庭" %}
+                    <td class="col2">{{ rec.joinFamily }}</td>
+                {% elif col.label == "登记时间" %}
+                    <td class="col2">{{ rec.recTime|date:"Y-m-d h:i:s" }}</td>
+                {% else %}
+                    <td class="col2">{{ col.value|default:"" }}</td>
+                {% endif %}
+                <td class="col4"><div class="subRemark">{{ col.help_text.0 }}</div><div class="subRemark">{{ col.help_text.1 }}</div></td>
+            </tr>
+        {% endfor %}
     </table>
     <p>
         <input id="btnOk" class="inputBtn" type="button" value="返回" style="margin-left: 196px; ">

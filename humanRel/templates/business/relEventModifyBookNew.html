@@ -52,6 +52,12 @@
             <form action="{% url 'app-busi:bookNew' pid=pid %}" method="POST">
                 {% csrf_token %}
                 <table id="recTable" recID="{{ pid }}">
+                    {% if form.non_field_errors %}
+                        <tr class="promptLine">
+                            <td class="col1 promptInfo"><label>错误：</label></td>
+                            <td class="promptInfo" colspan="2">{{ form.non_field_errors.0 }}</td>
+                        </tr>
+                    {% endif %}
                     <tr>
                         <td style="width: 360px; "><label for="joinFamily" class="labelSpc">今收到：</label></td>
                         <td style="width: 300px; "></td>
@@ -60,6 +66,12 @@
                         <td>{{ form.joinFamily }}</td>
                         <td><span id="promptPerson"></span></td>
                     </tr>
+                    {% if form.joinFamily.errors %}
+                        <tr class="promptLine">
+                            <td class="col1 promptInfo"><label>错误：</label></td>
+                            <td class="promptInfo" colspan="2">{{ form.joinFamily.errors.0 }}</td>
+                        </tr>
+                    {% endif %}
                     <tr style="height: 20px; "></tr>
                     <tr>
                         <td><label for="amtBook" class="labelSpc">礼金：</label></td>
@@ -69,6 +81,12 @@
                         <td>{{ form.amtBook }}</td>
                         <td></td>
                     </tr>
+                    {% if form.amtBook.errors %}
+                        <tr class="promptLine">
+                            <td class="col1 promptInfo"><label>错误：</label></td>
+                            <td class="promptInfo" colspan="2">{{ form.amtBook.errors.0 }}</td>
+                        </tr>
+                    {% endif %}
                 </table>
                 <div style="margin-top: 50px; ">
                     <input class="btnSpc" type="submit" value="确定" style="margin-left: 0; ">

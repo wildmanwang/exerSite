@@ -16,54 +16,70 @@ class FormRelEvent(Form):
     eventDate = fields.DateField(
         label="事件日期",
         widget=widgets.DateInput(attrs={"class": "inputType"}),
-        required=False
+        required=False,
+        help_text=["事件的正式日期", ""]
     )
     eventName = fields.CharField(
         label="事件简称",
         max_length=50,
         widget=widgets.TextInput(attrs={"class": "inputType"}),
         required=False,
-        error_messages={"max_length": "事件简称不能大于50位"}
+        error_messages={"max_length": "事件简称不能大于50位"},
+        help_text=["请输入事件简称", ""]
     )
     family = forms.ModelChoiceField(
         label="家庭",
         widget=widgets.Select(attrs={"class": "inputType"}),
-        queryset=base_models.Family.objects.all()
+        queryset=base_models.Family.objects.filter(status=1),
+        help_text=["请选择事件发生的家庭", ""]
     )
+    # 以下方式也能实现下拉，但是默认字段为空时，会自动选择第一条下拉项
+    # family = fields.ChoiceField(
+    #     label="家庭",
+    #     widget=widgets.Select(attrs={"class": "inputType"}),
+    #     choices=base_models.Family.objects.filter(status=1).values_list("id", "name__name__name")
+    # )
     person = forms.ModelChoiceField(
         label="当事人",
         widget=widgets.Select(attrs={"class": "inputType"}),
-        queryset=base_models.Person.objects.all(),
-        required=False
+        queryset=base_models.Person.objects.filter(status=1),
+        required=False,
+        help_text=["请选择事件发生的人员", ""]
     )
     eventType = fields.IntegerField(
         label="事件类型",
-        widget=widgets.Select(choices=((None, "---------"), (1, "结婚"), (2, "生子"), (3, "周岁"), (4, "祝寿"), (5, "考学"), (6, "乔迁"), (7, "身故"), (99, "其他")), attrs={"class": "inputType"})
+        widget=widgets.Select(choices=((None, "---------"), (1, "结婚"), (2, "生子"), (3, "周岁"), (4, "祝寿"), (5, "考学"), (6, "乔迁"), (7, "身故"), (99, "其他")), attrs={"class": "inputType"}),
+        help_text=["请选择事件的类型", "无法确定的选择其他"]
     )
     formType = fields.IntegerField(
         label="宴请类型",
-        widget=widgets.Select(choices=((None, "---------"), (1, "隆重宴请"), (2, "亲朋小聚"), (3, "低调跳过"), (99, "待定")), attrs={"class": "inputType"})
+        widget=widgets.Select(choices=((None, "---------"), (1, "隆重宴请"), (2, "亲朋小聚"), (3, "低调跳过"), (99, "待定")), attrs={"class": "inputType"}),
+        help_text=["请选择宴请类型", "只有隆重宴请才有随礼登记"]
     )
     eventDes = fields.CharField(
         label="事件说明",
         max_length=255,
         widget=widgets.TextInput(attrs={"class": "inputType"}),
         required=False,
-        error_messages={"max_length": "事件简称不能大于255位"}
+        error_messages={"max_length": "事件简称不能大于255位"},
+        help_text=["事件的详细描述", ""]
     )
     direction = fields.IntegerField(
         label="事件发起方",
-        widget=widgets.RadioSelect(choices=((1, "我发起"), (2, "他人发起")))
+        widget=widgets.RadioSelect(choices=((1, "我发起"), (2, "他人发起"))),
+        help_text=["", ""]
     )
     dateFrom = fields.DateField(
         label="开始日期",
         widget=widgets.DateInput(attrs={"class": "inputType"}),
-        required=False
+        required=False,
+        help_text=["请选择宴请开始的日期", ""]
     )
     dateTo = fields.DateField(
         label="截止日期",
         widget=widgets.DateInput(attrs={"class": "inputType"}),
-        required=False
+        required=False,
+        help_text=["请选择宴请结束的日期", ""]
     )
     amtOutFood = fields.DecimalField(
         label="宴席支出金额",
@@ -72,7 +88,8 @@ class FormRelEvent(Form):
         max_value=9999999.99,
         max_digits=9,
         decimal_places=2,
-        widget=widgets.NumberInput(attrs={"class": "inputType"})
+        widget=widgets.NumberInput(attrs={"class": "inputType"}),
+        help_text=["用于宴席的支出金额", "通常外包"]
     )
     amtOutOther = fields.DecimalField(
         label="其他支出金额",
@@ -81,19 +98,22 @@ class FormRelEvent(Form):
         max_value=9999999.99,
         max_digits=9,
         decimal_places=2,
-        widget=widgets.NumberInput(attrs={"class": "inputType"})
+        widget=widgets.NumberInput(attrs={"class": "inputType"}),
+        help_text=["其他宴席以外的支出金额", ""]
     )
     cntFamily = fields.IntegerField(
         label="来宾户数",
         min_value=0,
         max_value=99999,
-        widget=widgets.NumberInput(attrs={"class": "inputType"})
+        widget=widgets.NumberInput(attrs={"class": "inputType"}),
+        help_text=["来宾的家庭数", ""]
     )
     cntTable = fields.IntegerField(
         label="宴席桌数",
         min_value=0,
         max_value=99999,
-        widget=widgets.NumberInput(attrs={"class": "inputType"})
+        widget=widgets.NumberInput(attrs={"class": "inputType"}),
+        help_text=["一台宴席有多少桌", ""]
     )
     amtInBook = fields.DecimalField(
         label="礼簿金额",
@@ -102,7 +122,8 @@ class FormRelEvent(Form):
         max_value=9999999.99,
         max_digits=9,
         decimal_places=2,
-        widget=widgets.NumberInput(attrs={"class": "inputType"})
+        widget=widgets.NumberInput(attrs={"class": "inputType"}),
+        help_text=["礼金收入合计", "由系统自动汇总"]
     )
     amtInOther = fields.DecimalField(
         label="其他收入金额",
@@ -111,19 +132,32 @@ class FormRelEvent(Form):
         max_value=9999999.99,
         max_digits=9,
         decimal_places=2,
-        widget=widgets.NumberInput(attrs={"class": "inputType"})
+        widget=widgets.NumberInput(attrs={"class": "inputType"}),
+        help_text=["其他收入合计", "由系统自动汇总"]
     )
     status = fields.IntegerField(
         label="状态",
-        widget=widgets.RadioSelect(choices=((1, "预测"), (2, "计划"), (9, "完成")))
+        widget=widgets.RadioSelect(choices=((1, "预测"), (2, "计划"), (9, "完成"))),
+        help_text=["", ""]
     )
     remark = fields.CharField(
         label="备注",
         max_length=255,
         widget=widgets.TextInput(attrs={"class": "inputType"}),
         required=False,
-        error_messages={"max_length": "备注不能大于255位"}
+        error_messages={"max_length": "备注不能大于255位"},
+        help_text=["宴请举办过程的补充说明", ""]
     )
+
+    def __init__(self, userID, direction, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if direction == 1:
+            self.fields["family"].queryset = base_models.Family.objects.filter(id=base_models.Person.objects.filter(user_id=userID, relType=0, status=1).first().family_id)
+            self.fields["person"].queryset = base_models.Person.objects.filter(family_id=base_models.Person.objects.filter(user_id=userID, relType=0, status=1).first().family_id)
+            # self.fields["family"].choices = base_models.Family.objects.filter(id=base_models.Person.objects.filter(user_id=userID, relType=0, status=1).first().family_id).values_list("id", "name__name")
+        else:
+            self.fields["family"].queryset = base_models.Family.objects.exclude(id=base_models.Person.objects.filter(user_id=userID, relType=0, status=1).first().family_id)
+            self.fields["person"].queryset = base_models.Person.objects.exclude(family_id=base_models.Person.objects.filter(user_id=userID, relType=0, status=1).first().family_id)
 
     def clean_person(self):
         """
@@ -145,6 +179,9 @@ class FormRelEvent(Form):
 
 
 class FormJoinRecordSpec(Form):
+    """
+    用于礼簿录入
+    """
     joinFamily = forms.ModelChoiceField(
         label="出席家庭",
         widget=widgets.Select(attrs={"class": "selectSpc"}),
@@ -160,18 +197,24 @@ class FormJoinRecordSpec(Form):
         widget=widgets.NumberInput(attrs={"class": "inputSpc"})
     )
 
+    def __init__(self, userID, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["joinFamily"].queryset = base_models.Family.objects.exclude(id=base_models.Person.objects.filter(user_id=userID, relType=0, status=1).first().family_id)
+
 
 class FormJoinRecord(Form):
     event = forms.ModelChoiceField(
         label="事件",
         widget=widgets.Select(attrs={"class": "inputType"}),
         queryset=models.RelEvent.objects.all(),
-        required=False
+        required=False,
+        help_text=["", ""]
     )
     joinFamily = forms.ModelChoiceField(
         label="出席家庭",
         widget=widgets.Select(attrs={"class": "inputType"}),
-        queryset=base_models.Family.objects.filter(status=1)
+        queryset=base_models.Family.objects.filter(status=1),
+        help_text=["来宾家庭", ""]
     )
     amtBook = fields.DecimalField(
         label="礼金",
@@ -180,7 +223,8 @@ class FormJoinRecord(Form):
         max_value=9999999.99,
         max_digits=9,
         decimal_places=2,
-        widget=widgets.NumberInput(attrs={"class": "inputType"})
+        widget=widgets.NumberInput(attrs={"class": "inputType"}),
+        help_text=["随礼的金额", ""]
     )
     amtOther = fields.DecimalField(
         label="其他支出",
@@ -189,19 +233,30 @@ class FormJoinRecord(Form):
         max_value=9999999.99,
         max_digits=9,
         decimal_places=2,
-        widget=widgets.NumberInput(attrs={"class": "inputType"})
+        widget=widgets.NumberInput(attrs={"class": "inputType"}),
+        help_text=["其他风俗支出", "例如新娘子喜茶"]
     )
     recTime = fields.DateTimeField(
         label="登记时间",
-        widget=widgets.DateTimeInput(attrs={"class": "inputType"})
+        widget=widgets.DateTimeInput(attrs={"class": "inputType"}),
+        help_text=["系统时间", ""]
     )
     remark = fields.CharField(
         label="备注",
         max_length=255,
         widget=widgets.TextInput(attrs={"class": "inputType"}),
         required=False,
-        error_messages={"max_length": "备注不能大于255位"}
+        error_messages={"max_length": "备注不能大于255位"},
+        help_text=["其他信息", ""]
     )
+
+    def __init__(self, userID, direction, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["event"].queryset = models.RelEvent.objects.filter(user_id=userID, direction=direction)
+        if direction == 1:
+            self.fields["joinFamily"].queryset = base_models.Family.objects.exclude(id=base_models.Person.objects.filter(user_id=userID, relType=0, status=1).first().family_id)
+        else:
+            self.fields["joinFamily"].queryset = base_models.Family.objects.filter(id=base_models.Person.objects.filter(user_id=userID, relType=0, status=1).first().family_id)
 
 
 @auth
@@ -233,7 +288,7 @@ def relEventList(request, userID, status=0, pageNo=1):
 @auth
 def relEventNew(request, userID):
     if request.method == "GET":
-        rec = base_models.Person.objects.filter(user=userID, relType=0).first()
+        rec = base_models.Person.objects.filter(user=userID, relType=0, status=1).first()
         dic = {
             "eventDate": date.today(),
             "family": rec.family,
@@ -244,10 +299,10 @@ def relEventNew(request, userID):
             "amtInOther": 0.00,
             "status": 2
         }
-        obj = FormRelEvent(initial=dic)
+        obj = FormRelEvent(initial=dic, userID=userID, direction=1)
         return render(request, "business/relEventNew.html", {"form": obj})
     elif request.method == "POST":
-        obj = FormRelEvent(request.POST)
+        obj = FormRelEvent(userID=userID, direction=1, data=request.POST)
         res = obj.is_valid()
         if res:
             obj.cleaned_data["user_id"] = userID
@@ -297,10 +352,10 @@ def relEventModify(request, userID, nid):
             "status": rec.status,
             "remark": rec.remark
         }
-        obj = FormRelEvent(initial=dic)
+        obj = FormRelEvent(initial=dic, userID=userID, direction=1)
         return render(request, "business/relEventModify.html", {"form": obj, "nid": nid})
     elif request.method == "POST":
-        obj = FormRelEvent(request.POST)
+        obj = FormRelEvent(userID=userID, direction=1, data=request.POST)
         res = obj.is_valid()
         if res:
             models.RelEvent.objects.filter(id=nid).update(**obj.cleaned_data)
@@ -312,7 +367,27 @@ def relEventModify(request, userID, nid):
 @auth
 def relEventDetail(request, userID, nid):
     rec = models.RelEvent.objects.filter(id=nid).first()
-    obj = FormRelEvent()
+    dic = {
+        "eventDate": rec.eventDate,
+        "eventName": rec.eventName,
+        "family": rec.family,
+        "person": rec.person,
+        "eventType": rec.eventType,
+        "formType": rec.formType,
+        "eventDes": rec.eventDes,
+        "direction": rec.direction,
+        "dateFrom": rec.dateFrom,
+        "dateTo": rec.dateTo,
+        "amtOutFood": rec.amtOutFood,
+        "amtOutOther": rec.amtOutOther,
+        "cntFamily": rec.cntFamily,
+        "cntTable": rec.cntTable,
+        "amtInBook": rec.amtInBook,
+        "amtInOther": rec.amtInOther,
+        "status": rec.status,
+        "remark": rec.remark
+    }
+    obj = FormRelEvent(initial=dic, userID=userID, direction=1)
     return render(request, "business/relEventDetail.html", {"form": obj, "rec": rec})
 
 
@@ -358,11 +433,11 @@ def relEventModifyBookNew(request, userID, pid):
             "event": models.RelEvent.objects.filter(id=pid).first().id,
             "recTime": datetime.now()
         }
-        obj = FormJoinRecordSpec(initial=dic)
+        obj = FormJoinRecordSpec(initial=dic, userID=userID)
         lastList = models.JoinRecord.objects.filter(event=event).order_by("-recTime")[:5]
         return render(request, "business/relEventModifyBookNew.html", {"form": obj, "pid": pid, "eventName": event.eventName, "lastList": lastList})
     elif request.method == "POST":
-        obj = FormJoinRecordSpec(request.POST)
+        obj = FormJoinRecordSpec(userID=userID, data=request.POST)
         res = obj.is_valid()
         if not res:
             return render(request, "business/relEventModifyBookNew.html", {"form": obj, "pid": pid, "eventName": event.eventName})
@@ -405,10 +480,10 @@ def relEventModifyBookModify(request, userID, subid):
             "recTime": rec.recTime,
             "remark": rec.remark
         }
-        obj = FormJoinRecord(initial=dic)
+        obj = FormJoinRecord(initial=dic, userID=userID, direction=1)
         return render(request, "business/relEventModifyBookModify.html", {"form": obj, "eventName": rec.event.eventName, "pid": rec.event.id, "subid": subid})
     elif request.method == "POST":
-        obj = FormJoinRecord(request.POST)
+        obj = FormJoinRecord(userID=userID, direction=1, data=request.POST)
         res = obj.is_valid()
         if not res:
             return render(request, "business/relEventModifyBookModify.html", {"form": obj, "eventName": rec.event.eventName, "pid": rec.event.id, "subid": subid})
@@ -419,7 +494,7 @@ def relEventModifyBookModify(request, userID, subid):
 @auth
 def relEventModifyBookDetail(request, userID, subid):
     rec = models.JoinRecord.objects.filter(id=subid).first()
-    obj = FormJoinRecord()
+    obj = FormJoinRecord(userID=userID, direction=1)
     return render(request, "business/relEventModifyBookDetail.html", {"form": obj, "rec": rec, "eventName": rec.event.eventName})
 
 
@@ -437,6 +512,8 @@ def joinRecordList(request, userID, pageNo=1):
     else:
         dateFrom = datetime.strptime(dateFrom, "%Y-%m-%d")
         dateTo = datetime.strptime(dateTo, "%Y-%m-%d")
+    curFamily = base_models.Person.objects.filter(relType=0).first()
+    print(curFamily)
     if not eventType or eventType == "0":
         if not formType or formType == "0":
             dataList = models.JoinRecord.objects.filter(user=userID, event__eventDate__gte=dateFrom, event__eventDate__lte=dateTo)
@@ -461,6 +538,7 @@ def joinRecordNew(request, userID):
     if request.method == "GET":
         dicEvent = {
             "eventDate": date.today(),
+            "family": None,
             "direction": 2,
             "dateFrom": date.today(),
             "dateTo": date.today(),
@@ -468,24 +546,26 @@ def joinRecordNew(request, userID):
             "cntTable": 0,
             "status": 9
         }
-        objEvent = FormRelEvent(initial=dicEvent)
-        myFamily = base_models.Person.objects.filter(user=userID, relType=0).first().family
+        objEvent = FormRelEvent(initial=dicEvent, userID=userID, direction=2)
+        myFamily = base_models.Person.objects.filter(user=userID, relType=0, status=1).first().family
         dicRecord = {
             "joinFamily": myFamily,
             "recTime": datetime.now()
         }
-        objRecord = FormJoinRecord(initial=dicRecord)
+        objRecord = FormJoinRecord(initial=dicRecord, userID=userID, direction=2)
         return render(request, "business/joinRecordNew.html", {"formEvent": objEvent, "formRecord": objRecord})
     elif request.method == "POST":
-        objEvent = FormRelEvent(request.POST)
-        objRecord = FormJoinRecord(request.POST)
+        objEvent = FormRelEvent(userID=userID, direction=2, data=request.POST)
+        objRecord = FormJoinRecord(userID=userID, direction=2, data=request.POST)
         res = objEvent.is_valid()
         if not res:
+            print(objEvent.errors)
             return render(request, "business/joinRecordNew.html", {"formRecord": objRecord, "formEvent": objEvent})
         objEvent.cleaned_data["user_id"] = userID
         newEvent = models.RelEvent.objects.create(**objEvent.cleaned_data)
         res = objRecord.is_valid()
         if not res:
+            print(objRecord.errors)
             return render(request, "business/joinRecordNew.html", {"formRecord": objRecord, "formEvent": objEvent})
         objRecord.cleaned_data["user_id"] = userID
         objRecord.cleaned_data["event"] = newEvent
@@ -521,7 +601,7 @@ def joinRecordModify(request, userID, nid):
             "recTime": recRecord.recTime,
             "remark": recRecord.remark
         }
-        objRecord = FormJoinRecord(initial=dicRecord)
+        objRecord = FormJoinRecord(initial=dicRecord, userID=userID, direction=2)
         recEvent = models.RelEvent.objects.filter(id=recRecord.event.id).first()
         dicEvent = {
             "eventDate": recEvent.eventDate,
@@ -542,17 +622,19 @@ def joinRecordModify(request, userID, nid):
             "status": recEvent.status,
             "remark": recEvent.remark
         }
-        objEvent = FormRelEvent(initial=dicEvent)
+        objEvent = FormRelEvent(initial=dicEvent, userID=userID, direction=2)
         return render(request, "business/joinRecordModify.html", {"formRecord": objRecord, "formEvent": objEvent, "nid": nid})
     elif request.method == "POST":
-        objEvent = FormRelEvent(request.POST)
-        objRecord = FormJoinRecord(request.POST)
+        objEvent = FormRelEvent(userID=userID, direction=2, data=request.POST)
+        objRecord = FormJoinRecord(userID=userID, direction=2, data=request.POST)
         res = objRecord.is_valid()
         if not res:
+            print(objRecord.errors)
             return render(request, "business/joinRecordModify.html", {"formRecord": objRecord, "formEvent": objEvent, "nid": nid})
         models.JoinRecord.objects.filter(id=nid).update(**objRecord.cleaned_data)
         res = objEvent.is_valid()
         if not res:
+            print(objEvent.errors)
             return render(request, "business/joinRecordModify.html", {"formRecord": objRecord, "formEvent": objEvent, "nid": nid})
         models.RelEvent.objects.filter(id=models.JoinRecord.objects.filter(id=nid).first().event.id).update(**objEvent.cleaned_data)
         return redirect(reverse("app-busi:joinList", args=(1, )))
@@ -569,7 +651,7 @@ def joinRecordDetail(request, userID, nid):
         "recTime": recRecord.recTime,
         "remark": recRecord.remark
     }
-    objRecord = FormJoinRecord(initial=dicRecord)
+    objRecord = FormJoinRecord(initial=dicRecord, userID=userID, direction=2)
     recEvent = models.RelEvent.objects.filter(id=recRecord.event.id).first()
     dicEvent = {
         "eventDate": recEvent.eventDate,
@@ -581,5 +663,5 @@ def joinRecordDetail(request, userID, nid):
         "dateFrom": recEvent.dateFrom,
         "dateTo": recEvent.dateTo
     }
-    objEvent = FormRelEvent(initial=dicEvent)
+    objEvent = FormRelEvent(initial=dicEvent, userID=userID, direction=2)
     return render(request, "business/joinRecordDetail.html", {"formRecord": objRecord, "recRecord": recRecord, "formEvent": objEvent, "recEvent": recEvent})

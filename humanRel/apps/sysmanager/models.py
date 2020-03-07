@@ -19,3 +19,6 @@ class User(models.Model):
     email = models.CharField(verbose_name="电子邮箱", max_length=50, null=True)
     loginPW = models.CharField(verbose_name="登录密码", max_length=50)
     status = models.IntegerField(verbose_name="状态", choices=((0, "失效"), (1, "正常"), (2, "冻结")), default=1)
+
+    def __str__(self):
+        return self.name

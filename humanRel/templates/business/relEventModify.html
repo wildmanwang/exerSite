@@ -8,156 +8,30 @@
     <form action="{% url 'app-busi:eventModify' nid=nid %}" method="POST">
         {% csrf_token %}
         <table>
-            <tr>
-                <td class="groupTitle" colspan="3">基础信息</td>
-            </tr>
-            <tr>
-                <td class="col1 colRequired">{{ form.eventDate.label_tag }}</td>
-                <td class="col2">{{ form.eventDate }}</td>
-                <td class="col4"><div class="subRemark">事件的正式日期</div><div class="subRemark"></div></td>
-            </tr>
-            {% if form.eventDate.errors %}
-            <tr class="promptLine"><td></td><td class="promptInfo" colspan="2">{{ form.errors.eventDate.0 }}</td></tr>
+            {% if form.non_field_errors %}
+                <tr class="promptLine">
+                    <td class="col1 promptInfo"><label>错误：</label></td>
+                    <td class="promptInfo" colspan="2">{{ form.non_field_errors.0 }}</td>
+                </tr>
             {% endif %}
-            <tr>
-                <td class="col1 colRequired">{{ form.eventName.label_tag }}</td>
-                <td class="col2">{{ form.eventName }}</td>
-                <td class="col4"><div class="subRemark">请输入事件简称</div><div class="subRemark"></div></td>
-            </tr>
-            {% if form.eventName.errors %}
-            <tr class="promptLine"><td></td><td class="promptInfo" colspan="2">{{ form.errors.eventName.0 }}</td></tr>
-            {% endif %}
-            <tr class="hide">
-                <td class="col1 colRequired">{{ form.family.label_tag }}</td>
-                <td class="col2">{{ form.family }}</td>
-                <td class="col4"><div class="subRemark">请选择事件发生的家庭</div><div class="subRemark"></div></td>
-            </tr>
-            {% if form.family.errors %}
-            <tr class="promptLine"><td></td><td class="promptInfo" colspan="2">{{ form.errors.family.0 }}</td></tr>
-            {% endif %}
-            <tr>
-                <td class="col1">{{ form.person.label_tag }}</td>
-                <td class="col2">{{ form.person }}</td>
-                <td class="col4"><div class="subRemark">请选择事件发生的人员</div><div class="subRemark"></div></td>
-            </tr>
-            {% if form.person.errors %}
-            <tr class="promptLine"><td></td><td class="promptInfo" colspan="2">{{ form.errors.person.0 }}</td></tr>
-            {% endif %}
-            <tr>
-                <td class="col1 colRequired">{{ form.eventType.label_tag }}</td>
-                <td class="col2">{{ form.eventType }}</td>
-                <td class="col4"><div class="subRemark">请选择事件的类型</div><div class="subRemark">无法确定的选择其他</div></td>
-            </tr>
-            {% if form.eventType.errors %}
-            <tr class="promptLine"><td></td><td class="promptInfo" colspan="2">{{ form.errors.eventType.0 }}</td></tr>
-            {% endif %}
-            <tr>
-                <td class="col1 colRequired">{{ form.formType.label_tag }}</td>
-                <td class="col2">{{ form.formType }}</td>
-                <td class="col4"><div class="subRemark">请选择宴请类型</div><div class="subRemark">只有隆重宴请才有随礼登记</div></td>
-            </tr>
-            {% if form.formType.errors %}
-            <tr class="promptLine"><td></td><td class="promptInfo" colspan="2">{{ form.errors.formType.0 }}</td></tr>
-            {% endif %}
-            <tr>
-                <td class="col1">{{ form.eventDes.label_tag }}</td>
-                <td class="col2">{{ form.eventDes }}</td>
-                <td class="col4"><div class="subRemark">事件的详细描述</div><div class="subRemark"></div></td>
-            </tr>
-            {% if form.eventDes.errors %}
-            <tr class="promptLine"><td></td><td class="promptInfo" colspan="2">{{ form.errors.eventDes.0 }}</td></tr>
-            {% endif %}
-            <tr class="hide">
-                <td class="col1 colRequired">{{ form.direction.label_tag }}</td>
-                <td class="col2">{{ form.direction }}</td>
-                <td class="col4"><div class="subRemark">事件发生方</div><div class="subRemark"></div></td>
-            </tr>
-            {% if form.direction.errors %}
-            <tr class="promptLine"><td></td><td class="promptInfo" colspan="2">{{ form.errors.direction.0 }}</td></tr>
-            {% endif %}
-            <tr>
-                <td class="groupTitle" colspan="3">详细信息</td>
-            </tr>
-            <tr>
-                <td class="col1">{{ form.dateFrom.label_tag }}</td>
-                <td class="col2">{{ form.dateFrom }}</td>
-                <td class="col4"><div class="subRemark">请选择宴请开始的日期</div><div class="subRemark"></div></td>
-            </tr>
-            {% if form.dateFrom.errors %}
-            <tr class="promptLine"><td></td><td class="promptInfo" colspan="2">{{ form.errors.dateFrom.0 }}</td></tr>
-            {% endif %}
-            <tr>
-                <td class="col1">{{ form.dateTo.label_tag }}</td>
-                <td class="col2">{{ form.dateTo }}</td>
-                <td class="col4"><div class="subRemark">请选择宴请结束的日期</div><div class="subRemark"></div></td>
-            </tr>
-            {% if form.dateTo.errors %}
-            <tr class="promptLine"><td></td><td class="promptInfo" colspan="2">{{ form.errors.dateTo.0 }}</td></tr>
-            {% endif %}
-            <tr>
-                <td class="col1">{{ form.amtOutFood.label_tag }}</td>
-                <td class="col2">{{ form.amtOutFood }}</td>
-                <td class="col4"><div class="subRemark">用于宴席的支出金额</div><div class="subRemark">通常外包</div></td>
-            </tr>
-            {% if form.amtOutFood.errors %}
-            <tr class="promptLine"><td></td><td class="promptInfo" colspan="2">{{ form.errors.amtOutFood.0 }}</td></tr>
-            {% endif %}
-            <tr>
-                <td class="col1">{{ form.amtOutOther.label_tag }}</td>
-                <td class="col2">{{ form.amtOutOther }}</td>
-                <td class="col4"><div class="subRemark">其他宴席以外的支出金额</div><div class="subRemark"></div></td>
-            </tr>
-            {% if form.amtOutOther.errors %}
-            <tr class="promptLine"><td></td><td class="promptInfo" colspan="2">{{ form.errors.amtOutOther.0 }}</td></tr>
-            {% endif %}
-            <tr>
-                <td class="col1 colRequired">{{ form.cntFamily.label_tag }}</td>
-                <td class="col2">{{ form.cntFamily }}</td>
-                <td class="col4"><div class="subRemark">来宾的家庭数</div><div class="subRemark"></div></td>
-            </tr>
-            {% if form.cntFamily.errors %}
-            <tr class="promptLine"><td></td><td class="promptInfo" colspan="2">{{ form.errors.cntFamily.0 }}</td></tr>
-            {% endif %}
-            <tr>
-                <td class="col1 colRequired">{{ form.cntTable.label_tag }}</td>
-                <td class="col2">{{ form.cntTable }}</td>
-                <td class="col4"><div class="subRemark">一台宴席有多少桌</div><div class="subRemark"></div></td>
-            </tr>
-            {% if form.cntTable.errors %}
-            <tr class="promptLine"><td></td><td class="promptInfo" colspan="2">{{ form.errors.cntTable.0 }}</td></tr>
-            {% endif %}
-            <tr>
-                <td class="col1">{{ form.amtInBook.label_tag }}</td>
-                <td class="col2">{{ form.amtInBook }}</td>
-                <td class="col4"><div class="subRemark">礼金收入合计</div><div class="subRemark">由系统自动汇总</div></td>
-            </tr>
-            {% if form.amtInBook.errors %}
-            <tr class="promptLine"><td></td><td class="promptInfo" colspan="2">{{ form.errors.amtInBook.0 }}</td></tr>
-            {% endif %}
-            <tr>
-                <td class="col1">{{ form.amtInOther.label_tag }}</td>
-                <td class="col2">{{ form.amtInOther }}</td>
-                <td class="col4"><div class="subRemark">其他收入合计</div><div class="subRemark">由系统自动汇总</div></td>
-            </tr>
-            {% if form.amtInOther.errors %}
-            <tr class="promptLine"><td></td><td class="promptInfo" colspan="2">{{ form.errors.amtInOther.0 }}</td></tr>
-            {% endif %}
-            <tr>
-                <td class="col1 colRequired">{{ form.status.label_tag }}</td>
-                <td class="col2">{{ form.status }}</td>
-                <td class="col4"><div class="subRemark">单据状态</div><div class="subRemark"></div></td>
-            </tr>
-            {% if form.status.errors %}
-            <tr class="promptLine"><td></td><td class="promptInfo" colspan="2">{{ form.errors.status.0 }}</td></tr>
-            {% endif %}
-            <tr>
-                <td class="col1">{{ form.remark.label_tag }}</td>
-                <td class="col2">{{ form.remark }}</td>
-                <td class="col4"><div class="subRemark">宴请举办过程的补充说明</div><div class="subRemark"></div></td>
-            </tr>
-            {% if form.remark.errors %}
-            <tr class="promptLine"><td></td><td class="promptInfo" colspan="2">{{ form.errors.remark.0 }}</td></tr>
-            {% endif %}
+            {% for col in form %}
+                {% if col.label == "事件日期" %}
+                    <tr><td class="groupTitle" colspan="3">基础信息</td></tr>
+                {% elif col.label == "开始日期" %}
+                    <tr><td class="groupTitle" colspan="3">详细信息</td></tr>
+                {% endif %}
+                <tr class="{% if col.label == "家庭" and col.label == "事件发起方" %}hide{% endif %} ">
+                    <td class="col1"><label for="{{ col.id_for_label }}">{{ col.label }}：</label></td>
+                    <td class="col2">{{ col }}</td>
+                    <td class="col4"><div class="subRemark">{{ col.help_text.0 }}</div><div class="subRemark">{{ col.help_text.1 }}</div></td>
+                </tr>
+                {% if col.errors %}
+                    <tr class="promptLine">
+                        <td class="col1 promptInfo"><label>错误：</label></td>
+                        <td class="promptInfo" colspan="2">{{ col.errors.0 }}</td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
         </table>
         <p>
             <input class="inputBtn" type="submit" value="提交" style="margin-left: 196px; ">

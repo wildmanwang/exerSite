@@ -3,21 +3,41 @@
 
 {% block styleMain %}
     <style>
-        #i1, #i2{
+        #inputUser, #inputPwd{
             border: rgb(221, 221, 221) 1px solid;
             border-radius: 4px;
             width: 280px;
             height: 40px;
             padding-left: 38px;
-            font-size: 16px;
+            font-size: 14px;
         }
-        #i3{
+        #inputCheck{
+            display: inline-block;
+            border: #DDDDDD 1px solid;
+            border-radius: 4px;
+            width: 112px;
+            height: 40px;
+            font-size: 14px;
+            padding-left: 38px;
+            vertical-align: top;
+        }
+        #imgCheck{
+            display: inline-block;
+            border: #DDDDDD 1px solid;
+            border-radius: 4px;
+            width: 150px;
+            height: 42px;
+            font-size: 14px;
+            margin-left: 10px;
+            vertical-align: top;
+        }
+        #btnLogin{
             border: none;
             background-color: rgb(17, 150, 219);
             border-radius: 4px;
             width: 318px;
             height: 42px;
-            font-size: 18px;
+            font-size: 16px;
             color: white;
         }
         a{
@@ -31,22 +51,28 @@
     <div style="width: 320px; padding: 0 80px; margin: 10px auto; ">
         {% include "../include/relFlag.html" %}
     </div>
-    <div style="height: 240px; background-color: #F9F9F9; ">
-        <div style="width: 320px; height: 240px; padding: 0 80px; margin: 0 auto; background-color: #F2F2F2; overflow: hidden; ">
+    <div style="height: 320px; background-color: #F9F9F9; ">
+        <div style="width: 320px; height: 320px; padding: 0 80px; margin: 0 auto; background-color: #F2F2F2; overflow: hidden; ">
             <form action="{% url 'app-sys:login' %}" method="POST">
                 {% csrf_token %}
                 <div></div>
                 <div style="width: 320px; margin-top: 40px; position: relative; ">
-                    <input id="i1" type="text" name="username" placeholder="请输入用户名" />
+                    <input id="inputUser" type="text" name="username" placeholder="请输入用户名" />
                     <div style="display: inline-block; width: 24px; height: 24px; background-image: url('/static/images/login.png'); background-position-y: 0; position: absolute; left: 10px; top: 10px;"></div>
                 </div>
                 <div style="width: 320px; margin-top: 20px; position: relative; ">
-                    <input id="i2" type="password" name="userpw" placeholder="请输入密码" />
+                    <input id="inputPwd" type="password" name="userpw" placeholder="请输入密码" />
                     <div style="display: inline-block; width: 24px; height: 24px; background-image: url('/static/images/login.png'); background-position-y: -24px; position: absolute; left: 10px; top: 10px;"></div>
+                </div>
+                <div style="display: inline-block; margin-top: 20px; ">
+                    <input id="inputCheck" type="text" name="checkcode" placeholder="请输入验证码" />
+                </div>
+                <div style="display: inline-block;margin-top: 20px;  ">
+                    <img id="imgCheck" src="{% url 'app-sys:check_code' %}">
                 </div>
                 <label class="promptInfo">{{ info }}</label>
                 <div style="width: 320px; margin-top: 20px; ">
-                    <input id="i3" type="submit" value="登录" /></p>
+                    <input id="btnLogin" type="submit" value="登录" />
                 </div>
             </form>
         </div>
@@ -57,4 +83,10 @@
             <p><a href="">忘记密码？</a></p>
         </div>
     </div>
+    <script src="/static/js/jquery3.4.1.js"></script>
+    <script>
+        $("#imgCheck").click(function () {
+            $(this).attr("src", $(this).attr("src") + "?");
+        });
+    </script>
 {% endblock %}
