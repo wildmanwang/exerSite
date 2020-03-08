@@ -494,7 +494,17 @@ def relEventModifyBookModify(request, userID, subid):
 @auth
 def relEventModifyBookDetail(request, userID, subid):
     rec = models.JoinRecord.objects.filter(id=subid).first()
-    obj = FormJoinRecord(userID=userID, direction=1)
+    dic = {
+        "id": rec.id,
+        "user_id": userID,
+        "event": rec.event,
+        "joinFamily": rec.joinFamily,
+        "amtBook": rec.amtBook,
+        "amtOther": rec.amtOther,
+        "recTime": rec.recTime,
+        "remark": rec.remark
+    }
+    obj = FormJoinRecord(initial=dic, userID=userID, direction=1)
     return render(request, "business/relEventModifyBookDetail.html", {"form": obj, "rec": rec, "eventName": rec.event.eventName})
 
 

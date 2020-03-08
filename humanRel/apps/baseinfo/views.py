@@ -12,7 +12,9 @@ import json
 
 
 class FormPerson(Form):
-    # 唯一“自己”校验需要用到id、user，需要在模板form中提交，页面又不需要输入，因此required=False
+    # 唯一“自己”校验需要用到id、user
+    # 1 校验需要用到的字段，必须在form中提交
+    # 2 新增、修改、删除公用一个类，而新增中，这2个字段没有值，所以required设置为非必输
     id = fields.IntegerField(
         label="ID",
         widget=widgets.TextInput(attrs={"class": "inputType"}),

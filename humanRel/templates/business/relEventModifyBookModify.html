@@ -18,7 +18,7 @@
                 <td class="groupTitle" colspan="3">礼簿</td>
             </tr>
             {% for col in form %}
-                <tr class="{% if col.label == '事件' or col.label == '登记时间' %}hide{% endif %}">
+                <tr class="{% if col.name == 'event' or col.name == 'recTime' %}hide{% endif %}">
                     <td class="col1"><label id="{{ col.id_for_label }}">{{ col.label }}：</label></td>
                     <td class="col2">{{ col }}</td>
                     <td class="col4"><div class="subRemark">{{ col.help_text.0 }}</div><div class="subRemark">{{ col.help_text.1 }}</div></td>

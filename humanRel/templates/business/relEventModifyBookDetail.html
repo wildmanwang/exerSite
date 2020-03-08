@@ -10,11 +10,11 @@
             <td class="groupTitle" colspan="3">礼簿</td>
         </tr>
         {% for col in form %}
-            <tr class="{% if col.label == "事件" %}hide{% endif %}">
+            <tr class="{% if col.name == "event" %}hide{% endif %}">
                 <td class="col1">{{ col.label }}</td>
-                {% if col.label == "出席家庭" %}
+                {% if col.name == "joinFamily" %}
                     <td class="col2">{{ rec.joinFamily }}</td>
-                {% elif col.label == "登记时间" %}
+                {% elif col.name == "recTime" %}
                     <td class="col2">{{ rec.recTime|date:"Y-m-d h:i:s" }}</td>
                 {% else %}
                     <td class="col2">{{ col.value|default:"" }}</td>

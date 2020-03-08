@@ -12,9 +12,9 @@
         {% for col in form %}
             <tr>
                 <td class="col1">{{ col.label }}</td>
-                {% if col.label == "姓名" %}
+                {% if col.name == "name" %}
                     <td class="col2">{{ rec.name }}</td>
-                {% elif col.label == "状态" %}
+                {% elif col.name == "status" %}
                     {% if col.value == 1 %}
                         <td class="col2">正常</td>
                     {% else %}

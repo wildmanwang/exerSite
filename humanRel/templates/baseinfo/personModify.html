@@ -15,22 +15,22 @@
                 </tr>
             {% endif %}
             {% for col in form %}
-                {% if col.label == "姓名" %}
+                {% if col.name == "name" %}
                     <tr><td class="groupTitle" colspan="3">基础资料</td></tr>
-                {% elif col.label == "关系类型" %}
+                {% elif col.name == "relType" %}
                     <tr><td class="groupTitle" colspan="3">人物关系</td></tr>
-                {% elif col.label == "手机号码" %}
+                {% elif col.name == "mobile" %}
                     <tr><td class="groupTitle" colspan="3">联系方式</td></tr>
-                {% elif col.label == "学历" %}
+                {% elif col.name == "education" %}
                     <tr><td class="groupTitle" colspan="3">其他</td></tr>
                 {% endif %}
-                <tr class="{% if col.label == 'ID' or col.label == 'USER' %}hide{% endif %}">
+                <tr class="{% if col.name == 'id' or col.name == 'user' %}hide{% endif %}">
                     <td class="col1"><label for="{{ col.id_for_label }}">{{ col.label }}</label></td>
                     <td class="col2">{{ col }}</td>
                     <td class="col4"><div class="subRemark">{{ col.help_text.0 }}</div><div class="subRemark">{{ col.help_text.1 }}</div></td>
                 </tr>
                 {% if col.errors %}
-                    <tr class="promptLine {% if col.label == 'ID' or col.label == 'USER' %}hide{% endif %}">
+                    <tr class="promptLine {% if col.name == 'id' or col.name == 'user' %}hide{% endif %}">
                         <td class="col1 promptInfo">错误：</td>
                         <td class="promptInfo" colspan="2">{{ col.errors.0 }}</td>
                     </tr>

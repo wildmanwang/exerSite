@@ -7,24 +7,24 @@
 {% block dataFree %}
     <table>
         {% for col in form %}
-            {% if col.label == "姓名" %}
+            {% if col.name == "name" %}
                 <tr><td class="groupTitle" colspan="3">基础资料</td></tr>
-            {% elif col.label == "关系类型" %}
+            {% elif col.name == "relType" %}
                 <tr><td class="groupTitle" colspan="3">人物关系</td></tr>
-            {% elif col.label == "手机号码" %}
+            {% elif col.name == "mobile" %}
                 <tr><td class="groupTitle" colspan="3">联系方式</td></tr>
-            {% elif col.label == "学历" %}
+            {% elif col.name == "education" %}
                 <tr><td class="groupTitle" colspan="3">其他</td></tr>
             {% endif %}
-            <tr class="{% if col.label == 'ID' or col.label == 'USER' %}hide{% endif %}">
+            <tr class="{% if col.name == 'id' or col.name == 'user' %}hide{% endif %}">
                 <td class="col1">{{ col.label }}</td>
-                {% if col.label == "性别" %}
+                {% if col.name == "gender" %}
                     {% if col.value == 1 %}
                         <td class="col2">男</td>
                     {% else %}
                         <td class="col2">女</td>
                     {% endif %}
-                {% elif col.label == "关系类型" %}
+                {% elif col.name == "relType" %}
                     {% if col.value == 0 %}
                         <td class="col2">自己</td>
                     {% elif col.value == 1 %}
@@ -44,21 +44,21 @@
                     {% else %}
                         <td class="col2">其他</td>
                     {% endif %}
-                {% elif col.label == "家庭" %}
+                {% elif col.name == "family" %}
                     <td class="col2">{{ rec.family|default:"" }}</td>
-                {% elif col.label == "父亲" %}
+                {% elif col.name == "father" %}
                     <td class="col2">{{ rec.father|default:"" }}</td>
-                {% elif col.label == "母亲" %}
+                {% elif col.name == "mother" %}
                     <td class="col2">{{ rec.mother|default:"" }}</td>
-                {% elif col.label == "婚姻状态" %}
+                {% elif col.name == "Marriage" %}
                     {% if col.value == 1 %}
                         <td class="col2">已婚</td>
                     {% else %}
                         <td class="col2">未婚</td>
                     {% endif %}
-                {% elif col.label == "配偶" %}
+                {% elif col.name == "spouse" %}
                     <td class="col2">{{ rec.spouse|default:"" }}</td>
-                {% elif col.label == "学历" %}
+                {% elif col.name == "education" %}
                     {% if col.value == 0 %}
                         <td class="col2">在读</td>
                     {% elif col.value == 1 %}
@@ -78,7 +78,7 @@
                     {% else %}
                         <td class="col2">其他</td>
                     {% endif %}
-                {% elif col.label == "状态" %}
+                {% elif col.name == "status" %}
                     {% if col.value == 1 %}
                         <td class="col2">正常</td>
                     {% else %}

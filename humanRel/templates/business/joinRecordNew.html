@@ -23,13 +23,13 @@
                 <td class="groupTitle" colspan="3">基础信息</td>
             </tr>
             {% for col in formEvent %}
-                <tr class="{% if col.label != "事件日期" and col.label != "事件简称" and col.label != "家庭" and col.label != "当事人" and col.label != "事件类型" and col.label != "宴请类型" and col.label != "开始日期" and col.label != "截止日期" %}hide{% endif %}">
+                <tr class="{% if col.name != "eventDate" and col.name != "eventName" and col.name != "family" and col.name != "person" and col.name != "eventType" and col.name != "formType" and col.name != "dateFrom" and col.name != "dateTo" %}hide{% endif %}">
                     <td class="col1"><label for="{{ col.id_for_label }}">{{ col.label }}</label></td>
                     <td class="col2">{{ col }}</td>
                     <td class="col4"><div class="subRemark">{{ col.help_text.0 }}</div><div class="subRemark">{{ col.help_text.1 }}</div></td>
                 </tr>
                 {% if col.errors %}
-                    <tr class="promptLine {% if col.label != "事件日期" and col.label != "事件简称" and col.label != "家庭" and col.label != "当事人" and col.label != "事件类型" and col.label != "宴请类型" and col.label != "开始日期" and col.label != "截止日期" %}hide{% endif %}">
+                    <tr class="promptLine {% if col.name != "eventDate" and col.name != "eventName" and col.name != "family" and col.name != "person" and col.name != "eventType" and col.name != "formType" and col.name != "dateFrom" and col.name != "dateTo" %}hide{% endif %}">
                         <td class="col1 promptInfo"><label>错误：</label></td>
                         <td class="promptInfo" colspan="2">{{ col.errors.0 }}</td>
                     </tr>
@@ -39,13 +39,13 @@
                 <td class="groupTitle" colspan="3">详细信息</td>
             </tr>
             {% for col in formRecord %}
-                <tr class="{% if col.label != "礼金" and col.label != "其他支出" and col.label != "备注" %}hide{% endif %}">
+                <tr class="{% if col.name != "amtBook" and col.name != "amtOther" and col.name != "remark" %}hide{% endif %}">
                     <td class="col1"><label for="{{ col.id_for_label }}">{{ col.label }}</label></td>
                     <td class="col2">{{ col }}</td>
                     <td class="col4"><div class="subRemark">{{ col.help_text.0 }}</div><div class="subRemark">{{ col.help_text.1 }}</div></td>
                 </tr>
                 {% if col.errors %}
-                    <tr class="promptLine {% if col.label != "礼金" and col.label != "其他支出" and col.label != "备注" %}hide{% endif %}">
+                    <tr class="promptLine {% if col.name != "amtBook" and col.name != "amtOther" and col.name != "remark" %}hide{% endif %}">
                         <td class="col1 promptInfo"><label>错误：</label></td>
                         <td class="promptInfo" colspan="2">{{ col.errors.0 }}</td>
                     </tr>

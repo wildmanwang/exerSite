@@ -10,16 +10,16 @@
             <td class="groupTitle" colspan="3">基础信息</td>
         </tr>
         {% for col in formEvent %}
-            {% if col.label == "事件日期" or col.label == "事件简称" or col.label == "家庭" or col.label == "当事人" or col.label == "事件类型" or col.label == "宴请类型" or col.label == "开始日期" or col.label == "截止日期" %}
+            {% if col.name == "eventDate" or col.name == "eventName" or col.name == "family" or col.name == "person" or col.name == "eventType" or col.name == "formType" or col.name == "dateFrom" or col.name == "dateTo" %}
                 <tr>
                     <td class="col1">{{ col.label }}</td>
-                    {% if col.label == "事件日期" %}
+                    {% if col.name == "eventDate" %}
                         <td>{{ col.value|date:"Y-m-d" }}</td>
-                    {% elif col.label == "家庭" %}
+                    {% elif col.name == "family" %}
                         <td>{{ recEvent.family }}</td>
-                    {% elif col.label == "当事人" %}
+                    {% elif col.name == "person" %}
                         <td>{{ recEvent.person }}</td>
-                    {% elif col.label == "事件类型" %}
+                    {% elif col.name == "eventType" %}
                         {% if col.value == 1 %}
                             <td>结婚</td>
                         {% elif col.value == 2 %}
@@ -37,7 +37,7 @@
                         {% else %}
                             <td>其他</td>
                         {% endif %}
-                    {% elif col.label == "宴请类型" %}
+                    {% elif col.name == "formType" %}
                         {% if col.value == 1 %}
                             <td>隆重宴请</td>
                         {% elif col.value == 2 %}
@@ -47,9 +47,9 @@
                         {% else %}
                             <td>其他</td>
                         {% endif %}
-                    {% elif col.label == "开始日期" %}
+                    {% elif col.name == "dateFrom" %}
                         <td>{{ col.value|date:"Y-m-d" }}</td>
-                    {% elif col.label == "截止日期" %}
+                    {% elif col.name == "dateTo" %}
                         <td>{{ col.value|date:"Y-m-d" }}</td>
                     {% else %}
                         <td class="col2">{{ col.value|default:"" }}</td>
@@ -62,10 +62,10 @@
             <td class="groupTitle" colspan="3">详细信息</td>
         </tr>
         {% for col in formRecord %}
-            {% if col.label == "礼金" or col.label == "其他支出" or col.label == "登记时间" or col.label == "备注" %}
+            {% if col.name == "amtBook" or col.name == "amtOther" or col.name == "recTime" or col.name == "remark" %}
                 <tr>
                     <td class="col1"><label for="{{ col.id_for_label }}">{{ col.label }}</label></td>
-                    {% if col.label == "登记时间" %}
+                    {% if col.name == "recTime" %}
                         <td class="col2">{{ col.value|date:"Y-m-d h:i:s" }}</td>
                     {% else %}
                         <td class="col2">{{ col.value|default:"" }}</td>
