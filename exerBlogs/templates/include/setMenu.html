@@ -1,0 +1,28 @@
+<style>
+    .pageMenu{
+        height: 50px;
+        line-height: 50px;
+        text-align: left;
+        font-size: 16px;
+        padding-left: 30px;
+        background-color: #BBBBBB;
+    }
+    .pageMenu a{
+        text-decoration: none;
+        color: #333333;
+    }
+    .activePageMenu{
+        background-color: white;
+    }
+</style>
+<div style="display: inline-block; width: 250px; background-color: #BBBBBB; overflow: hidden; position: absolute; left: 0; top: 100px; bottom: 0; border: #BBBBBB 1px solid; ">
+    <div class="pageMenu {% if menuItem == 'user' %}activePageMenu{% endif %}"><a href="{% url 'app-backend:setUser' %}">账户设置</a></div>
+    <div class="pageMenu {% if menuItem == 'acct' %}activePageMenu{% endif %}"><a href="{% url 'app-backend:setAcct' %}">个人资料</a></div>
+    <div class="pageMenu {% if menuItem == 'photo' %}activePageMenu{% endif %}"><a href="{% url 'app-backend:setPhoto' %}">头像设置</a></div>
+    <div class="pageMenu {% if menuItem == 'blog' %}activePageMenu{% endif %}"><a href="{% url 'app-backend:setBlog' %}">博客设置</a></div>
+</div>
+<script>
+    $(".pageMenu").click(function () {
+        $(this).addClass("activePageMenu").siblings().removeClass("activePageMenu");
+    });
+</script>

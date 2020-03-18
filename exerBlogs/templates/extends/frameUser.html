@@ -1,0 +1,131 @@
+{% extends "../extends/frame.html" %}
+
+
+{% block frameStyle %}
+    <style>
+        .firstLever{
+            margin: 5px;
+            overflow: hidden;
+        }
+        .topMenu{
+            font-size: 12px;
+            color: #333333;
+            padding: 0 5px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .topMenu:hover{
+            text-decoration-line: underline;
+            color: #EE6666;
+        }
+        .bottomItem{
+            display: inline-block;
+            font-size: 12px;
+            color: #555555;
+            margin: 5px;
+            vertical-align: top;
+        }
+    </style>
+    {% block subStyle %}
+    {% endblock %}
+{% endblock %}
+
+
+{% block frameContents %}
+    {# 1 顶部系统菜单 #}
+    <div class="firstLever">
+        <span class="left topMenu">代码改变世界</span>
+        {% if user %}
+            <a id="b_exit" class="right topMenu">退出</a>
+            <a href="{% url 'app-backend:setUser' %}" class="right topMenu">设置</a>
+            <a href="" class="right topMenu">消息</a>
+            <a href="" class="right topMenu">我的博客</a>
+            <a href="" class="right topMenu">{{ user.nickname }}</a>
+        {% else %}
+            <span class="right" style="font-size: 12px; ">]</span>
+            <a href="{% url 'app-sys:register' %}" class="right topMenu">注册</a>
+            <a href="{% url 'app-sys:login' %}" class="right topMenu">登录</a>
+            <span class="right" style="font-size: 12px; ">[</span>
+        {% endif %}
+    </div>
+    {# 2 顶部标题栏 #}
+    <div class="firstLever" style="border: #AAAAAA 1px solid; border-radius: 2px; ">
+        <img src="/static/images/title.png" class="left" style="margin: 5px 10px; " />
+        <span style="display: inline-block; font-size: 24px; font-weight: bold; color: #888888; height: 72px; line-height: 72px; margin-left: 100px; ">{% block pageTitle %}{% endblock %}</span>
+        <div class="right" style="margin: 5px 10px; ">{% include "include/titleAdvert.html" %}</div>
+    </div>
+    {# 3 内容区 #}
+    <div class="firstLever">
+        {% block subContents %}
+        {% endblock %}
+    </div>
+    {# 4 底部 #}
+    <hr>
+    <div class="firstLever" style="text-align: center; ">
+        <span class="bottomItem">友情链接：</span>
+        <span class="bottomItem">硅云</span>
+        <span class="bottomItem">阿里云</span>
+        <span class="bottomItem">腾讯云</span>
+        <span class="bottomItem">华为云</span>
+        <span class="bottomItem">百度云</span>
+        <span class="bottomItem">京东云</span>
+        <span class="bottomItem">亿速云</span>
+        <span class="bottomItem">网易云</span>
+        <span class="bottomItem">葡萄城控件</span>
+        <span class="bottomItem">站长之家</span>
+    </div>
+    <div style="text-align: center; margin-top: 10px; ">
+        <span class="bottomItem">Powered by .NET Core on Kubernetes</span>
+    </div>
+    <div style="text-align: center; margin-top: 10px; ">
+        <span class="bottomItem"><a href="">关于博客园</a></span>
+        <span class="bottomItem"><a href="">联系我们</a></span>
+        <span class="bottomItem"><a href="">广告服务</a></span>
+        <span class="bottomItem"><a href="">人才服务</a></span>
+        <span class="bottomItem">©2004-2020</span>
+        <span class="bottomItem"><a href="">博客园</a></span>
+        <span class="bottomItem">保留所有权利</span>
+        <span class="bottomItem"><a href="">沪ICP备09004260号</a></span>
+    </div>
+    <div style="text-align: center; margin-top: 10px; margin-bottom: 50px; ">
+        <img src="/static/images/netFlag1.png" style="height: 23px; ">
+        <span class="bottomItem">沪公网安备31011501001144</span>
+        <img src="/static/images/netFlag2.png" style="height: 20px; ">
+    </div>
+    <div id="dialogLogout" class="hide dialogMin">
+        <span>确定要注销吗？</span>
+        <div style="margin-top: 20px; ">
+            <input id="logoutCancel" type="button" class="right inputBtn" style="margin-left: 10px; " value="取消">
+            <input id="logoutOk" type="button" class="right inputBtn" style="margin-left: 10px; " value="确定">
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block frameScript %}
+    <script>
+        $("#b_exit").click(function () {
+            $(".cover-layer").removeClass("hide");
+            $("#dialogLogout").removeClass("hide");
+            console.log(111);
+        });
+        $("#logoutCancel").click(function () {
+            $("#dialogLogout").addClass("hide");
+            $(".cover-layer").addClass("hide");
+        });
+        $("#logoutOk").click(function () {
+                $.ajax({
+                    url: "{% url 'app-sys:logout' %}",
+                    type: "GET",
+                    dataType: "JSON",
+                    success: function (data) {
+                        if (data.result) {
+                            location.href = "{% url 'app-sys:login' %}"
+                        }
+                    }
+                });
+            });
+    </script>
+    {% block subScript %}
+    {% endblock %}
+{% endblock %}

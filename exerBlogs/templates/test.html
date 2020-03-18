@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>测试</title>
+    <style>
+        body{
+            margin: 0;
+        }
+        .pageMenu{
+            height: 50px;
+            line-height: 50px;
+            text-align: left;
+            font-size: 16px;
+            padding-left: 30px;
+            background-color: #BBBBBB;
+        }
+        .activePageMenu{
+            background-color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1>这里是测试页</h1>
+    <hr>
+    <div style="display: inline-block; width: 250px; background-color: #BBBBBB; overflow: hidden; position: absolute; left: 0; top: 85px; bottom: 0; border: #BBBBBB 1px solid; ">
+        <div class="pageMenu activePageMenu">账户设置</div>
+        <div class="pageMenu">个人资料</div>
+        <div class="pageMenu">头像设置</div>
+        <div class="pageMenu">博客设置</div>
+    </div>
+    <script src="/static/js/jquery3.4.1.js"></script>
+    <script>
+        $(".pageMenu").click(function () {
+            $(this).addClass("activePageMenu").siblings().removeClass("activePageMenu");
+        });
+    </script>
+</body>
+</html>

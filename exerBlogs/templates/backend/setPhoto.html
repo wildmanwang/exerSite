@@ -1,0 +1,99 @@
+{% extends "../extends/frameUser.html" %}
+
+
+{% block subStyle %}
+    <link href="/static/css/colEdit.css" type="text/css" rel="stylesheet">
+    <style>
+        .btnFile{
+            width: 100px;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            border-radius: 4px;
+        }
+        .uploadFrame{
+            position: relative;
+            margin: 50px 0 0 300px;
+        }
+        .uploadTop{
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100px;
+            height: 40px;
+            background-color: #336699;
+            color: white;
+            z-index: 90;
+        }
+        .uploadBottom{
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            z-index: 100;
+        }
+        .uploadDes{
+            position: absolute;
+            left: 110px;
+            top: 0;
+            text-align: left;
+        }
+        .imgPreview{
+            margin: 10px 0 20px 300px;
+        }
+    </style>
+{% endblock %}
+
+
+{% block pageTitle %}
+设置 —— 头像设置
+{% endblock %}
+
+
+{% block subContents %}
+    {% include "../include/setMenu.html" %}
+    <form>
+        {% csrf_token %}｝
+        <div class="btnFile uploadFrame">
+            <div class="btnFile uploadTop">选择头像</div>
+            <input type="file" id="myImg" name="myImg" class="btnFile uploadBottom" />
+            <div id="uploadBtn" class="btnFile uploadDes">上传头像</div>
+        </div>
+    </form>
+    <div id="imgPreview" class="imgPreview"><img src="{{ filename }}"></div>
+{% endblock %}
+
+
+{% block subScript %}
+    <script>
+        $(function () {
+            $("#myImg").change(function () {
+                var file = document.getElementById("myImg").files[0];
+                var fd = new FormData();
+                fd.append("csrfmiddlewaretoken", $("input[name='csrfmiddlewaretoken']").val());
+                fd.append("myImg", file);
+
+                $.ajax({
+                    url: "{% url 'app-backend:setPhoto' %}",
+                    type: "POST",
+                    data: fd,
+                    dataType: "JSON",
+                    processData: false,                 /*告诉jQuery不要当做字符串做特殊处理*/
+                    contentType: false,                 /*告诉jQuery不要当做字符串做特殊处理*/
+                    success: function (data, state, xhr) {
+                        fileOK(data.data);
+                    },
+                    error: function () {
+                        console.log("error!")
+                    }
+                });
+            });
+            function fileOK(filename) {
+                $("#imgPreview").empty();
+                var imgTag = document.createElement("img");
+                imgTag.src = filename;
+                $("#imgPreview").append(imgTag);
+            }
+        })
+    </script>
+{% endblock %}

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>杉旗博客</title>
+    <link href="/static/css/commons.css" rel="stylesheet" type="text/css">
+    {% block frameStyle %}{% endblock %}
+</head>
+<body>
+    <script src="/static/js/jquery3.4.1.js"></script>
+    {% block frameContents %}{% endblock %}
+    <div class="hide cover-layer"></div>
+    {% block frameScript %}{% endblock %}
+</body>
+</html>

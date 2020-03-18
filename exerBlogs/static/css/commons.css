@@ -1,0 +1,160 @@
+body{
+    margin: 0;
+}
+.cover-layer{
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: black;
+    opacity: 0.5;
+    z-index: 10;
+}
+.dialogCus{
+    border: darkgray 1px solid;
+    border-radius: 4px;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    padding: 5px;
+    background-color: white;
+    z-index: 20;
+}
+.dialogMin{
+    border: darkgray 1px solid;
+    border-radius: 4px;
+    position: fixed;
+    width: 320px;
+    left: 50%;
+    top: 50%;
+    padding: 20px 40px;
+    margin-top: -120px;
+    margin-left: -200px;
+    background-color: white;
+    z-index: 30;
+}
+.hide{
+    display: none;
+}
+.left{
+    display: inline-block;
+    float: left;
+}
+.right{
+    display: inline-block;
+    float: right;
+}
+.font-size1{
+    font-size: 12px;
+}
+.font-size2{
+    font-size: 16px;
+}
+.font-size3{
+    font-size: 20px;
+}
+.font-size4{
+    font-size: 24px;
+}
+.font-size5{
+    font-size: 28px;
+}
+.color1{
+    color: rgb(0, 0, 0);
+}
+.color2{
+    color: rgb(64, 64, 96)
+}
+.color3{
+    color: rgb(128, 128, 160);
+}
+.color4{
+    color: rgb(192, 192, 224);
+}
+.color5{
+    color: rgb(224, 224, 256);
+}
+.bkcolor1{
+    background-color: black;
+}
+.bkcolor2{
+    background-color: darkslategrey;
+}
+.bkcolor3{
+    background-color: cadetblue;
+}
+.bkcolor4{
+    background-color: lightgray;
+}
+.bkcolor5{
+    background-color: white;
+}
+table{
+    border: dimgray 2px solid;
+    border-collapse: collapse;
+}
+tr{
+    height: 35px;
+}
+th{
+    border: darkgray 1px solid;
+    background-color: rgb(240, 240, 240);
+    text-align: center;
+    font-size: 14px;
+    color: dimgray;
+}
+td{
+    border: darkgray 1px solid;
+    background-color: white;
+    font-size: 14px;
+    color: darkslategrey;
+}
+.inputLabel{
+    display: inline-block;
+    text-align: right;
+    width: 120px;
+    font-size: 14px;
+}
+.inputRequired{
+    display: inline-block;
+    text-align: center;
+    width: 10px;
+    font-size: 14px;
+    color: red;
+}
+.inputType{
+    width: 200px;
+    height: 30px;
+    font-size: 14px;
+    line-height: 30px;
+    border: darkgray 1px solid;
+    border-radius: 4px;
+}
+.inputBtn{
+    width: 98px;
+    height: 30px;
+    font-size: 14px;
+    line-height: 30px;
+    border: darkgray 1px solid;
+    border-radius: 4px;
+}
+.inputBtnBig{
+    width: 202px;
+    height: 34px;
+    font-size: 14px;
+    line-height: 30px;
+    background-color: #336699;
+    color: white;
+    border: none;
+    border-radius: 4px;
+}
+.labelBtn{
+    font-size: 14px;
+    color: blue;
+    margin: 0 5px;
+    cursor: pointer;
+}
+.promptInfo{
+    color: red;
+}

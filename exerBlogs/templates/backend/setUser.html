@@ -1,0 +1,53 @@
+{% extends "../extends/frameUser.html" %}
+
+
+{% block subStyle %}
+    <link href="/static/css/colEdit.css" type="text/css" rel="stylesheet">
+{% endblock %}
+
+
+{% block pageTitle %}
+设置 —— 账户设置
+{% endblock %}
+
+
+{% block subContents %}
+    {% include "../include/setMenu.html" %}
+    <form action="{% url 'app-backend:setUser' %}" method="POST">
+        {% csrf_token %}
+        <table style="margin-left: 300px; ">
+            {% if rec.non_field_errors %}
+                <tr>
+                    <td class="col1 promptInfo"><label>错误：</label></td>
+                    <td class="promptInfo" colspan="2">{{ rec.non_field_errors.0 }}</td>
+                </tr>
+            {% endif %}
+            {% for col in rec %}
+                <tr>
+                    <td class="col1"><label for="{{ col.id_for_label }}">{{ col.label }}：</label></td>
+                    <td class="col2">{{ col }}</td>
+                    <td class="col4"><div class="subRemark">{{ col.help_text }}</div></td>
+                    {% if col.errors %}
+                        <tr class="promptLine">
+                            <td class="col1 promptInfo">错误：</td>
+                            <td class="promptInfo" colspan="2">{{ col.errors.0 }}</td>
+                        </tr>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+        </table>
+        <p style="margin-left: 300px; ">
+            <input class="inputBtn" type="submit" value="提交" style="margin-left: 196px; ">
+            <input id="btnCancel" class="inputBtn" type="button" value="取消">
+        </p>
+    </form>
+{% endblock %}
+
+
+{% block subScript %}
+    <script>
+        $("#btnCancel").click(function () {
+            location.href = "{% url 'app-blogs:index' %}"
+        });
+    </script>
+{% endblock %}

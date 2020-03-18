@@ -1,0 +1,44 @@
+{% extends "extends/frame.html" %}
+
+
+{% block frameStyle %}
+    {% block pageStyle %}{% endblock %}
+{% endblock %}
+
+
+{% block frameContents %}
+    <div style="margin-top: 200px; ">
+        <div style="width: 700px; margin: 20px auto; ">
+            <span class="inputLabel"></span>
+            {% include "../include/blogFlag.html" %}
+            <span class="font-size4" style="vertical-align: top; line-height: 45px; color: #336699; margin-left: 5px; ">
+                {% block pageTitle %}{% endblock %}
+            </span>
+        </div>
+        <div style="background-color: cadetblue; ">
+            <div style="background-color: #99CCFF; width: 700px; padding: 50px; margin: 0 auto; overflow: hidden; ">
+                {% block pageContents %}{% endblock %}
+            </div>
+        </div>
+        <div>
+            <div style="width: 700px; padding: 50px; margin: 0 auto; overflow: hidden; ">
+                {% block pageAfter %}{% endblock %}
+            </div>
+        </div>
+    </div>
+    <div>
+        <div style="position: fixed; left: 0; right: 0; bottom: 0; background-color: #DDEEFF">
+            <div class="font-size2" style="width: 700px; height: 40px; padding: 0 50px; line-height: 40px; margin: 0 auto; overflow: hidden; ">
+                <span class="inputLabel"></span>
+                <a href="" class="" style="margin-right: 30px; ">联系我们</a>
+                <a href="" class="" style="margin-right: 30px; ">投诉建议</a>
+                <a href="" class="" style="margin-right: 30px; ">我要加盟</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block frameScript %}
+    {% block pageScript %}{% endblock %}
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends "../extends/frameSys.html" %}
+
+
+{% block pageStyle %}
+
+{% endblock %}
+
+
+{% block pageTitle %}
+    用户登录
+{% endblock %}
+
+
+{% block pageContents %}
+    <div style="position: relative; ">
+        <form action="{% url 'app-sys:login' %}" method="POST">
+            {% csrf_token %}
+            <p>
+                <label for="username" class="inputLabel">用户名：</label>
+                <input id="username" name="username" class="inputType" type="text" />
+            </p>
+            <p>
+                <label for="password" class="inputLabel">密码：</label>
+                <input id="password" name="password" class="inputType" type="password" />
+            </p>
+            <p>
+                <label class="inputLabel"></label>
+                <label class="promptInfo">{{ info }}</label>
+            </p>
+            <p>
+                <label class="inputLabel"></label>
+                <input type="submit" class="inputBtn bkcolor2 color5" value="登 录" style="width: 200px; height: 35px; font-size: 18px; border: none; " />
+            </p>
+        </form>
+    </div>
+{% endblock %}
+
+
+{% block pageAfter %}
+    <p>
+        <span class="inputLabel"></span>
+        <a href="" class="font-size2">忘记密码</a>
+    </p>
+    <p>
+        <span class="inputLabel"></span>
+        <a href="{% url 'app-sys:register' %}" class="font-size2">注册</a>
+    </p>
+{% endblock %}
+
+
+{% block pageScript %}
+{% endblock %}

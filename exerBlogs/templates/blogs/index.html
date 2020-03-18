@@ -1,0 +1,285 @@
+{% extends "../extends/frameUser.html" %}
+
+
+{% block subStyle %}
+<style>
+    .topFunMenu{
+        height: 22px;
+        line-height: 22px;
+        font-size: 14px;
+        color: #EEEEEE;
+        padding: 2px 0 6px 25px;
+        text-decoration: none;
+        cursor: pointer;
+    }
+    .topFunMenu:hover{
+        text-decoration-line: underline;
+    }
+    .leftMenuBlock{
+        padding: 10px 0 10px 20px;
+        border: #BBBBBB 1px solid;
+        border-radius: 3px;
+        margin-top: 10px;
+    }
+    .leftMenuGroup{
+        font-size: 14px;
+        color: #222222;
+        font-weight: bold;
+        margin: 5px;
+    }
+    .leftMenuItem{
+        display: block;
+        font-size: 14px;
+        color: #444444;
+        margin: 5px;
+        text-decoration: none;
+    }
+    .leftMenuItem:hover{
+        color: #5555FF;
+    }
+    .rightMenuBlock{
+        padding: 5px;
+        border: #BBBBBB 1px solid;
+        border-radius: 3px;
+        margin-top: 10px;
+    }
+    .rightMenuGroup{
+        font-size: 14px;
+        color: #FFAA22;
+        font-weight: bold;
+        margin: 5px;
+    }
+    .rightMenuItem{
+        display: block;
+        font-size: 12px;
+        color: #444444;
+        margin: 5px;
+        text-decoration: none;
+    }
+    .rightMenuItem:hover{
+        color: #5555FF;
+    }
+    .tabFrame{
+        height: 31px;
+        border-bottom: #BBBBBB 1px solid;
+        border-top-left-radius: 3px;
+        border-top-right-radius: 3px;
+        overflow: visible;
+    }
+    .tabSub{
+        height: 30px;
+        display: inline-block;
+        text-align: center;
+        line-height: 30px;
+        float: left;
+    }
+    .tabSpace{
+        width: 8px;
+        border: none;
+    }
+    .tabItem{
+        width: 50px;
+        border: #BBBBBB 1px solid;
+        background-color: #EEEEEE;
+        font-size: 14px;
+    }
+    .tabActive{
+        background-color: white;
+        border-bottom: white 1px solid;
+    }
+    .tabPageFrame{
+        border: #BBBBBB 1px solid;
+        border-bottom-left-radius: 3px;
+        border-bottom-right-radius: 3px;
+        border-top: none;
+        margin-bottom: 10px;
+    }
+    .tabPage{
+        padding: 10px;
+        overflow: hidden;
+    }
+</style>
+{% endblock %}
+
+
+{% block subContents %}
+    {# 3 顶部功能菜单 #}
+    <div class="firstLever" style="background-color: rgb(43, 102, 149); box-shadow: rgba(0, 0, 0, 0.25) -3px 1px 3px; ">
+        <a href="" class="left topFunMenu">园子</a>
+        <a href="" class="left topFunMenu">新闻</a>
+        <a href="" class="left topFunMenu">博问</a>
+        <a href="" class="left topFunMenu">闪存</a>
+        <a href="" class="left topFunMenu">小组</a>
+        <a href="" class="left topFunMenu">收藏</a>
+        <a href="" class="left topFunMenu">招聘</a>
+        <a href="" class="left topFunMenu">班级</a>
+        <a href="" class="left topFunMenu">找找看</a>
+    </div>
+    {# 4 内容区 #}
+    <div class="firstLever" style="position: relative; ">
+        {# 导航区 #}
+        <div style="display: inline-block; width: 160px; position: relative; left: 0; top: 0; background-color: #DDEEFF; ">
+            {# 网站分类 #}
+            <div class="leftMenuBlock" style="margin-top: 0; ">
+                <div class="leftMenuGroup">网站分类</div>
+                <a href="" class="leftMenuItem">.net技术</a>
+                <a href="" class="leftMenuItem">编程语言</a>
+                <a href="" class="leftMenuItem">软件设计</a>
+                <a href="" class="leftMenuItem">Web前端</a>
+                <a href="" class="leftMenuItem">企业信息化</a>
+                <a href="" class="leftMenuItem">手机开发</a>
+                <a href="" class="leftMenuItem">软件工程</a>
+                <a href="" class="leftMenuItem">数据库技术</a>
+                <a href="" class="leftMenuItem">操作系统</a>
+                <a href="" class="leftMenuItem">其他分类</a>
+            </div>
+            {# 链接 #}
+            <div class="leftMenuBlock">
+                <div class="leftMenuGroup">链接</div>
+                <a href="" class="leftMenuItem">反馈或建议</a>
+                <a href="" class="leftMenuItem">官方博客</a>
+                <a href="" class="leftMenuItem">博客模板</a>
+                <a href="" class="leftMenuItem">Java博客</a>
+                <a href="" class="leftMenuItem">C++博客</a>
+                <a href="" class="leftMenuItem">手机版</a>
+            </div>
+            {# 最新推荐博客 #}
+            <div class="leftMenuBlock">
+                <div class="leftMenuGroup">最新推荐博客</div>
+                <a href="" class="leftMenuItem">阿里巴巴原生</a>
+                <a href="" class="leftMenuItem">HarlanC</a>
+                <a href="" class="leftMenuItem">故乡卡比</a>
+                <a href="" class="leftMenuItem">野人王</a>
+                <a href="" class="leftMenuItem">挪威的森林</a>
+            </div>
+            {# 推荐博客排行 #}
+            <div class="leftMenuBlock">
+                <div class="leftMenuGroup">最新推荐博客</div>
+                <div href="" class="leftMenuItem">1. <a href="" class="leftMenuItem" style="display: inline; ">ArTech</a></div>
+                <div href="" class="leftMenuItem">2. <a href="" class="leftMenuItem" style="display: inline; ">路过秋天</a></div>
+                <div href="" class="leftMenuItem">3. <a href="" class="leftMenuItem" style="display: inline; ">小坦克</a></div>
+                <div href="" class="leftMenuItem">4. <a href="" class="leftMenuItem" style="display: inline; ">腾飞（Jesse)</a></div>
+                <div href="" class="leftMenuItem">5. <a href="" class="leftMenuItem" style="display: inline; ">张善友</a></div>
+                <div href="" class="leftMenuItem">6. <a href="" class="leftMenuItem" style="display: inline; ">EdisonZhou</a></div>
+                <div href="" class="leftMenuItem">7. <a href="" class="leftMenuItem" style="display: inline; ">葡萄城技术团队</a></div>
+                <div href="" class="leftMenuItem">8. <a href="" class="leftMenuItem" style="display: inline; ">CareySon</a></div>
+                <div href="" class="leftMenuItem">9. <a href="" class="leftMenuItem" style="display: inline; ">农码一生</a></div>
+                <div href="" class="leftMenuItem">11. <a href="" class="leftMenuItem" style="display: inline; ">三生石上(FineUI控件)</a></div>
+                <div href="" class="leftMenuItem">12. <a href="" class="leftMenuItem" style="display: inline; ">纯洁的微笑</a></div>
+                <div href="" class="leftMenuItem">13. <a href="" class="leftMenuItem" style="display: inline; ">一线码农</a></div>
+                <div href="" class="leftMenuItem">14. <a href="" class="leftMenuItem" style="display: inline; ">Savorboard</a></div>
+                <div href="" class="leftMenuItem">15. <a href="" class="leftMenuItem" style="display: inline; ">ChokCoco</a></div>
+                <div href="" class="leftMenuItem">16. <a href="" class="leftMenuItem" style="display: inline; ">叶小钗</a></div>
+                <div href="" class="leftMenuItem">17. <a href="" class="leftMenuItem" style="display: inline; ">滴答的雨</a></div>
+                <div href="" class="leftMenuItem">18. <a href="" class="leftMenuItem" style="display: inline; ">请叫我头头哥</a></div>
+                <div href="" class="leftMenuItem">19. <a href="" class="leftMenuItem" style="display: inline; ">Learning hard</a></div>
+                <div href="" class="leftMenuItem">20. <a href="" class="leftMenuItem" style="display: inline; ">Insus.NET</a></div>
+            </div>
+            {# 统计信息 #}
+            <div class="leftMenuBlock">
+                <div class="leftMenuGroup">统计信息</div>
+                <a href="" class="leftMenuItem">博客 - 555096</a>
+                <a href="" class="leftMenuItem">随笔 - 7758657</a>
+                <a href="" class="leftMenuItem">文章 - 777485</a>
+                <a href="" class="leftMenuItem">评论 - 3490433</a>
+            </div>
+        </div>
+        {# 内容区 #}
+        <div style="display: inline-block; min-width: 600px; position: absolute; left: 165px; right: 305px; top: 0; overflow: hidden; ">
+            {# 分页区 #}
+            <div class="tabFrame">
+                <div class="tabSub tabSpace"></div>
+                <div class="tabSub tabItem tabActive" data-target="A">首页</div>
+                <div class="tabSub tabSpace"></div>
+                <div class="tabSub tabItem" data-target="B">精华</div>
+                <div class="tabSub tabSpace"></div>
+                <div class="tabSub tabItem" data-target="C">候选</div>
+                <div class="tabSub tabSpace"></div>
+                <div class="tabSub tabItem" data-target="D">新闻</div>
+                <div class="tabSub tabSpace"></div>
+                <div class="tabSub tabItem" data-target="E">关注</div>
+                <div class="tabSub tabSpace"></div>
+                <div class="tabSub tabItem" data-target="F">我评</div>
+                <div class="tabSub tabSpace"></div>
+                <div class="tabSub tabItem" data-target="G">我赞</div>
+            </div>
+            {# 页面区 #}
+            <div class="tabPageFrame">
+                <div class="tabPage" data-target="A">
+                    {% for rec in recList %}
+                    {% endfor %}
+                </div>
+                <div class="tabPage hide" data-target="B">精华</div>
+                <div class="tabPage hide" data-target="C">候选</div>
+                <div class="tabPage hide" data-target="D">新闻</div>
+                <div class="tabPage hide" data-target="E">关注</div>
+                <div class="tabPage hide" data-target="F">我评</div>
+                <div class="tabPage hide" data-target="G">我赞</div>
+            </div>
+        </div>
+        {# 新闻广告区 #}
+        <div style="display: inline-block; width: 300px; position: absolute; right: 0; top: 0; background-color: #DDEEFF; ">
+            <a href="" class="rightMenuItem">【推荐】升级到ASP.NET Core 3.1 快、快、快！</a>
+            <a href="" class="rightMenuItem">【推荐】HTML5拓扑3D机房，电力工控Web SCADA</a>
+            <div class="rightMenuBlock">
+                <div class="rightMenuGroup">最新新闻</div>
+                <a href="" class="rightMenuItem">菜鸟宣布：国内快递业除湖北外已经100%恢复</a>
+                <a href="" class="rightMenuItem">Android是去年漏洞最多的系统，但谷歌认为这</a>
+                <a href="" class="rightMenuItem">SK海力士正加强手机图像传感器业务 已开发4款</a>
+                <a href="" class="rightMenuItem">美法官：亚马逊可能在起诉微软与美国防部云</a>
+                <a href="" class="rightMenuItem">AMD维持一季度业绩预期 预计营收17.5亿美</a>
+                <a href="" class="rightMenuItem">谷歌现移除Edge访问Chrome Web Store的安全</a>
+                <a href="" class="rightMenuItem">华为发布多个5G网络新品 可实现室内外双千兆</a>
+                <a href="" class="rightMenuItem">机器学习模型太大难部署？这里有3个解决方案</a>
+                <a href="" class="rightMenuItem">乘苹果“史诗级漏洞”，有人用安卓机给 iPhone7</a>
+                <a href="" class="rightMenuItem">图像传感器运行神经网络实现纳秒级时间内图像</a>
+            </div>
+            <div class="rightMenuBlock">
+                <div class="rightMenuGroup">48小时阅读排行</div>
+                <a href="" class="rightMenuItem">我的技术之路 - 工作五年的一次总结</a>
+                <a href="" class="rightMenuItem">【面试必备】硬核！30 张图解 HTTP 常见的面试</a>
+                <a href="" class="rightMenuItem">博客园主题——atum1.1升级发布啦</a>
+                <a href="" class="rightMenuItem">一个轻量级的基于 .NET Core 的 ORM 框架 HSQL</a>
+                <a href="" class="rightMenuItem">200行代码，7个对象——让你了解ASP.NET Core</a>
+                <a href="" class="rightMenuItem">[ASP.NET Core 3框架揭秘]服务承载系统[5]: 承</a>
+                <a href="" class="rightMenuItem">聊聊.netcore采坑那一些事之系统时间and文件路</a>
+                <a href="" class="rightMenuItem">程序员过关斩将--从每秒6000写请求谈起</a>
+                <a href="" class="rightMenuItem">初窥构建之法——记2020BUAA软工个人博客作业</a>
+                <a href="" class="rightMenuItem">开源网站云查杀方案，搭建自己的云杀毒。</a>
+            </div>
+            <div class="rightMenuBlock">
+                <div style="padding: 5px; height: 160px; position: relative; background-color: #FF6622; ">
+                    <div style="font-size: 16px; color: #BBDDFF; ">腾讯云</div>
+                    <span style="position: absolute; top: 0; right: 0; ">广告X</span>
+                </div>
+            </div>
+            <div class="rightMenuBlock">
+                <div class="rightMenuGroup">知识库最新文章</div>
+                <a href="" class="rightMenuItem">60年前美国军方的这个编程原则，造就了多少</a>
+                <a href="" class="rightMenuItem">从零开始入门 K8s | 手把手带你理解 etcd</a>
+                <a href="" class="rightMenuItem">程序员的重复劳动陷阱</a>
+                <a href="" class="rightMenuItem">K8s GC设计原则</a>
+                <a href="" class="rightMenuItem">云原生基础及调研</a>
+                <a href="" class="rightMenuItem">如何阅读技术书籍</a>
+                <a href="" class="rightMenuItem">【领导力】论理想中的技术团队</a>
+                <a href="" class="rightMenuItem">什么是云原生</a>
+            </div>
+            <div class="rightMenuBlock">
+                <div style="padding: 5px; height: 160px; position: relative; background-color: #FF6622; ">
+                    <div style="font-size: 16px; color: #BBDDFF; ">阿里云</div>
+                    <span style="position: absolute; top: 0; right: 0; ">广告X</span>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block subScript %}
+<script>
+    $(".tabItem").click(function () {
+        $(this).addClass("tabActive").siblings().removeClass("tabActive");
+        $(".tabPageFrame div[data-target='" + $(this).attr("data-target") + "']").removeClass("hide").siblings().addClass("hide");
+    });
+</script>
+{% endblock %}

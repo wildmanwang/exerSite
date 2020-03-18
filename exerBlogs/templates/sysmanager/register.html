@@ -1,0 +1,45 @@
+{% extends "../extends/frameSys.html" %}
+
+
+{% block pageStyle %}
+
+{% endblock %}
+
+{% block pageTitle %}
+    注册杉旗博客
+{% endblock %}
+
+
+{% block pageContents %}
+    <div style="position: relative; ">
+        <form action="{% url 'app-sys:register' %}" method="POST">
+            {% csrf_token %}
+            {% for field in rec %}
+                <p>
+                    <div>
+                        <label for="{{ field.id_for_label }}" class="inputLabel">{{ field.label }}：</label>
+                        {{ field }}
+                        <span class="promptInfo"></span>
+                    </div>
+                </p>
+            {% endfor %}
+            <p>
+                <label class="inputLabel"></label>
+                <input type="submit" class="inputBtn bkcolor2 color5" value="确认" style="width: 200px; height: 35px; font-size: 18px; border: none; ">
+            </p>
+        </form>
+    </div>
+{% endblock %}
+
+
+{% block pageAfter %}
+    <p>
+        <span class="inputLabel"></span>
+        <a href="{% url 'app-sys:login' %}" class="font-size2">登录</a>
+    </p>
+{% endblock %}
+
+
+{% block pageScript %}
+
+{% endblock %}
