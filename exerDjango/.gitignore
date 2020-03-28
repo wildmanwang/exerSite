@@ -4,6 +4,7 @@ build
 ven
 deploy
 TXT
+static/upload
 
 *.rar
 *.spec

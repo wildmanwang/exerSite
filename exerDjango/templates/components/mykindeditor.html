@@ -1,0 +1,24 @@
+{% extends "extends/frameMain.html" %}
+
+{% block pageTitle %}kind editor{% endblock %}
+
+{% block contentsFrame %}
+    <div style="width: 600px; margin: 20px; ">
+        <textarea id="myEditor"></textarea>
+    </div>
+    <div><a href="http://kindeditor.net/demo.php">官网</a></div>
+    <div><a href="https://www.cnblogs.com/wupeiqi/articles/6307554.html">博客</a></div>
+{% endblock %}
+
+{% block scriptFrame %}
+    <script src="/static/plugins/kindeditor/kindeditor-all-min.js"></script>
+    <script>
+        var myEditor = KindEditor.create("#myEditor", {
+            width: "100%",
+            height: "400px;",
+            minWidth: 300,
+            minHeight: 200,
+            uploadJson: '/uploadfile',
+        });
+    </script>
+{% endblock %}

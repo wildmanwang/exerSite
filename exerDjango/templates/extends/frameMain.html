@@ -1,0 +1,206 @@
+{% extends "extends/frame.html" %}
+
+
+{% block styleMain %}
+    <style>
+        #pg_top{
+            top: 0;
+            right: 0;
+            left: 0;
+            height: 58px;
+            background-color: #555555;
+            color: white;
+            border-bottom: #555555 2px solid;
+        }
+        #user:hover{
+            background-color: #888888;
+        }
+        #user_drop{
+            display: none;
+        }
+        #user:hover #user_drop{
+            display: block;
+        }
+        #user_drop div{
+            padding: 10px 15px;
+            width: 170px;
+            color: #555555;
+            font-size: 12px;
+        }
+        #user_drop div:hover{
+            background-color: #EEEEFF;
+        }
+        #content #menu{
+            position: absolute;
+            top: 60px;
+            bottom: 0;
+            left: 0;
+            width: 250px;
+            background-color: #666666;
+        }
+        #sheetTitle{
+            position: absolute;
+            top: 60px;
+            right: 0;
+            left: 250px;
+            height: 30px;
+            min-width: 800px;
+            background-color: #DDAAAA;
+            padding: 10px;
+            overflow: auto;
+        }
+        #myFrame{
+            position: absolute;
+            top: 110px;
+            right: 0;
+            bottom: 0;
+            left: 250px;
+            min-width: 800px;
+            background-color: #DDDDDD;
+            padding: 10px;
+            overflow: auto;
+        }
+        .funGp{
+            height: 40px;
+            background-color: #666666;
+            color: white;
+            font-size: 14px;
+            padding-left: 40px;
+            line-height: 40px;
+            background-size: 26px;
+            background-position: 12px 7px;
+            background-image: url('/static/imgs/分组.png');
+            background-repeat: no-repeat;
+            cursor: pointer;
+        }
+        .funItem{
+            height: 30px;
+            background-color: #AABBCC;
+            font-size: 12px;
+            padding-left: 60px;
+            line-height: 30px;
+            background-size: 16px;
+            background-position: 36px 7px;
+            background-image: url('/static/imgs/功能.png');
+            background-repeat: no-repeat;
+            cursor: pointer;
+        }
+        .hide{
+            display: none;
+        }
+    </style>
+    {% block styleFrame %}{% endblock %}
+{% endblock %}
+
+
+{% block contentsMain %}
+<body style="margin: 0;">
+    <!--顶部标题栏-->
+    <div id="pg_top">
+        <img src="/static/imgs/mis.png" style="width: 30px; height: 30px; margin: 15px 20px; float: left; " />
+        <div style="display: inline-block; color: white; font-size: 20px; line-height: 60px; float: left">Django学习笔记</div>
+        <div style="display: inline-block; color: white; font-size: 12px; border: white 1px solid; width: 80px; height: 30px; border-radius: 4px; text-align: center; line-height: 30px; margin: 15px 20px; float: right">退出登录</div>
+        <div id="user" style="position: relative; display: inline-block; width: 140px; height: 60px; float: right">
+            <div style="display: inline-block; margin-right: 20px; color: white; font-size: 12px; line-height: 60px; float: right">拾落的流星</div>
+            <img src="/static/imgs/头像.png" style="width: 30px; height: 30px; border-radius: 50%; margin: 15px 10px; float: right; " />
+            <div id="user_drop" style="position: absolute; width: 200px; top: 60px; right: -20px; background-color: #FFEEEE; border: #888888 1px solid; z-index: 20 ">
+                <div class="user_menu">我的资料</div>
+                <div class="user_menu">修改密码</div>
+                <div class="user_menu">退出</div>
+            </div>
+        </div>
+    </div>
+    <!--下部-->
+    <div id="content" style="overflow: hidden; z-index: 10; ">
+        <!--左侧菜单栏-->
+        <div id="menu">
+            <div style="margin-top: 10px;">
+                <div id="gpFunc" class="funGp" data-ext="0">功能列表</div>
+                <div class="funItem hide">员工-分页</div>
+                <div class="funItem hide">员工-集成</div>
+            </div>
+            <div>
+                <div id="gpOther" class="funGp" data-ext="0">组件列表</div>
+                <div class="funItem hide">分页</div>
+                <div class="funItem hide">图片上传</div>
+                <div class="funItem hide">kindeditor</div>
+            </div>
+            <div>
+                <div id="gpSys" class="funGp" data-ext="0">系统菜单</div>
+                <div class="funItem hide">我的主页</div>
+            </div>
+        </div>
+        <!--右侧内容区-->
+        <div id="sheetTitle">
+            <div style="height: 30px; font-size: 20px; color: darkslategrey; line-height: 30px; font-weight: bold; padding-left: 20px; ">{% block pageTitle %}{% endblock %}</div>
+        </div>
+        <div id="myFrame" style="z-index: 15; ">
+            {% block contentsFrame %}
+            {% endblock %}
+        </div>
+    </div>
+    <script src="/static/jquery3.4.1.js"></script>
+    <script>
+        tags = document.getElementsByClassName("funGp");
+        for (var i in tags) {
+            tags[i].onclick = function() {
+                // 获取当前及父标签
+                var flag_ext = this.dataset.ext;
+                var parentTag = this.parentElement;
+                // 收缩全部分组
+                var allTag = parentTag.parentElement.children;
+                for (var i in allTag) {
+                    if (typeof (allTag[i]) == "object") {
+                        var childTag = allTag[i].children;
+                        for (var j in childTag) {
+                            if (typeof (childTag[j].className) == "string") {
+                                if (childTag[j].className.indexOf("funItem") >= 0) {
+                                    childTag[j].classList.add("hide");
+                                } else if (childTag[j].className.indexOf("funGp") >= 0) {
+                                    childTag[j].dataset.ext = "0"
+                                }
+                            }
+                        }
+                    }
+                }
+                //展开当前分组
+                if (flag_ext === "0") {
+                    allTag = parentTag.children;
+                    for (i in allTag) {
+                        if (typeof (allTag[i].className) == "string") {
+                            if (allTag[i].className.indexOf("funItem") >= 0) {
+                                allTag[i].classList.remove("hide");
+                            }
+                        }
+                    }
+                    this.dataset.ext = "1";
+                }
+            };
+        }
+
+        tags = document.getElementsByClassName("user_menu");
+        for (i in tags) {
+            tags[i].onclick = function () {
+                if (this.innerText === "我的资料") console.log("这是我的资料");
+                else if (this.innerText === "修改密码") console.log("这是修改密码");
+                else if (this.innerText === "退出") console.log("这是退出");
+            };
+        }
+
+        tags = document.getElementsByClassName("funItem");
+        for (i in tags) {
+            tags[i].onclick = function () {
+                var frame = document.getElementById("conPage");
+                if (this.innerText === "员工-分页") location.href = "{% url "employees" %}";
+                else if (this.innerText === "员工-集成") location.href = "{% url "employeesAllInOne" %}";
+
+                else if (this.innerText === "分页") location.href = "{% url "multipages" pageNo=1 %}";
+                else if (this.innerText === "图片上传") location.href = "{% url "uploadfile" %}";
+                else if (this.innerText === "kindeditor") location.href = "{% url "mykindeditor" %}";
+
+                else if (this.innerText === "我的主页") location.href = "{% url "index" %}";
+            };
+        }
+    </script>
+    {% block scriptFrame %}{% endblock %}
+{% endblock %}

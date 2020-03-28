@@ -65,14 +65,16 @@
 
 
 {% block scriptFrame %}
-    $(".btn_delete").click(function () {
-        $("#deleteID").val($(this).attr("targetID"));
-        $("#deleteAsk").text("确定要删除ID为[" + $(this).attr("targetID") + "]的员工吗？");
-        $("#winAsk").removeClass("hide");
-        $(".mask").removeClass("hide");
-    });
-    $("#btn_cancel").click(function () {
-        $("#winAsk").addClass("hide");
-        $(".mask").addClass("hide");
-    });
+    <script>
+        $(".btn_delete").click(function () {
+            $("#deleteID").val($(this).attr("targetID"));
+            $("#deleteAsk").text("确定要删除ID为[" + $(this).attr("targetID") + "]的员工吗？");
+            $("#winAsk").removeClass("hide");
+            $(".mask").removeClass("hide");
+        });
+        $("#btn_cancel").click(function () {
+            $("#winAsk").addClass("hide");
+            $(".mask").addClass("hide");
+        });
+    </script>
 {% endblock %}

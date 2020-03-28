@@ -1,6 +1,6 @@
 from django.shortcuts import HttpResponse, render, redirect
 from appSys import models
-import json
+import os, json
 
 
 # Create your views here.
@@ -23,12 +23,16 @@ def login(request):
             return render(request, "login.html", {"info": "用户或密码错误！"})
 
 
+def index(request):
+    return render(request, "sysfuncs/index.html")
+
+
 def employees(request):
-    return render(request, "employees.html", {"users": models.Employee.objects.all()})
+    return render(request, "functions/employees.html", {"users": models.Employee.objects.all()})
 
 
 def employeesAllInOne(request):
-    return render(request, "employeesAllInOne.html", {"users": models.Employee.objects.all(), "dept": models.Department.objects.all(), "projects": models.Project.objects.all()})
+    return render(request, "functions/employeesAllInOne.html", {"users": models.Employee.objects.all(), "dept": models.Department.objects.all(), "projects": models.Project.objects.all()})
 
 
 def employeeDetail(request, userID):
@@ -36,12 +40,12 @@ def employeeDetail(request, userID):
     if not res:
         return HttpResponse("<head><meta http-equiv='Refresh' Content='3;/employees'></head><body><h3>查无此员工!</h3></body>")
     else:
-        return render(request, "emp_detail.html", {"user": res})
+        return render(request, "functions/emp_detail.html", {"user": res})
 
 
 def employeeNew(request):
     if request.method == "GET":
-        return render(request, "emp_new.html")
+        return render(request, "functions/emp_new.html")
     elif request.method == "POST":
         rtn = {
             "result": False,
@@ -95,7 +99,7 @@ def employeeUpdate(request, userID):
         if not res:
             return HttpResponse("<head><meta http-equiv='Refresh' Content='3;/employees'></head><body><h3>查无此员工!</h3></body>")
         dept = models.Department.objects.all()
-        return render(request, "emp_update.html", {"user": res, "dept": dept})
+        return render(request, "functions/emp_update.html", {"user": res, "dept": dept})
     elif request.method == "POST":
         rtn = {
             "result": False,
@@ -197,4 +201,30 @@ def multipages(request, pageNo):
     from utils.pages import Pages
 
     page = Pages(len(PageDatas), 12, "/multipages-", pageNo)
-    return render(request, "multipages.html", {"data": PageDatas[page.startRec:page.endRec], "pagetag": page.pageStr})
+    return render(request, "components/multipages.html", {"data": PageDatas[page.startRec:page.endRec], "pagetag": page.pageStr})
+
+
+def uploadfile(request):
+    if request.method == "GET":
+        return render(request, "components/uploadfile.html")
+    elif request.method == "POST":
+        rtn = {
+            "result": False,
+            "data": None,
+            "info": None
+        }
+        myfile = request.FILES.get("myfile")
+        filename = os.path.join("static/upload", myfile.name)
+        with open(filename, "wb") as f:
+            for item in myfile.chunks():
+                f.write(item)
+        rtn["result"] = True
+        rtn["data"] = filename
+        rep =  HttpResponse(json.dumps(rtn))
+        rep["X-Frame-Options"] = "SAMEORIGIN"               # 允许在Frame框架中显示
+
+        return rep
+
+
+def mykindeditor(request):
+    return render(request, "components/mykindeditor.html")

@@ -19,15 +19,20 @@ import appSys.views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('login/', appSys.views.login),
-    path('employees', appSys.views.employees),
-    path('employeesAllInOne', appSys.views.employeesAllInOne),
-    re_path('employee/detail-(?P<userID>\d+)', appSys.views.employeeDetail),
-    path('employee/new', appSys.views.employeeNew),
-    path('employee/newmany', appSys.views.employeeNewmany),
-    re_path('employee/update-(?P<userID>\d+)', appSys.views.employeeUpdate),
-    re_path('employee/updatemany-(?P<userID>\d+)$', appSys.views.employeeUpdatemany),
-    path('employee/delete', appSys.views.employeeDelete),
-    path('employee/deletemany', appSys.views.employeeDeletemany),
-    re_path('multipages-(?P<pageNo>\d+)$', appSys.views.multipages),
+
+    path('employees', appSys.views.employees, name="employees"),
+    path('employeesAllInOne', appSys.views.employeesAllInOne, name="employeesAllInOne"),
+    re_path('employee/detail-(?P<userID>\d+)', appSys.views.employeeDetail, name="employeeDetail"),
+    path('employee/new', appSys.views.employeeNew, name="employeeNew"),
+    path('employee/newmany', appSys.views.employeeNewmany, name="employeeNewmany"),
+    re_path('employee/update-(?P<userID>\d+)', appSys.views.employeeUpdate, name="employeeUpdate"),
+    re_path('employee/updatemany-(?P<userID>\d+)$', appSys.views.employeeUpdatemany, name="employeeUpdatemany"),
+    path('employee/delete', appSys.views.employeeDelete, name="employeeDelete"),
+    path('employee/deletemany', appSys.views.employeeDeletemany, name="employeeDeletemany"),
+
+    re_path('multipages-(?P<pageNo>\d+)$', appSys.views.multipages, name="multipages"),
+    re_path('uploadfile', appSys.views.uploadfile, name="uploadfile"),
+    re_path("mykindeditor", appSys.views.mykindeditor, name="mykindeditor"),
+
+    path("", appSys.views.index, name="index"),
 ]

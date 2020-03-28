@@ -1,19 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>分页</title>
+{% extends "extends/frameMain.html" %}
+
+
+{% block pageTitle %}分页{% endblock %}
+
+
+{% block styleFrame %}
     <style>
         .page{
             display: inline-block;
             margin: 0 5px;
         }
     </style>
-</head>
-<body>
+{% endblock %}
+
+
+{% block contentsFrame %}
     {% for item in data %}
         <li>{{ item }}</li>
     {% endfor %}
     {{ pagetag|safe }}
-</body>
-</html>
+{% endblock %}

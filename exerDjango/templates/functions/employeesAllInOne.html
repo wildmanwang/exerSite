@@ -218,217 +218,219 @@
 
 
 {% block scriptFrame %}
-    $(function () {
-        $("#btn_new").click(function () {
-            $("#winNew").removeClass("hide");
-            $(".mask").removeClass("hide");
-        });
-        $("#btn_newsubmit").click(function () {
-            $("#newinfo").val("");
-            $.ajax({
-                url: 'employee/new',
-                type: 'POST',
-                data: $("#formnew").serialize(),
-                data1: {
-                    "jobNumber": $("#jobNumber").val(),
-                    "name": $("#name").val(),
-                    "gender": $("#gender").prop("checked")?1:0,
-                    "dept_id": $("#dept_id").val(),
-                    "position": $("#position").val(),
-                    "email": $("#email").val(),
-                    "mobile": $("#mobile").val(),
-                    "pwd": $("#pwd").val()
-                },
-                success: function (data) {
-                    rtn = JSON.parse(data);
-                    if (rtn.result) {
-                        location.reload();
-                    }
-                    else {
-                        $("#newinfo").text(rtn.info);
-                    }
-                }
-            })
-        });
-        $("#btn_newcancel").click(function () {
-            $("#winNew").addClass("hide");
-            $(".mask").addClass("hide");
-        });
-        $("#btn_newtest").click(function () {
-            $("#newinfo").text($("#gender").prop("checked"));
-        });
-        $("#btn_newmany").click(function () {
-            $("#winNewmany").removeClass("hide");
-            $(".mask").removeClass("hide");
-        });
-        $("#btn_newsubmitmany").click(function () {
-            $("#newmanyinfo").val("");
-            $.ajax({
-                url: 'employee/newmany',
-                type: 'POST',
-                data: $("#formnewmany").serialize(),
-                success: function (data) {
-                    rtn = JSON.parse(data);
-                    if (rtn.result) {
-                        location.reload();
-                    }
-                    else {
-                        $("#newmanyinfo").text(rtn.info);
-                    }
-                }
-            })
-        });
-        $("#btn_newcancelmany").click(function () {
-            $("#winNewmany").addClass("hide");
-            $(".mask").addClass("hide");
-        });
-        $(".btn_delete").click(function () {
-            $("#deleteID").val($(this).parent().parent().attr("targetID"));
-            $("#deleteAsk").text("确定要删除ID为[" + $(this).parent().parent().attr("targetID") + "]的员工吗？");
-            $("#winDelete").removeClass("hide");
-            $(".mask").removeClass("hide");
-        });
-        $("#btn_deletesubmit").click(function () {
-            $.ajax({
-                url: 'employee/delete',
-                type: "POST",
-                data: $("#formdelete").serialize(),
-                success: function (data) {
-                    rtn = JSON.parse(data);
-                    if (rtn.result) {
-                        location.reload();
-                    }
-                    else {
-                        $("#deleteinfo").text(rtn.info);
-                    }
-                }
-            })
-        });
-        $("#btn_delcancel").click(function () {
-            $("#winDelete").addClass("hide");
-            $(".mask").addClass("hide");
-        });
-        $(".btn_update").click(function () {
-            $("#winUpdate form").attr("targetID", $(this).parent().parent().attr("targetID"));
-            $("#winUpdate [name='jobNumber']").val($(this).parent().parent().find(".jobNumber").text());
-            $("#winUpdate [name='name']").val($(this).parent().parent().find(".name").text());
-            if ($(this).parent().parent().find(".gender").text() === "男") {
-                $("#gender1").prop("checked", true);
-            }
-            else {
-                $("#gender0").prop("checked", true);
-            }
-            $("#winUpdate [name='dept_id']").val($(this).parent().parent().find(".deptname").attr("targetID"));
-            $("#winUpdate [name='position']").val($(this).parent().parent().find(".position").attr("targetID"));
-            $("#winUpdate [name='email']").val($(this).parent().parent().find(".email").text());
-            $("#winUpdate [name='phone']").val($(this).parent().parent().find(".phone").text());
-            $("#winUpdate [name='pwd']").val($(this).parent().parent().find(".pwd").text());
-            $("#winUpdate [name='status']").val($(this).parent().parent().find(".status").text());
-            $("#winUpdate").removeClass("hide");
-            $(".mask").removeClass("hide");
-        });
-        $("#btn_updatesubmit").click(function () {
-            $.ajax({
-                url: "employee/update-" + $("#winUpdate form").attr("targetID"),
-                type: "POST",
-                data: $("#winUpdate form").serialize(),
-                success: function (data) {
-                    rtn = JSON.parse(data);
-                    if (rtn.result) {
-                        location.reload();
-                    }
-                    else {
-                        $("#updateinfo").text(rtn.info);
-                    }
-                }
-            })
-        });
-        $("#btn_updcancel").click(function () {
-            $("#winUpdate").addClass("hide");
-            $(".mask").addClass("hide");
-        });
-        $("#btn_updtest").click(function () {
-            $("#dept_id").find("option[text='研发中心']").attr("selected", true);
-        });
-        $(".btn_updatemany").click(function () {
-            $("#winUpdatemany form").attr("targetID", $(this).parent().parent().attr("targetID"));
-            $("#winUpdatemany [name='jobNumber']").val($(this).parent().parent().find(".jobNumber").text());
-            $("#winUpdatemany [name='name']").val($(this).parent().parent().find(".name").text());
-            if ($(this).parent().parent().find(".gender").text() === "男")  {
-                $("#gender3").prop("checked", true);
-            }
-            else {
-                $("#gender2").prop("checked", true);
-            }
-            selectValue = [];
-            $(this).parent().parent().find(".project .relation").each(function () {
-                selectValue.push($(this).attr("targetID"));
+    <script>
+        $(function () {
+            $("#btn_new").click(function () {
+                $("#winNew").removeClass("hide");
+                $(".mask").removeClass("hide");
             });
-            $("#winUpdatemany select").val(selectValue);
-            $("#winUpdatemany").removeClass("hide");
-            $(".mask").removeClass("hide");
-        });
-        $("#btn_updatesubmitmany").click(function () {
-            $("#updatemanyinfo").text("");
-            $.ajax({
-                url: 'employee/updatemany-' + $("#winUpdatemany form").attr("targetID"),
-                method: 'POST',
-                data: $("#formupdatemany").serialize(),
-                success: function (data) {
-                    rtn = JSON.parse(data);
-                    if (rtn.result) {
-                        location.reload();
+            $("#btn_newsubmit").click(function () {
+                $("#newinfo").val("");
+                $.ajax({
+                    url: 'employee/new',
+                    type: 'POST',
+                    data: $("#formnew").serialize(),
+                    data1: {
+                        "jobNumber": $("#jobNumber").val(),
+                        "name": $("#name").val(),
+                        "gender": $("#gender").prop("checked")?1:0,
+                        "dept_id": $("#dept_id").val(),
+                        "position": $("#position").val(),
+                        "email": $("#email").val(),
+                        "mobile": $("#mobile").val(),
+                        "pwd": $("#pwd").val()
+                    },
+                    success: function (data) {
+                        rtn = JSON.parse(data);
+                        if (rtn.result) {
+                            location.reload();
+                        }
+                        else {
+                            $("#newinfo").text(rtn.info);
+                        }
                     }
-                    else {
-                        $("#updatemanyinfo").text(rtn.info);
+                })
+            });
+            $("#btn_newcancel").click(function () {
+                $("#winNew").addClass("hide");
+                $(".mask").addClass("hide");
+            });
+            $("#btn_newtest").click(function () {
+                $("#newinfo").text($("#gender").prop("checked"));
+            });
+            $("#btn_newmany").click(function () {
+                $("#winNewmany").removeClass("hide");
+                $(".mask").removeClass("hide");
+            });
+            $("#btn_newsubmitmany").click(function () {
+                $("#newmanyinfo").val("");
+                $.ajax({
+                    url: 'employee/newmany',
+                    type: 'POST',
+                    data: $("#formnewmany").serialize(),
+                    success: function (data) {
+                        rtn = JSON.parse(data);
+                        if (rtn.result) {
+                            location.reload();
+                        }
+                        else {
+                            $("#newmanyinfo").text(rtn.info);
+                        }
                     }
+                })
+            });
+            $("#btn_newcancelmany").click(function () {
+                $("#winNewmany").addClass("hide");
+                $(".mask").addClass("hide");
+            });
+            $(".btn_delete").click(function () {
+                $("#deleteID").val($(this).parent().parent().attr("targetID"));
+                $("#deleteAsk").text("确定要删除ID为[" + $(this).parent().parent().attr("targetID") + "]的员工吗？");
+                $("#winDelete").removeClass("hide");
+                $(".mask").removeClass("hide");
+            });
+            $("#btn_deletesubmit").click(function () {
+                $.ajax({
+                    url: 'employee/delete',
+                    type: "POST",
+                    data: $("#formdelete").serialize(),
+                    success: function (data) {
+                        rtn = JSON.parse(data);
+                        if (rtn.result) {
+                            location.reload();
+                        }
+                        else {
+                            $("#deleteinfo").text(rtn.info);
+                        }
+                    }
+                })
+            });
+            $("#btn_delcancel").click(function () {
+                $("#winDelete").addClass("hide");
+                $(".mask").addClass("hide");
+            });
+            $(".btn_update").click(function () {
+                $("#winUpdate form").attr("targetID", $(this).parent().parent().attr("targetID"));
+                $("#winUpdate [name='jobNumber']").val($(this).parent().parent().find(".jobNumber").text());
+                $("#winUpdate [name='name']").val($(this).parent().parent().find(".name").text());
+                if ($(this).parent().parent().find(".gender").text() === "男") {
+                    $("#gender1").prop("checked", true);
                 }
-            })
-        });
-        $("#btn_updatecancelmany").click(function () {
-            $("#winUpdatemany").addClass("hide");
-            $(".mask").addClass("hide");
-        });
-        $(".btn_deletemany").click(function () {
-            $("#formdeletemany [name='userID']").val($(this).parent().parent().attr("targetID"));
-            $("#deletemanyinfo").text("");
-            $("#winDeletemany").removeClass("hide");
-            $(".mask").removeClass("hide");
-        });
-        $("#btn_deletemanysubmit").click(function () {
-            $.ajax({
-                url: 'employee/deletemany',
-                method: 'POST',
-                data: $("#formdeletemany").serialize(),
-                success: function (data) {
-                    rtn = JSON.parse(data);
-                    if (rtn.result) {
-                        location.reload();
-                    }
-                    else {
-                        $("#deletemanyinfo").text(rtn.info);
-                    }
+                else {
+                    $("#gender0").prop("checked", true);
                 }
-            })
-        });
-        $("#btn_delmanycancel").click(function () {
-            $("#winDeletemany").addClass("hide");
-            $(".mask").addClass("hide");
-        });
-        $(".name").click(function () {
-            $("#winDetail .jobNumber").text($(this).parent().find(".jobNumber").text());
-            $("#winDetail .name").text($(this).parent().find(".name").text());
-            $("#winDetail .gender").text($(this).parent().find(".gender").text());
-            $("#winDetail .deptname").text($(this).parent().find(".deptname").text());
-            $("#winDetail .position").text($(this).parent().find(".position").text());
-            $("#winDetail .pwd").text($(this).parent().find(".pwd").text());
-            $("#winDetail .status").text($(this).parent().find(".status").text());
-            $("#winDetail").removeClass("hide");
-            $(".mask").removeClass("hide");
-        });
-        $("#btn_detcancel").click(function () {
-            $("#winDetail").addClass("hide");
-            $(".mask").addClass("hide");
-        });
-    })
+                $("#winUpdate [name='dept_id']").val($(this).parent().parent().find(".deptname").attr("targetID"));
+                $("#winUpdate [name='position']").val($(this).parent().parent().find(".position").attr("targetID"));
+                $("#winUpdate [name='email']").val($(this).parent().parent().find(".email").text());
+                $("#winUpdate [name='phone']").val($(this).parent().parent().find(".phone").text());
+                $("#winUpdate [name='pwd']").val($(this).parent().parent().find(".pwd").text());
+                $("#winUpdate [name='status']").val($(this).parent().parent().find(".status").text());
+                $("#winUpdate").removeClass("hide");
+                $(".mask").removeClass("hide");
+            });
+            $("#btn_updatesubmit").click(function () {
+                $.ajax({
+                    url: "employee/update-" + $("#winUpdate form").attr("targetID"),
+                    type: "POST",
+                    data: $("#winUpdate form").serialize(),
+                    success: function (data) {
+                        rtn = JSON.parse(data);
+                        if (rtn.result) {
+                            location.reload();
+                        }
+                        else {
+                            $("#updateinfo").text(rtn.info);
+                        }
+                    }
+                })
+            });
+            $("#btn_updcancel").click(function () {
+                $("#winUpdate").addClass("hide");
+                $(".mask").addClass("hide");
+            });
+            $("#btn_updtest").click(function () {
+                $("#dept_id").find("option[text='研发中心']").attr("selected", true);
+            });
+            $(".btn_updatemany").click(function () {
+                $("#winUpdatemany form").attr("targetID", $(this).parent().parent().attr("targetID"));
+                $("#winUpdatemany [name='jobNumber']").val($(this).parent().parent().find(".jobNumber").text());
+                $("#winUpdatemany [name='name']").val($(this).parent().parent().find(".name").text());
+                if ($(this).parent().parent().find(".gender").text() === "男")  {
+                    $("#gender3").prop("checked", true);
+                }
+                else {
+                    $("#gender2").prop("checked", true);
+                }
+                selectValue = [];
+                $(this).parent().parent().find(".project .relation").each(function () {
+                    selectValue.push($(this).attr("targetID"));
+                });
+                $("#winUpdatemany select").val(selectValue);
+                $("#winUpdatemany").removeClass("hide");
+                $(".mask").removeClass("hide");
+            });
+            $("#btn_updatesubmitmany").click(function () {
+                $("#updatemanyinfo").text("");
+                $.ajax({
+                    url: 'employee/updatemany-' + $("#winUpdatemany form").attr("targetID"),
+                    method: 'POST',
+                    data: $("#formupdatemany").serialize(),
+                    success: function (data) {
+                        rtn = JSON.parse(data);
+                        if (rtn.result) {
+                            location.reload();
+                        }
+                        else {
+                            $("#updatemanyinfo").text(rtn.info);
+                        }
+                    }
+                })
+            });
+            $("#btn_updatecancelmany").click(function () {
+                $("#winUpdatemany").addClass("hide");
+                $(".mask").addClass("hide");
+            });
+            $(".btn_deletemany").click(function () {
+                $("#formdeletemany [name='userID']").val($(this).parent().parent().attr("targetID"));
+                $("#deletemanyinfo").text("");
+                $("#winDeletemany").removeClass("hide");
+                $(".mask").removeClass("hide");
+            });
+            $("#btn_deletemanysubmit").click(function () {
+                $.ajax({
+                    url: 'employee/deletemany',
+                    method: 'POST',
+                    data: $("#formdeletemany").serialize(),
+                    success: function (data) {
+                        rtn = JSON.parse(data);
+                        if (rtn.result) {
+                            location.reload();
+                        }
+                        else {
+                            $("#deletemanyinfo").text(rtn.info);
+                        }
+                    }
+                })
+            });
+            $("#btn_delmanycancel").click(function () {
+                $("#winDeletemany").addClass("hide");
+                $(".mask").addClass("hide");
+            });
+            $(".name").click(function () {
+                $("#winDetail .jobNumber").text($(this).parent().find(".jobNumber").text());
+                $("#winDetail .name").text($(this).parent().find(".name").text());
+                $("#winDetail .gender").text($(this).parent().find(".gender").text());
+                $("#winDetail .deptname").text($(this).parent().find(".deptname").text());
+                $("#winDetail .position").text($(this).parent().find(".position").text());
+                $("#winDetail .pwd").text($(this).parent().find(".pwd").text());
+                $("#winDetail .status").text($(this).parent().find(".status").text());
+                $("#winDetail").removeClass("hide");
+                $(".mask").removeClass("hide");
+            });
+            $("#btn_detcancel").click(function () {
+                $("#winDetail").addClass("hide");
+                $(".mask").addClass("hide");
+            });
+        })
+    </script>
 {% endblock %}

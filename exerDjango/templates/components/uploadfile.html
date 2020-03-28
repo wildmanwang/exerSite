@@ -1,0 +1,92 @@
+{% extends "extends/frameMain.html" %}
+
+{% block pageTitle %}图片上传{% endblock %}
+
+{% block contentsFrame %}
+    <p>
+        <input type="file" id="file1">
+    </p>
+    <input type="button" id="btnUpload" value="上传XHR" onclick="submitXhr();">
+    <input type="button" id="btnUpload" value="上传JQ" onclick="submitJq();">
+    <hr>
+    <form action="/uploadfile" method="POST" enctype="multipart/form-data" target="ifm1">
+        <iframe id="ifm1" name="ifm1" style="display: none; "></iframe>
+        <input type="file" id="file2" name="myfile" onchange="changeIfm();">
+        <p>
+            <input type="submit" onclick="submitIframe();" value="上传iFrame">
+        </p>
+    </form>
+    <hr>
+    <form id="form2" action="/uploadfile" method="POST" enctype="multipart/form-data" target="ifm2">
+        <iframe id="ifm2" name="ifm2" style="display: none; "></iframe>
+        <input type="file" id="file3" name="myfile" onchange="changeIfm();">
+    </form>
+    <div id="imgPreview"></div>
+{% endblock %}
+
+
+{% block scriptFrame %}
+    <script>
+        function submitXhr() {
+            console.log("通过XMLHttpRequest上传文件");
+            var file = document.getElementById("file1").files[0];
+            var fd = new FormData();
+            fd.append("xxx", "hahaha");
+            fd.append("myfile", file);
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/uploadfile", true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
+                    var data = JSON.parse(xhr.responseText);
+                    fileOK(data.data);
+                }
+            };
+            xhr.send(fd);
+        }
+        function submitJq() {
+            console.log("通过JQuery上传文件");
+            var file = document.getElementById("file1").files[0];
+            var fd = new FormData();
+            fd.append("xxx", "hahaha");
+            fd.append("myfile", file);
+
+            $.ajax({
+                url: "/uploadfile",
+                type: "POST",
+                data: fd,
+                dataType: "JSON",
+                processData: false,                 /*告诉jQuery不要当做字符串做特殊处理*/
+                contentType: false,                 /*告诉jQuery不要当做字符串做特殊处理*/
+                success: function (data, state, xhr) {
+                    fileOK(data.data);
+                },
+                error: function () {
+                    console.log("error!")
+                }
+            });
+        }
+        function submitIframe() {
+            console.log("通过iFrame上传文件");
+            $("#ifm1").on("load", function () {
+                var text = $("#ifm1").contents().find("body").text();
+                var data = JSON.parse(text);
+                fileOK(data.data);
+            });
+        }
+        function fileOK(filename) {
+            $("#imgPreview").empty();
+            var imgTag = document.createElement("img");
+            imgTag.src = filename;
+            $("#imgPreview").append(imgTag);
+        }
+        function changeIfm() {
+            $("#ifm2").on("load", function () {
+                var text = $("#ifm2").contents().find("body").text();
+                var data = JSON.parse(text);
+                fileOK(data.data);
+            });
+            $("#form2").submit();
+        }
+    </script>
+{% endblock %}
