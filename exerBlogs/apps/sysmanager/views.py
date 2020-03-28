@@ -60,7 +60,7 @@ def login(request):
             return render(request, "sysmanager/login.html", {"info": "密码错误"})
         request.session.set_expiry(36000)
         request.session["LoginUser"] = username
-        return redirect("app-blogs:index")
+        return redirect(reverse("app-blogs:index", args=(1, )))
 
 
 def logout(request):

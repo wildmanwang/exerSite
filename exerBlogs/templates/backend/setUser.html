@@ -47,7 +47,7 @@
 {% block subScript %}
     <script>
         $("#btnCancel").click(function () {
-            location.href = "{% url 'app-blogs:index' %}"
+            location.href = "{% url 'app-blogs:index' pageNo=1 %}"
         });
     </script>
 {% endblock %}

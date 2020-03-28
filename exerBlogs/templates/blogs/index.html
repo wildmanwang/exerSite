@@ -98,6 +98,23 @@
         padding: 10px;
         overflow: hidden;
     }
+    .blogTable,.blogTr,.blogTd{
+        border: none;
+        font-size: 14px;
+        color: #555555;
+    }
+    .blogTh{
+        height: 35px;
+        text-align: center;
+        background-color: #555555;
+        color: #EEEEEE;
+        border: white 1px solid;
+    }
+    .blogTd{
+        height: 35px;
+        background-color: #EEEEEE;
+        border: white 1px solid;
+    }
 </style>
 {% endblock %}
 
@@ -114,6 +131,7 @@
         <a href="" class="left topFunMenu">招聘</a>
         <a href="" class="left topFunMenu">班级</a>
         <a href="" class="left topFunMenu">找找看</a>
+        <a href="{% url 'app-blogs:blogNew' %}" class="left topFunMenu">新增</a>
     </div>
     {# 4 内容区 #}
     <div class="firstLever" style="position: relative; ">
@@ -206,11 +224,32 @@
             {# 页面区 #}
             <div class="tabPageFrame">
                 <div class="tabPage" data-target="A">
-                    {% for rec in recList %}
-                    {% endfor %}
+                    <table class="blogTable">
+                        <tr class="blogTr">
+                            <td class="blogTh" style="width: 40px; ">序号</td>
+                            <td class="blogTh" style="width: 70%; min-width: 360px; ">标题</td>
+                            <td class="blogTh" style="width: 120px; ">作者</td>
+                            <td class="blogTh" style="width: 160px; ">创建时间</td>
+                            <td class="blogTh" style="width: 80px; ">点赞数</td>
+                        </tr>
+                        {% for rec in dataList %}
+                            <tr class="blogTr" recID="{{ rec.id }}">
+                                <td class="blogTd" style="text-align: center; ">{{ forloop.counter }}</td>
+                                <td class="blogTd blogTitle" style="color: #3366FF; cursor: pointer; ">{{ rec.title }}</td>
+                                <td class="blogTd">{{ rec.owner }}</td>
+                                <td class="blogTd">{{ rec.createTime|date:"Y-m-d h:i:s" }}</td>
+                                <td class="blogTd" style="text-align: center; ">{{ rec.upTimes }}</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                    <p>{{ pagetag|safe }}</p>
                 </div>
-                <div class="tabPage hide" data-target="B">精华</div>
-                <div class="tabPage hide" data-target="C">候选</div>
+                <div class="tabPage hide" data-target="B">
+                    <p>精华</p>
+                </div>
+                <div class="tabPage hide" data-target="C">
+                    <p>候选</p>
+                </div>
                 <div class="tabPage hide" data-target="D">新闻</div>
                 <div class="tabPage hide" data-target="E">关注</div>
                 <div class="tabPage hide" data-target="F">我评</div>
@@ -276,10 +315,19 @@
 
 
 {% block subScript %}
-<script>
-    $(".tabItem").click(function () {
-        $(this).addClass("tabActive").siblings().removeClass("tabActive");
-        $(".tabPageFrame div[data-target='" + $(this).attr("data-target") + "']").removeClass("hide").siblings().addClass("hide");
-    });
-</script>
+    <script src="/static/js/jquery.cookie.js"></script>
+    <script>
+        $("#PAGE_reccnt_perpage_select").val($.cookie("reccnt_perpage"));
+        $("#PAGE_reccnt_perpage_select").change(function () {
+            $.cookie("reccnt_perpage", $(this).val(), {path: "/"});
+            location.href = "{% url 'app-blogs:index' pageNo=1 %}";
+        });
+        $(".tabItem").click(function () {
+            $(this).addClass("tabActive").siblings().removeClass("tabActive");
+            $(".tabPageFrame div[data-target='" + $(this).attr("data-target") + "']").removeClass("hide").siblings().addClass("hide");
+        });
+        $(".blogTitle").click(function () {
+            location.href = "http://127.0.0.1:8000/blog-" + $(this).parent().attr("recID");
+        });
+    </script>
 {% endblock %}

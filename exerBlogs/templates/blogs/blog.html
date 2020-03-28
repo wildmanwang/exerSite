@@ -1,0 +1,102 @@
+{% extends "../extends/frameUser.html" %}
+
+
+{% block subStyle %}
+    <style>
+        .forZan{
+            border: #AABBCC 1px solid;
+            background-color: #DDEEFF;
+            color: #888888;
+            display: inline-block;
+            font-size: 14px;
+            margin: 50px 0 10px 10px;
+            padding: 5px 20px;
+            position: relative;
+        }
+        .zanOK{
+            background-color: #6699FF;
+            color: white;
+        }
+    </style>
+{% endblock %}
+
+
+{% block pageTitle %}
+    博客 - {{ rec.title }}
+{% endblock %}
+
+
+{% block subContents %}
+    <div style="min-width: 980px; margin: 10px 20px 10px 260px; ">
+        <form action="{% url 'app-blogs:blogNew' %}" method="POST">
+            {% csrf_token %}
+            <div style="background-color: #CCCCCC; ">标题</div>
+            <div>
+                <label id="title" type="text" style="width: 100%; " recID="{{ rec.id }}">{{ rec.title }}</label>
+            </div>
+            <div style="background-color: #CCCCCC; ">内容</div>
+            <div style="border: #EEEEEE 1px solid; ">
+                <div id="content" name="blogContent" style="margin: 10px 10px 50px 20px; ">{{ rec.contents|safe }}</div>
+            </div>
+            <div style="margin-top: 10px; ">
+                <input type="button" id="btn-rtn" value="返回">
+                <span id="numZan" style="margin: 50px 0 10px 50px; ">{{ rec.upTimes }}</span>
+                <span id="forZan" class="forZan {% if zan > 0 %}zanOK{% endif %} ">赞</span>
+            </div>
+        </form>
+    </div>
+{% endblock %}
+
+
+{% block subScript %}
+    <script>
+        $(function () {
+            $("#btn-rtn").click(function () {
+                location.href = "{% url 'app-blogs:index' pageNo=1 %}";
+            });
+            $("#forZan").click(function () {
+                if ($(this).attr("class") === "forZan zanOK") {
+                    $(this).removeClass("zanOK");
+                } else {
+                    var fontSize = 10;
+                    var top = -10;
+                    var right = -15;
+                    var opacity = 1.0;
+                    $(this).append("<span id='zan' style='display: inline-block; font-size: 10px; position: absolute; top: -10px; right: -15px; color: green; opacity: 1.0;'>+1</span>");
+                    var obj = setInterval(function () {
+                        fontSize += 8;
+                        top -= 20;
+                        right -= 20;
+                        opacity -= 0.1;
+                        $("#zan").css("fontSize", fontSize + "px");
+                        $("#zan").css("top", top + "px");
+                        $("#zan").css("right", right + "px");
+                        $("#zan").css("opacity", opacity);
+                        if (opacity < 0) {
+                            clearInterval(obj);
+                            $("#zan").remove();
+                        }
+                    }, 100);
+                    $(this).addClass("zanOK");
+                }
+                zan();
+            });
+            function zan() {
+                $.ajax({
+                    url: "{% url 'app-blogs:blogZan' %}",
+                    type: "POST",
+                    data: {
+                        "csrfmiddlewaretoken": $("input[name='csrfmiddlewaretoken']").val(),
+                        "blogID": $("#title").attr("recID")
+                    },
+                    dataType: "JSON",
+                    success: function (data, statusText, aRequest) {
+                        if (data.result) {
+                            $("#numZan").text(data.data);
+                        }
+                    }
+                })
+            }
+        })
+    </script>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends "../extends/frameUser.html" %}
+
+
+{% block pageTitle %}
+    新增博客
+{% endblock %}
+
+
+{% block subContents %}
+    <div style="min-width: 980px; margin: 10px 20px 10px 260px; ">
+        <form action="{% url 'app-blogs:blogNew' %}" method="POST">
+            {% csrf_token %}
+            <div style="background-color: #CCCCCC; ">标题</div>
+            <div>
+                <input type="text" style="width: 100%; " name="blogTitle" />
+            </div>
+            <div style="background-color: #CCCCCC; ">内容</div>
+            <div>
+                <textarea id="content" name="blogContent"></textarea>
+            </div>
+            <div style="margin-top: 10px; ">
+                <input type="submit" value="提交">
+                <input type="button" value="返回">
+            </div>
+        </form>
+    </div>
+{% endblock %}
+
+
+{% block subScript %}
+    <script src="/static/css/kindeditor/kindeditor-all-min.js"></script>
+    <script>
+        $(function () {
+            initKindEditor();
+        });
+        function initKindEditor() {
+            var kind = KindEditor.create('#content', {
+                width: '100%',       // 文本框宽度(可以百分比或像素)
+                height: '500px',     // 文本框高度(只能像素)
+                minWidth: 200,       // 最小宽度（数字）
+                minHeight: 400      // 最小高度（数字）
+            });
+        }
+    </script>
+{% endblock %}
