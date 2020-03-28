@@ -25,7 +25,7 @@ class Pages():
 
     @property
     def pageStr(self):
-        pagestr = '<div><select id="PAGE_reccnt_perpage_select" class="page right" style="width: 45px; color: rgb(127, 127, 127); margin: 0 2px 0 10px; "><option value="5">5</option><option value="10">10</option><option value="20">20</option><option value="50">50</option></select></div>'
+        pagestr = '<div><select id="PAGE_reccnt_perpage_select" class="page right" style="width: 45px; color: rgb(127, 127, 127); margin: 0 2px 0 10px; "><option value="5">5</option><option value="10">10</option><option value="20">20</option><option value="50">50</option></select>'
         for page in range(self.pageCnt, 0, -1):
             if self.curPage == page:
                 pagestr += '<span class="right" style="display: inline-block; color: rgb(127, 127, 127); margin: 0 7px; ">{page}</span>'.format(baseUrl=self.baseUrl, page=page)

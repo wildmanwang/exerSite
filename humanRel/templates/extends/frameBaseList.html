@@ -16,12 +16,12 @@
             {% block queryFields %}
             {% endblock %}
         </div>
+        <div class="promptInfo"></div>
         <div style="margin-top: 10px; ">
             {% csrf_token %}
             {% block dataGrid %}
             {% endblock %}
             <p>{{ pagetag|safe }}</p>
-            <span class="promptInfo"></span>
         </div>
         <div id="dialogDel" class="hide dialogMin">
             <span>确定要删除当前记录吗？</span>

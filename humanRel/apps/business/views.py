@@ -323,8 +323,12 @@ def relEventDelete(request, userID, nid):
     if not rec:
         rtn["info"] = "查无此记录%d" % (nid)
     else:
-        rec.delete()
-        rtn["result"] = True
+        try:
+            rec.delete()
+            rtn["result"] = True
+        except Exception as e:
+            rtn["result"] = False
+            rtn["info"] = "删除失败：" + str(e)
     return HttpResponse(json.dumps(rtn))
 
 
@@ -461,8 +465,12 @@ def relEventModifyBookDelete(request, userID, subid):
     if not rec:
         rtn["info"] = "查无此记录%d" % (subid)
     else:
-        rec.delete()
-        rtn["result"] = True
+        try:
+            rec.delete()
+            rtn["result"] = True
+        except Exception as e:
+            rtn["result"] = False
+            rtn["info"] = "删除失败：" + str(e)
     return HttpResponse(json.dumps(rtn))
 
 
@@ -594,8 +602,12 @@ def joinRecordDelete(request, userID, nid):
     if not rec:
         rtn["info"] = "查无此记录%d" % (nid)
     else:
-        rec.delete()
-        rtn["result"] = True
+        try:
+            rec.delete()
+            rtn["result"] = True
+        except Exception as e:
+            rtn["result"] = False
+            rtn["info"] = "删除失败：" + str(e)
     return HttpResponse(json.dumps(rtn))
 
 

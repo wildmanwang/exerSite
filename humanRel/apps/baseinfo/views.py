@@ -189,6 +189,19 @@ class FormPerson(Form):
 
 
 class FormFamily(Form):
+    id = fields.IntegerField(
+        label="ID",
+        widget=widgets.TextInput(attrs={"class": "inputType"}),
+        required=False,
+        help_text=["", ""]
+    )
+    user = forms.ModelChoiceField(
+        label="USER",
+        widget=widgets.Select(attrs={"class": "inputType"}),
+        queryset=User.objects.filter(status=1),
+        required=False,
+        help_text=["", ""]
+    )
     name = forms.ModelChoiceField(
         label="姓名",
         widget=widgets.Select(attrs={"class": "inputType"}),
@@ -225,6 +238,22 @@ class FormFamily(Form):
         error_messages={"max_length": "备注不能大于255位"},
         help_text=["其他信息", ""]
     )
+
+    def clean(self):
+        """
+        不可以选择已有家庭的户主
+        :return:
+        """
+        id = self.cleaned_data.get("id", None)
+        data = self.cleaned_data["name"]
+        if not id:
+            # 新增
+            queryRst = models.Family.objects.filter(name=data).first()
+        else:
+            queryRst = models.Family.objects.filter(name=data).exclude(id=id).first()
+        if queryRst:
+            raise ValidationError("{id}{name}不能重复定义家庭.".format(id=id, name=queryRst.name))
+        return self.cleaned_data
 
 
 @auth
@@ -273,8 +302,12 @@ def personDelete(request, userID, nid):
     if not rec:
         rtn["info"] = "查无此记录%d" % (nid)
     else:
-        rec.delete()
-        rtn["result"] = True
+        try:
+            rec.delete()
+            rtn["result"] = True
+        except Exception as e:
+            rtn["result"] = False
+            rtn["info"] = "删除失败：" + str(e)
     return HttpResponse(json.dumps(rtn))
 
 
@@ -363,7 +396,9 @@ def familyList(request, userID, status=9, pageNo=1):
 @auth
 def familyNew(request, userID):
     if request.method == "GET":
+        user = User.objects.filter(id=userID).first()
         dic = {
+            "user": user,
             "status": 1
         }
         obj = FormFamily(initial=dic)
@@ -373,7 +408,8 @@ def familyNew(request, userID):
         res = obj.is_valid()
         if res:
             obj.cleaned_data["user_id"] = userID
-            models.Family.objects.create(**obj.cleaned_data)
+            rst = models.Family.objects.create(**obj.cleaned_data)
+            models.Person.objects.filter(name=rst.name).update(family=rst)
             return redirect(reverse("app-base:familyList", args=(1, 1, )))
         else:
             return render(request, "baseinfo/familyNew.html", {"form": obj})
@@ -390,8 +426,12 @@ def familyDelete(request, userID, nid):
     if not rec:
         rtn["info"] = "查无此记录%d" % (nid)
     else:
-        rec.delete()
-        rtn["result"] = True
+        try:
+            rec.delete()
+            rtn["result"] = True
+        except Exception as e:
+            rtn["result"] = False
+            rtn["info"] = "删除失败：" + str(e)
     return HttpResponse(json.dumps(rtn))
 
 
@@ -400,6 +440,8 @@ def familyModify(request, userID, nid):
     if request.method == "GET":
         rec = models.Family.objects.filter(id=nid).first()
         dic = {
+            "id": rec.id,
+            "user": rec.user,
             "name": rec.name,
             "location": rec.location,
             "address": rec.address,
@@ -412,7 +454,7 @@ def familyModify(request, userID, nid):
         obj = FormFamily(data=request.POST)
         res = obj.is_valid()
         if res:
-            models.Family.objects.filter(id=nid).update(**obj.cleaned_data)
+            rst = models.Family.objects.filter(id=nid).update(**obj.cleaned_data)
             return redirect(reverse("app-base:familyList", args=(1, 1, )))
         else:
             return render(request, "baseinfo/familyModify.html", {"form": obj, "nid": nid})
