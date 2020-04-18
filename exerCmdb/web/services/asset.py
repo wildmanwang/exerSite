@@ -1,13 +1,12 @@
-from django.http.request import QueryDict
-from utils.pages import Pages
 from utils.baseServer import BaseService
-import json
-from web.models import Asset
+from web import models
 
 
 class ServiceAsset(BaseService):
     def __init__(self):
         super().__init__()
+
+        self.mainData = models.Asset
 
         self.condition_config = [
                 {
@@ -19,43 +18,43 @@ class ServiceAsset(BaseService):
                     "name": "device_type",
                     "caption": "设备类型",
                     "input_type": "select",
-                    "data_source": "device_type_list",
+                    "select_dict": "device_type_list",
                 },
                 {
                     "name": "business_unit",
                     "caption": "业务线",
                     "input_type": "select",
-                    "data_source": "business_unit_list",
+                    "select_dict": "business_unit_list",
                 },
                 {
                     "name": "idc",
                     "caption": "机房",
                     "input_type": "select",
-                    "data_source": "idc_list",
+                    "select_dict": "idc_list",
                 },
                 {
                     "name": "cabinet_order",
                     "caption": "机柜中序号",
                     "input_type": "input",
-                    "data_source": "",
+                    "select_dict": "",
                 },
                 {
                     "name": "employee",
                     "caption": "员工",
                     "input_type": "select",
-                    "data_source": "employee_list",
+                    "select_dict": "employee_list",
                 },
                 {
                     "name": "user",
                     "caption": "用户",
                     "input_type": "select",
-                    "data_source": "user_list",
+                    "select_dict": "user_list",
                 },
                 {
                     "name": "device_status_id",
                     "caption": "设备状态",
                     "input_type": "select",
-                    "data_source": "device_status_list",
+                    "select_dict": "device_status_list",
                 }
             ]
         self.table_config = [
@@ -63,7 +62,7 @@ class ServiceAsset(BaseService):
                     "colname": "id",        # 对应数据库列名
                     "caption": "Id",        # 显示的标题
                     "display": 0,           # 是否显示该列
-                    "edit": {},             # {"enable": 0, "type": "input", "dataDict": "", }编辑选项
+                    "edit": {},             # {"enable": 0, "type": "input", "dict": "", }编辑选项
                     "text": {},             # {"content": "{m}", "kwargs": {"m": "@device_type"}, "align": "center",}，@表示用数据列代入， @@表示使用数据字典
                     "attr": {},             # {"key1": "value2", "key2": "@column"}，@表示用数据列代入
                 },
@@ -71,7 +70,7 @@ class ServiceAsset(BaseService):
                     "colname": "device_type",
                     "caption": "设备类型",
                     "display": 1,
-                    "edit": {"enable": 0, "type": "select", "dataDict": "device_type_list", },
+                    "edit": {"enable": 0, "type": "select", "dict": "device_type_list", },
                     "text": {"content": "{m}", "kwargs": {"m": "@@device_type_list"}, "align": "left",},
                     "attr": {"kkk": "vvv"},
                 },
@@ -79,7 +78,7 @@ class ServiceAsset(BaseService):
                     "colname": "business_unit",
                     "caption": "业务线",
                     "display": 1,
-                    "edit": {"enable": 1, "type": "select", "dataDict": "business_unit_list", },
+                    "edit": {"enable": 1, "type": "select", "dict": "business_unit_list", },
                     "text": {"content": "{m}", "kwargs": {"m": "@@business_unit_list"}, "align": "left",},
                     "attr": {},
                 },
@@ -87,7 +86,7 @@ class ServiceAsset(BaseService):
                     "colname": "idc",
                     "caption": "机房",
                     "display": 1,
-                    "edit": {"enable": 1, "type": "select", "dataDict": "idc_list", },
+                    "edit": {"enable": 1, "type": "select", "dict": "idc_list", },
                     "text": {"content": "{m}", "kwargs": {"m": "@@idc_list"}, "align": "left",},
                     "attr": {},
                 },
@@ -111,7 +110,7 @@ class ServiceAsset(BaseService):
                     "colname": "employee",
                     "caption": "员工",
                     "display": 1,
-                    "edit": {"enable": 1, "type": "select", "dataDict": "employee_list", },
+                    "edit": {"enable": 1, "type": "select", "dict": "employee_list", },
                     "text": {"content": "{m}", "kwargs": {"m": "@@employee_list"}, "align": "left",},
                     "attr": {},
                 },
@@ -119,7 +118,7 @@ class ServiceAsset(BaseService):
                     "colname": "user",
                     "caption": "用户",
                     "display": 1,
-                    "edit": {"enable": 1, "type": "select", "dataDict": "user_list", },
+                    "edit": {"enable": 1, "type": "select", "dict": "user_list", },
                     "text": {"content": "{m}", "kwargs": {"m": "@@user_list"}, "align": "left",},
                     "attr": {},
                 },
@@ -135,7 +134,7 @@ class ServiceAsset(BaseService):
                     "colname": "device_status_id",
                     "caption": "设备状态",
                     "display": 1,
-                    "edit": {"enable": 1, "type": "select", "dataDict": "device_status_list", },
+                    "edit": {"enable": 1, "type": "select", "dict": "device_status_list", },
                     "text": {"content": "{m}", "kwargs": {"m": "@@device_status_list"}, "align": "center",},
                     "attr": {},
                 },
@@ -149,22 +148,21 @@ class ServiceAsset(BaseService):
                 }
             ]
 
-    def getBaseList(self, request):
-        # 获取列表数据
-        col_list = []
-        for col in self.table_config:
-            if col["colname"]:
-                col_list.append(col["colname"])
-        queryCon = json.loads(request.GET.get("conditionDict", None))
-        if len(queryCon) > 0:
-            rs = Asset.objects.filter(**queryCon).values(*col_list)
-        else:
-            rs = Asset.objects.values(*col_list)
-        # queryset不能json序列化，因此转换成列表
-        rs = list(rs)
+        self.page_config = {
+            "baseUrl": "asset-json",
+            "onClick": "1"
+        }
 
-    def postData(self, request):
-        pass
-
-    def deleteData(self, request):
-        pass
+        # 初始化数据字典
+        self.global_dict = {}
+        self.global_dict["device_status_list"] = {1: "上架", 2: "上线", 3: "离线", 4: "下架", }
+        dict_rs = list(models.AssetType.objects.values("id", "name"))
+        self.global_dict["device_type_list"] = dict(zip([item["id"] for item in dict_rs], [item["name"] for item in dict_rs]))
+        dict_rs = list(models.BusinessUnit.objects.values("id", "name"))
+        self.global_dict["business_unit_list"] = dict(zip([item["id"] for item in dict_rs], [item["name"] for item in dict_rs]))
+        dict_rs = list(models.Idc.objects.values("id", "name", "floor"))
+        self.global_dict["idc_list"] = dict(zip([item["id"] for item in dict_rs], [str(item["floor"]) + "楼-" + item["name"] for item in dict_rs]))
+        dict_rs = list(models.EmployeeInfo.objects.values("id", "name"))
+        self.global_dict["employee_list"] = dict(zip([item["id"] for item in dict_rs], [item["name"] for item in dict_rs]))
+        dict_rs = list(models.UserInfo.objects.values("id", "username"))
+        self.global_dict["user_list"] = dict(zip([item["id"] for item in dict_rs], [item["username"] for item in dict_rs]))

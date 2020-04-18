@@ -1,5 +1,13 @@
 class Pages():
     def __init__(self, totalCnt, perCnt, baseUrl, curPage=1, funClick=""):
+        """
+        分页控件
+        :param totalCnt:
+        :param perCnt:
+        :param baseUrl:
+        :param curPage:
+        :param funClick: 点击跳转，默认空，即a标签跳转
+        """
         self.totalCnt = totalCnt
         self.perCnt = perCnt
         self.funClick = funClick

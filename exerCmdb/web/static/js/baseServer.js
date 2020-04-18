@@ -95,7 +95,7 @@
         //     "name": "device_type",
         //     "caption": "设备类型",
         //     "input_type": "select",
-        //     "data_source": "device_type_list",
+        //     "select_dict": "device_type_list",
         // }
         // <div id="condition-grid" style="margin: 2px 5px 0 5px; border: #BBBBBB 1px solid; ">
         //     <div class="query-condition">
@@ -133,7 +133,7 @@
             var optTag = document.createElement("option");
             $(optTag).attr("name", col1.name);
             $(optTag).attr("input_type", col1.input_type);
-            $(optTag).attr("data_source", col1.data_source);
+            $(optTag).attr("select_dict", col1.select_dict);
             $(optTag).text(col1.caption);
             $(tag2).append(optTag);
         });
@@ -148,7 +148,7 @@
         $(tag4).addClass("left query-line query-btn");
         $(tag4).attr("name", "btn");
         $(tag4).text("查询");
-        $(tag4).attr("onclick", "$.initData(\"asset-json\", 1);");
+        $(tag4).attr("onclick", "$.initData(\"" + requestURL + "\", 1);");
         $(frameTag).append(tag4);
 
         $("#condition-grid").append(frameTag);
@@ -281,7 +281,7 @@
                         td.setAttribute("editable", "1");
                         td.setAttribute("edittype", confitem.edit.type);
                         if (confitem.edit.type === "select") {
-                            td.setAttribute("editdict", confitem.edit.dataDict);
+                            td.setAttribute("editdict", confitem.edit.dict);
                         }
                         td.setAttribute("origin", row[confitem["colname"]]);
                         td.setAttribute("current", row[confitem["colname"]]);
@@ -419,6 +419,7 @@
     jq.extend({
         "initData": function (url, pageNum) {
             requestURL = url;
+            console.log(requestURL);
             if (!pageNum) pageNum = getPageNum();
             initTable(pageNum);
         },
@@ -447,7 +448,7 @@
                 $(optTag).val("");
                 $(optTag).text("");
                 $(tagValue).append(optTag);
-                $.each(globalDict[opt.attr("data_source")], function (k1, v1) {
+                $.each(globalDict[opt.attr("select_dict")], function (k1, v1) {
                     optTag = document.createElement("option");
                     $(optTag).val(k1);
                     $(optTag).text(v1);
@@ -574,7 +575,7 @@
         },
         "operRefresh": function (obj) {
             editOper("editOut");
-            $.initData('asset-json', 0);
+            $.initData(requestURL, 0);
         }
     })
 })(jQuery);

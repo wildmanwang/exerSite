@@ -117,7 +117,7 @@
     <script src="/static/js/jquery.cookie.js"></script>
     <script>
         $(function () {
-            $.initData("asset-json", 1);
+            $.initData("{{ jsonUrl }}", 1);
         });
         $("#operDelCancel").click(function () {
             $("#dialogDelete").addClass("hide");
