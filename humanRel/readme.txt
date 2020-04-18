@@ -15,6 +15,13 @@ OK 网页模板
 OK 网页组件
 ?? 对于有参数的URL，jQuery中无法对参数动态赋值？如果参数以?arg=1形式，jQuery中可以赋值，而模板中如何反解？
 ?? select_related和prefetch_related
+功能标准化：列表、新增、修改、删除
+    https://github.com/howardandlili/AutoCMDB-master
+    https://github.com/KC9226/AutoCmdb
+    https://github.com/lingzhongxian/AutoCMDB
+    https://github.com/P79N6A/AutoCmdb
+    https://github.com/LamberMa/AutoCMDB
+    https://github.com/dragon0486/AutoCMDB
 中间件
 信号
 缓存
