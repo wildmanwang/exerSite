@@ -1,0 +1,4 @@
+问题列表：
+通过适配器连接MYSQL，提示错误：Server returns invalid timezone.Go to 'Advanced' tab and set 'serverTimezone' property manually
+    问题：适配器版本与数据库版本不匹配
+    解决：通过使用MYSQL 5.1适配器解决此问题

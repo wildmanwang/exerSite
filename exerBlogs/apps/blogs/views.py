@@ -1,21 +1,44 @@
 from django.shortcuts import render, redirect, reverse, HttpResponse
 from apps.sysmanager.views import auth
-from apps.blogs.models import Blog, BlogUpRecord
+from apps.blogs.models import Category, Article_type, Blog, BlogUpRecord
+from django.db import transaction       # 事务管理
 from datetime import datetime
 from utils.pages import Pages
+from utils.xss import XSSFilter
 import json
 
 # Create your views here.
 
 
 @auth
-def index(request, user, pageNo=1):
-    dataList = Blog.objects.all().order_by("-id")
+def index(request, user, *args, **kwargs):
+    condition = {}
+    pageNo = 1
+    for k, v in kwargs.items():
+        kwargs[k] = int(v)
+        if k == "pageNo":
+            pageNo = v
+        elif v == "0":
+            pass
+        else:
+            condition[k] = v
+    dataList = Blog.objects.filter(**condition).order_by("-id")
     cnt = request.COOKIES.get("reccnt_perpage")
     if not cnt:
         cnt = "10"
     page = Pages(len(dataList), int(cnt), "index-", pageNo)
-    rep = render(request, "blogs/index.html", {"dataList": dataList[page.startRec:page.endRec], "pagetag": page.pageStr, "user": user})
+    dsCategory = Category.objects.all()
+    dsArticle_type = Article_type.objects.all()
+    rep = render(
+        request,
+        "blogs/index.html", {
+            "dataList": dataList[page.startRec:page.endRec],
+            "pagetag": page.pageStr,
+            "user": user,
+            "dsCategory": dsCategory,
+            "dsArticle_type": dsArticle_type,
+            "kwargs": kwargs
+        })
     rep.set_cookie("reccnt_perpage", cnt, path="/")
     return rep
 
@@ -27,13 +50,16 @@ def blogNew(request, user):
     elif request.method == "POST":
         title = request.POST.get("blogTitle", None)
         contents = request.POST.get("blogContent", None)
-        obj = Blog.objects.create(
-            title=title,
-            contents=contents,
-            createTime=datetime.now(),
-            upTimes=0,
-            owner_id=user.id
-        )
+        contents = XSSFilter().process(contents)
+        with transaction.Atomic(using=None, savepoint=True):
+            # 全部数据库作为一个事务提交
+            obj = Blog.objects.create(
+                title=title,
+                contents=contents,
+                createTime=datetime.now(),
+                upTimes=0,
+                owner_id=user.id
+            )
         return redirect(reverse("app-blogs:index", args=(1, )))
 
 

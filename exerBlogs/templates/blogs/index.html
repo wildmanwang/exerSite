@@ -1,4 +1,5 @@
 {% extends "../extends/frameUser.html" %}
+{% load myfilter %}
 
 
 {% block subStyle %}
@@ -97,6 +98,24 @@
     .tabPage{
         padding: 10px;
         overflow: hidden;
+    }
+    .conTitle{
+        display: inline-block;
+        width: 120px;
+        font-size: 14px;
+        font-weight: bold;
+        margin: 5px;
+    }
+    .conItem{
+        display: inline-block;
+        font-size: 14px;
+        border: #BBBBBB 1px solid;
+        padding: 3px 6px;
+        margin: 5px;
+    }
+    .conSelect{
+        background-color: #EE8833;
+        color: #BBDDFF;
     }
     .blogTable,.blogTr,.blogTd{
         border: none;
@@ -224,32 +243,51 @@
             {# 页面区 #}
             <div class="tabPageFrame">
                 <div class="tabPage" data-target="A">
-                    <table class="blogTable">
-                        <tr class="blogTr">
-                            <td class="blogTh" style="width: 40px; ">序号</td>
-                            <td class="blogTh" style="width: 70%; min-width: 360px; ">标题</td>
-                            <td class="blogTh" style="width: 120px; ">作者</td>
-                            <td class="blogTh" style="width: 160px; ">创建时间</td>
-                            <td class="blogTh" style="width: 80px; ">点赞数</td>
-                        </tr>
-                        {% for rec in dataList %}
-                            <tr class="blogTr" recID="{{ rec.id }}">
-                                <td class="blogTd" style="text-align: center; ">{{ forloop.counter }}</td>
-                                <td class="blogTd blogTitle" style="color: #3366FF; cursor: pointer; ">{{ rec.title }}</td>
-                                <td class="blogTd">{{ rec.owner }}</td>
-                                <td class="blogTd">{{ rec.createTime|date:"Y-m-d h:i:s" }}</td>
-                                <td class="blogTd" style="text-align: center; ">{{ rec.upTimes }}</td>
-                            </tr>
+                    <div style="margin: 10px 0; ">
+                        <span class="conTitle">分类[normal]</span>
+                        <a href="/index-1-0-{{ kwargs.article_type_id }}" class="conItem {% if kwargs.category_id == 0 %}conSelect{% endif %}">全部</a>
+                        {% for item in dsCategory %}
+                            <a href="/index-1-{{ item.id }}-{{ kwargs.article_type_id }}" class="conItem {% if kwargs.category_id == item.id %}conSelect{% endif %}">{{ item.caption }}</a>
                         {% endfor %}
-                    </table>
+                    </div>
+                    <div style="margin: 10px 0; ">
+                        <span class="conTitle">分类[simple_tag]</span>
+                        {% filterBlog '全部' kwargs 'category_id' 0 kwargs.category_id %}
+                        {% for item in dsCategory %}
+                            {% filterBlog item.caption kwargs 'category_id' item.id kwargs.category_id %}
+                        {% endfor %}
+                    </div>
+                    <div style="margin: 10px 0 20px 0; ">
+                        <span class="conTitle">主题[simple_tag]</span>
+                        {% filterBlog '全部' kwargs 'article_type_id' 0 kwargs.article_type_id %}
+                        {% for item in dsArticle_type %}
+                            {% filterBlog item.caption kwargs 'article_type_id' item.id kwargs.article_type_id %}
+                        {% endfor %}
+                    </div>
+                    <div>
+                        <table class="blogTable">
+                            <tr class="blogTr">
+                                <td class="blogTh" style="width: 40px; ">序号</td>
+                                <td class="blogTh" style="width: 70%; min-width: 360px; ">标题</td>
+                                <td class="blogTh" style="width: 120px; ">作者</td>
+                                <td class="blogTh" style="width: 160px; ">创建时间</td>
+                                <td class="blogTh" style="width: 80px; ">点赞数</td>
+                            </tr>
+                            {% for rec in dataList %}
+                                <tr class="blogTr" recID="{{ rec.id }}">
+                                    <td class="blogTd" style="text-align: center; ">{{ forloop.counter }}</td>
+                                    <td class="blogTd blogTitle" style="color: #3366FF; cursor: pointer; ">{{ rec.title }}</td>
+                                    <td class="blogTd">{{ rec.owner }}</td>
+                                    <td class="blogTd">{{ rec.createTime|date:"Y-m-d h:i:s" }}</td>
+                                    <td class="blogTd" style="text-align: center; ">{{ rec.upTimes }}</td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
                     <p>{{ pagetag|safe }}</p>
                 </div>
-                <div class="tabPage hide" data-target="B">
-                    <p>精华</p>
-                </div>
-                <div class="tabPage hide" data-target="C">
-                    <p>候选</p>
-                </div>
+                <div class="tabPage hide" data-target="B">精华</div>
+                <div class="tabPage hide" data-target="C">候选</div>
                 <div class="tabPage hide" data-target="D">新闻</div>
                 <div class="tabPage hide" data-target="E">关注</div>
                 <div class="tabPage hide" data-target="F">我评</div>
@@ -320,7 +358,7 @@
         $("#PAGE_reccnt_perpage_select").val($.cookie("reccnt_perpage"));
         $("#PAGE_reccnt_perpage_select").change(function () {
             $.cookie("reccnt_perpage", $(this).val(), {path: "/"});
-            location.href = "{% url 'app-blogs:index' pageNo=1 %}";
+            location.href = "{% url 'app-blogs:index' pageNo=1 category_id=0 article_type_id=0 %}";
         });
         $(".tabItem").click(function () {
             $(this).addClass("tabActive").siblings().removeClass("tabActive");
