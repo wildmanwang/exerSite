@@ -1,0 +1,130 @@
+{% extends "layout/frame.html" %}
+
+
+{% block subStyle %}
+    <style>
+        .query-line{
+            display: inline-block;
+            border: #888888 1px solid;
+            border-left: none;
+            height: 36px;
+            line-height: 36px;
+            text-align: center;
+            margin: 2px 0;
+            font-size: 13px;
+        }
+        .query-condition{
+            overflow: hidden;
+        }
+        .query-condition button{
+            height: 38px;
+        }
+        .btn-oper{
+            width: 40px;
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            margin-left: 20px;
+            border-left: #888888 1px solid;
+            cursor: pointer;
+        }
+        .btn-flag{
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            border-radius: 3px;
+            margin-top: 11px;
+            line-height: 12px;
+            text-align: center;
+            background-color: #333333;
+            cursor: pointer;
+        }
+        .query-select{
+            width: 160px;
+            height: 38px;
+        }
+        .query-value-border{
+            width: 400px;
+            position: relative;
+        }
+        .query-value{
+            border: none;
+            width: 400px;
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            text-align: left;
+            line-height: 36px;
+        }
+        .query-btn{
+            padding: 0 30px;
+            margin-left: 2px;
+            background-color: #3F82BB;
+            border: #888888 1px solid;
+            color: white;
+            cursor: pointer;
+        }
+        .toolBtn{
+            padding: 0 30px;
+            border-right: #BBBBBB 1px solid;
+            height: 36px;
+            line-height: 36px;
+            text-align: center;
+            font-size: 13px;
+            cursor: pointer;
+        }
+        .toolBtn:hover{
+            background-color: #EEEEEE;
+        }
+        .check{
+            background-color: #dd8833;
+            color: white;
+        }
+        .check:hover{
+            background-color: #dd8833;
+            color: white;
+        }
+        .editBox{
+            display: block;
+            width: 100%;
+            height: 36px;
+            border: #BBBBBB 1px solid;
+            border-radius: 3px;
+        }
+    </style>
+{% endblock %}
+
+
+{% block subContent %}
+    {% csrf_token %}
+    <div id="condition-grid" style="margin: 2px 5px 0 5px; border: #BBBBBB 1px solid; "></div>
+    <div id="toolbar" style="margin: 0 5px; border: #BBBBBB 1px solid; border-top: none; overflow: hidden; "></div>
+    <div id="data-grid" style="margin: 0 5px 2px 5px; border: #BBBBBB 1px solid; border-top: none; "></div>
+    <div id="dialogDelete" class="dialogMin hide">
+        <span name="title">确定要删除选中的记录吗？</span>
+        <div style="margin-top: 20px; ">
+            <input id="operDelCancel" type="button" class="right inputBtn" style="margin-left: 10px; " value="取消">
+            <input id="operDelOk" type="button" class="right inputBtn" style="margin-left: 10px; " value="确定">
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block subScript %}
+    <script src="/static/js/baseServer.js"></script>
+    <script src="/static/js/jquery.cookie.js"></script>
+    <script>
+        $(function () {
+            $.initData("asset-json", 1);
+        });
+        $("#operDelCancel").click(function () {
+            $("#dialogDelete").addClass("hide");
+            $(".cover-layer").addClass("hide");
+        });
+        $("#operDelOk").click(function () {
+            $.operDelete();
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ExerCmdb</title>
+    <link href="/static/css/commons.css" type="text/css" rel="stylesheet" >
+    <style>
+        #pageHeader .menu{
+            width: 100px;
+            height: 48px;
+            line-height: 48px;
+            text-align: center;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        #pageHeader .menu:hover{
+            background-color: #3F82BB;
+        }
+        #pageHeader .menu .number{
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            line-height: 18px;
+            margin-left: 4px;
+            text-align: center;
+            border-radius: 10px;
+            font-size: 12px;
+        }
+        #leftMenu .menu{
+            height: 42px;
+            line-height: 42px;
+            background-color: #EEEEEE;
+            color: #333333;
+            border-bottom: #BBBBBB 1px solid;
+            text-align: center;
+            cursor: pointer;
+        }
+    </style>
+    {% block subStyle %}
+    {% endblock %}
+</head>
+<body>
+    <div id="pageHeader" style="height: 48px; overflow: hidden; background-color: #2F72AB; ">
+        <div class="left" style="width: 200px; text-align: center; height: 50px; line-height: 50px; color: white; font-size: 24px; font-weight: bold; background-color: #1c5a9c; ">ExerCmdb</div>
+        <div class="left menu">首页</div>
+        {% if pageTitle != '首页' %}
+            <div class="left menu">{{ pageTitle }}</div>
+        {% endif %}
+        <div class="right menu"><img src="/static/images/person_default.png" style="margin-top: 4px; border-radius: 20px; " /></div>
+        <div class="right menu">消息<span class="number" style="background-color: #EEEE22">4</span></div>
+        <div class="right menu">通知<span class="number" style="background-color: #22EE22">3</span></div>
+        <div class="right menu">任务<span class="number" style="background-color: #EE2222">1</span></div>
+    </div>
+    <div style="position: absolute; top: 50px; left: 0; right: 0; bottom: 0; ">
+        <div id="leftMenu" style="position: absolute; top: 0; left: 0; bottom: 0; width: 198px; border: #BBBBBB 1px solid; ">
+            <div class="menu">资产管理</div>
+            <div class="menu">用户管理</div>
+            <div class="menu">日志管理</div>
+        </div>
+        <div id="content" style="position: absolute; top: 0; left: 200px; right: 0; bottom: 0; border: #BBBBBB 1px solid; ">
+            {% block subContent %}
+            {% endblock %}
+        </div>
+    </div>
+    <div class="hide cover-layer"></div>
+    <div id="dialogInfo" class="dialogMin hide">
+        <span name="title">这里是提示信息。</span>
+        <div style="margin-top: 20px; ">
+            <input id="operInfoOk" type="button" class="right inputBtn" style="margin-left: 10px; " value="确定">
+        </div>
+    </div>
+    <script type="text/javascript" src="/static/js/jquery3.4.1.js"></script>
+    <script>
+        $("#operInfoOk").click(function () {
+            $("#dialogInfo").addClass("hide");
+            $(".cover-layer").addClass("hide");
+        });
+    </script>
+    {% block subScript %}
+    {% endblock %}
+</body>
+</html>
