@@ -1,0 +1,73 @@
+{% extends "layout/frame.html" %}
+
+
+{% block subStyle %}
+    <style>
+        table, tr, td{
+            border: none;
+            background-color: rgb(242, 242, 242);
+            font-size: 14px;
+        }
+        table{
+            border-bottom: #E2E2E2 1px solid;
+            width: 100%;
+        }
+        td{
+            height: 36px;
+        }
+        .groupTitle{
+            background-color: white;
+            padding-left: 50px;
+            height: 32px;
+        }
+        .col1{
+            width: 150px;
+            padding-left: 50px;
+        }
+        .col2{
+            width: 200px;
+        }
+        .col2 input{
+            width: 194px;
+            height: 26px;
+        }
+        .col2 select{
+            width: 198px;
+            height: 30px;
+        }
+        .col4{
+        }
+        .subRemark{
+            padding-left: 10px;
+            font-size: 12px;
+            color: darkgray;
+        }
+    </style>
+    {% block pageStyle %}
+    {% endblock %}
+{% endblock %}
+
+
+{% block subContent %}
+    <form id="data-form">
+        {% csrf_token %}
+        <div id="data-free"></div>
+    </form>
+    <p>
+        <input class="inputBtn" type="button" value="提交" style="margin-left: 196px; " onclick="$.operSave(); ">
+        <input id="btnReturn" class="inputBtn" type="button" value="返回">
+    </p>
+{% endblock %}
+
+
+{% block subScript %}
+    <script src="/static/js/baseDataDetail.js"></script>
+    <script src="/static/js/jquery.cookie.js"></script>
+    <script>
+        $(function () {
+            $.initData("{{ jsonUrl }}", "", "new");
+        });
+    </script>
+    {% block pageScript %}
+    {% endblock %}
+{% endblock %}

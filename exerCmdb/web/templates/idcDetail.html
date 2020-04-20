@@ -1,0 +1,10 @@
+{% extends "layout/frameBaseDetail.html" %}
+
+
+{% block pageScript %}
+    <script>
+        $("#btnReturn").click(function () {
+            location.href = "{% url 'idc' %}"
+        });
+    </script>
+{% endblock %}

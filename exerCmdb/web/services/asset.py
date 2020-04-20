@@ -1,8 +1,8 @@
-from utils.baseServer import BaseService
+from utils.dataService import BaseDataService
 from web import models
 
 
-class ServiceAsset(BaseService):
+class ServiceAsset(BaseDataService):
     def __init__(self):
         super().__init__()
 
@@ -59,92 +59,103 @@ class ServiceAsset(BaseService):
             ]
         self.table_config = [
                 {
-                    "colname": "id",        # 对应数据库列名
-                    "caption": "Id",        # 显示的标题
-                    "display": 0,           # 是否显示该列
-                    "edit": {},             # {"enable": 0, "type": "input", "dict": "", }编辑选项
-                    "text": {},             # {"content": "{m}", "kwargs": {"m": "@device_type"}, "align": "center",}，@表示用数据列代入， @@表示使用数据字典
-                    "attr": {},             # {"key1": "value2", "key2": "@column"}，@表示用数据列代入
+                    "colname": "id",
+                    "caption": "Id",
+                    "display": {"grid": 0, "new": 0, "detail": 0},
+                    "edit": {},
+                    "text": {},
+                    "attr": {},
+                    "group": "基础信息",
                 },
                 {
                     "colname": "device_type",
                     "caption": "设备类型",
-                    "display": 1,
+                    "display": {"grid": 1, "new": 1, "detail": 1},
                     "edit": {"enable": 0, "type": "select", "dict": "device_type_list", },
-                    "text": {"content": "{m}", "kwargs": {"m": "@@device_type_list"}, "align": "left",},
+                    "text": {"content": "{m}", "kwargs": {"m": "@@device_type_list"}, "align": "left", "remark": ["设备简单分类", "不同的设备管理不同"],},
                     "attr": {"kkk": "vvv"},
+                    "group": "",
                 },
                 {
                     "colname": "business_unit",
                     "caption": "业务线",
-                    "display": 1,
+                    "display": {"grid": 1, "new": 1, "detail": 1},
                     "edit": {"enable": 1, "type": "select", "dict": "business_unit_list", },
-                    "text": {"content": "{m}", "kwargs": {"m": "@@business_unit_list"}, "align": "left",},
+                    "text": {"content": "{m}", "kwargs": {"m": "@@business_unit_list"}, "align": "left", "remark": ["公司主业分类", "主要用于资源调度"],},
                     "attr": {},
+                    "group": "",
                 },
                 {
                     "colname": "idc",
                     "caption": "机房",
-                    "display": 1,
+                    "display": {"grid": 1, "new": 1, "detail": 1},
                     "edit": {"enable": 1, "type": "select", "dict": "idc_list", },
-                    "text": {"content": "{m}", "kwargs": {"m": "@@idc_list"}, "align": "left",},
+                    "text": {"content": "{m}", "kwargs": {"m": "@@idc_list"}, "align": "left", "remark": ["设备当前所在机房", "物理位置"],},
                     "attr": {},
+                    "group": "",
                 },
                 {
                     "colname": "cabinet_num",
                     "caption": "机柜号",
-                    "display": 1,
+                    "display": {"grid": 1, "new": 1, "detail": 1},
                     "edit": {"enable": 1, "type": "input", },
-                    "text": {"content": "{m}", "kwargs": {"m": "@cabinet_num"}, "align": "center",},
+                    "text": {"content": "{m}", "kwargs": {"m": "@cabinet_num"}, "align": "center", "remark": ["机房机柜", "机柜的编号"],},
                     "attr": {},
+                    "group": "",
                 },
                 {
                     "colname": "cabinet_order",
                     "caption": "机柜中序号",
-                    "display": 1,
+                    "display": {"grid": 1, "new": 1, "detail": 1},
                     "edit": {"enable": 1, "type": "input", },
-                    "text": {"content": "{m}", "kwargs": {"m": "@cabinet_order"}, "align": "center",},
+                    "text": {"content": "{m}", "kwargs": {"m": "@cabinet_order"}, "align": "center", "remark": ["机柜中的序号", ""],},
                     "attr": {},
+                    "group": "",
                 },
                 {
                     "colname": "employee",
                     "caption": "员工",
-                    "display": 1,
+                    "display": {"grid": 1, "new": 1, "detail": 1},
                     "edit": {"enable": 1, "type": "select", "dict": "employee_list", },
-                    "text": {"content": "{m}", "kwargs": {"m": "@@employee_list"}, "align": "left",},
+                    "text": {"content": "{m}", "kwargs": {"m": "@@employee_list"}, "align": "left", "remark": ["当前使用方", ""],},
                     "attr": {},
+                    "group": "其他信息",
                 },
                 {
                     "colname": "user",
                     "caption": "用户",
-                    "display": 1,
+                    "display": {"grid": 1, "new": 1, "detail": 1},
                     "edit": {"enable": 1, "type": "select", "dict": "user_list", },
-                    "text": {"content": "{m}", "kwargs": {"m": "@@user_list"}, "align": "left",},
+                    "text": {"content": "{m}", "kwargs": {"m": "@@user_list"}, "align": "left", "remark": ["运维登记方", ""],},
                     "attr": {},
+                    "group": "",
                 },
                 {
                     "colname": "remark",
                     "caption": "备注",
-                    "display": 1,
+                    "display": {"grid": 1, "new": 1, "detail": 1},
                     "edit": {"enable": 1, "type": "input", },
-                    "text": {"content": "{m}", "kwargs": {"m": "@remark"}, "align": "left",},
+                    "text": {"content": "{m}", "kwargs": {"m": "@remark"}, "align": "left", "remark": ["", ""],},
                     "attr": {},
+                    "group": "",
                 },
                 {
                     "colname": "device_status_id",
                     "caption": "设备状态",
-                    "display": 1,
+                    "display": {"grid": 1, "new": 1, "detail": 1},
                     "edit": {"enable": 1, "type": "select", "dict": "device_status_list", },
-                    "text": {"content": "{m}", "kwargs": {"m": "@@device_status_list"}, "align": "center",},
+                    "text": {"content": "{m}", "kwargs": {"m": "@@device_status_list"}, "align": "center", "remark": ["设备的当前状态", ""],},
                     "attr": {},
+                    "group": "",
                 },
                 {
                     "colname": None,
                     "caption": "操作",
-                    "display": 1,
+                    "display": {"grid": 1, "new": 0, "detail": 0},
                     "edit": {"enable": 0, },
                     "text": {"content": "<a href='/asset-detail-{m}.html'>查看详情</a>", "kwargs": {"m": "@id"}, "align": "center",},
                     "attr": {},
+                    "group": "",
                 }
             ]
 

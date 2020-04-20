@@ -2,6 +2,7 @@
     // 资料列表组件
     // 通过自执行函数封装，避免函数重名
     var requestURL;
+    var newURL;
     var globalDict;
 
     // 为字符串增加格式化方法
@@ -178,10 +179,10 @@
                 "onclick": "$.operSelectReverse(this)",
             },
             {
-                "name": "operAdd",
+                "name": "operNew",
                 "caption": "添加",
                 "click-type": "click",
-                "onclick": "$.operAdd(this)",
+                "onclick": "$.operNew(this)",
             },
             {
                 "name": "operDelete",
@@ -233,7 +234,7 @@
         $(th).attr("style", "width: 50px; ");
         $(tr).append(th);
         $.each(config, function (k, v) {
-            if(v.display){
+            if(v.display.grid){
                 th = document.createElement("th");
                 th.innerHTML = v.caption;
                 $(tr).append(th);
@@ -257,7 +258,7 @@
             $(td).attr("style", "background-color: #f2f2f2; text-align: center; ");
             $(tr).append(td);
             $.each(config, function (k2, confitem) {
-                if (confitem.display) {
+                if (confitem.display.grid) {
                     td = document.createElement("td");
                     var strStyle = "background-color: #f2f2f2; padding: 5px; text-align: " + confitem.text.align + "; ";
                     var kwargs = {};
@@ -417,9 +418,9 @@
 
     // 暴露调用接口
     jq.extend({
-        "initData": function (url, pageNum) {
-            requestURL = url;
-            console.log(requestURL);
+        "initData": function (jsonUrl, newUrl, pageNum) {
+            requestURL = jsonUrl;
+            newURL = newUrl;
             if (!pageNum) pageNum = getPageNum();
             initTable(pageNum);
         },
@@ -479,8 +480,8 @@
                 }
             });
         },
-        "operAdd": function (obj) {
-            console.log("select add!");
+        "operNew": function (obj) {
+            location.href = newURL;
         },
         "operDelQuestion": function (obj) {
             var num = 0;
@@ -559,7 +560,7 @@
                 conStr = JSON.stringify(updateDict);
                 $.ajax({
                     url: requestURL,
-                    type: "POST",
+                    type: "PUT",
                     traditional: true,
                     data: {"updateDict": conStr, "csrfmiddlewaretoken": $("#content input[name='csrfmiddlewaretoken']").val()},
                     dataType: "JSON",

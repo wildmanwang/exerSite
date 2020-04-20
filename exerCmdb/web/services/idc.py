@@ -1,8 +1,8 @@
-from utils.baseServer import BaseService
+from utils.dataService import BaseDataService
 from web import models
 
 
-class ServiceIdc(BaseService):
+class ServiceIdc(BaseDataService):
     def __init__(self):
         super().__init__()
 
@@ -22,36 +22,40 @@ class ServiceIdc(BaseService):
             ]
         self.table_config = [
                 {
-                    "colname": "id",        # 对应数据库列名
-                    "caption": "Id",        # 显示的标题
-                    "display": 0,           # 是否显示该列
-                    "edit": {},             # {"enable": 0, "type": "input", "dict": "", }编辑选项
-                    "text": {},             # {"content": "{m}", "kwargs": {"m": "@device_type"}, "align": "center",}，@表示用数据列代入， @@表示使用数据字典
-                    "attr": {},             # {"key1": "value2", "key2": "@column"}，@表示用数据列代入
+                    "colname": "id",
+                    "caption": "Id",
+                    "display": {"grid": 0, "new": 0, "detail": 0},
+                    "edit": {},
+                    "text": {},
+                    "attr": {},
+                    "group": "基础信息",
                 },
                 {
                     "colname": "name",
                     "caption": "名称",
-                    "display": 1,
+                    "display": {"grid": 1, "new": 1, "detail": 1},
                     "edit": {"enable": 1, "type": "input", "dict": "", },
-                    "text": {"content": "{m}", "kwargs": {"m": "@name"}, "align": "left",},
+                    "text": {"content": "{m}", "kwargs": {"m": "@name"}, "align": "left", "remark": ["备注信息1", "备注信息2"],},
                     "attr": {"kkk": "vvv"},
+                    "group": "",
                 },
                 {
                     "colname": "floor",
                     "caption": "楼层",
-                    "display": 1,
+                    "display": {"grid": 1, "new": 1, "detail": 1},
                     "edit": {"enable": 1, "type": "input", "dict": "", },
-                    "text": {"content": "{m}", "kwargs": {"m": "@floor"}, "align": "right",},
+                    "text": {"content": "{m}", "kwargs": {"m": "@floor"}, "align": "right", "remark": ["备注信息1", "备注信息2"],},
                     "attr": {},
+                    "group": "",
                 },
                 {
                     "colname": None,
                     "caption": "操作",
-                    "display": 1,
+                    "display": {"grid": 1, "new": 0, "detail": 0},
                     "edit": {"enable": 0, },
                     "text": {"content": "<a href='/idc-detail-{m}.html'>查看详情</a>", "kwargs": {"m": "@id"}, "align": "center", },
                     "attr": {},
+                    "group": "",
                 }
             ]
 

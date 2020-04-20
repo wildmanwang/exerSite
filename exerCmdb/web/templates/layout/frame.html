@@ -28,6 +28,7 @@
             font-size: 12px;
         }
         #leftMenu .menu{
+            display: block;
             height: 42px;
             line-height: 42px;
             background-color: #EEEEEE;
@@ -54,9 +55,8 @@
     </div>
     <div style="position: absolute; top: 50px; left: 0; right: 0; bottom: 0; ">
         <div id="leftMenu" style="position: absolute; top: 0; left: 0; bottom: 0; width: 198px; border: #BBBBBB 1px solid; ">
-            <div class="menu">资产管理</div>
-            <div class="menu">用户管理</div>
-            <div class="menu">日志管理</div>
+            <a href="{% url 'asset' %}" class="menu">资产管理</a>
+            <a href="{% url 'idc' %}" class="menu">机房管理</a>
         </div>
         <div id="content" style="position: absolute; top: 0; left: 200px; right: 0; bottom: 0; border: #BBBBBB 1px solid; ">
             {% block subContent %}

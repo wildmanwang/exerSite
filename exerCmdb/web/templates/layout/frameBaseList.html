@@ -113,11 +113,11 @@
 
 
 {% block subScript %}
-    <script src="/static/js/baseServer.js"></script>
+    <script src="/static/js/baseDataList.js"></script>
     <script src="/static/js/jquery.cookie.js"></script>
     <script>
         $(function () {
-            $.initData("{{ jsonUrl }}", 1);
+            $.initData("{{ jsonUrl }}", "{{ newUrl }}", 1);
         });
         $("#operDelCancel").click(function () {
             $("#dialogDelete").addClass("hide");
