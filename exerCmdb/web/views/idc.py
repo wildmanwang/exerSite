@@ -21,7 +21,7 @@ class IdcJsonView(View):
 
 class IdcDetailView(View):
     def get(self, request, nid, *args, **kwargs):
-        return render(request, "idcDetail.html", {"pageTitle": "机房详情", "jsonUrl": "idc-detail-json", "nid": nid})
+        return render(request, "idcDetail.html", {"pageTitle": "机房详情", "jsonUrl": "idc-detail-json", "baseUrl": "idc", "nid": nid})
 
 
 class IdcDetailJsonView(View):
@@ -31,12 +31,12 @@ class IdcDetailJsonView(View):
 
 class IdcNewView(View):
     def get(self, request, *args, **kwargs):
-        return render(request, "idcNew.html", {"pageTitle": "新增机房", "jsonUrl": "idc-new-json"})
-
-    def post(self, request, *args, **kwargs):
-        return ServiceIdc().postData(request)
+        return render(request, "idcNew.html", {"pageTitle": "新增机房", "jsonUrl": "idc-new-json", "baseUrl": "idc"})
 
 
 class IdcNewJsonView(View):
     def get(self, request, *args, **kwargs):
         return ServiceIdc().getNew(request)
+
+    def post(self, request, *args, **kwargs):
+        return ServiceIdc().postData(request)

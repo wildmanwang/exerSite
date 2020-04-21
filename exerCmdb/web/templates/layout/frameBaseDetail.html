@@ -43,7 +43,7 @@
 {% block subContent %}
     <div id="data-free"></div>
     <p>
-        <input id="btnReturn" class="inputBtn" type="button" value="返回" style="margin-left: 196px; ">
+        <input class="inputBtn" type="button" value="返回" style="margin-left: 196px; " onclick="$.operRtn(); ">
     </p>
 {% endblock %}
 
@@ -53,7 +53,7 @@
     <script src="/static/js/jquery.cookie.js"></script>
     <script>
         $(function () {
-            $.initData("{{ jsonUrl }}", {{ nid }}, "detail");
+            $.initData("{{ jsonUrl }}", "{{ baseUrl }}", {{ nid }}, "detail");
         });
     </script>
     {% block pageScript %}

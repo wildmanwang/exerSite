@@ -7,7 +7,6 @@ class ServiceIdc(BaseDataService):
         super().__init__()
 
         self.mainData = models.Idc
-
         self.condition_config = [
                 {
                     "name": "name",
@@ -58,11 +57,10 @@ class ServiceIdc(BaseDataService):
                     "group": "",
                 }
             ]
-
         self.page_config = {
-            "baseUrl": "idc-json",
+            "jsonUrl": "idc-json",
+            "newUrl": "idc-new",
             "onClick": "1"
         }
 
-        # 初始化数据字典
         self.global_dict = {}

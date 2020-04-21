@@ -1,7 +1,7 @@
 (function(jq){
     // 资料列表组件
     // 通过自执行函数封装，避免函数重名
-    var requestURL;
+    var jsonURL;
     var newURL;
     var globalDict;
 
@@ -29,7 +29,7 @@
         var conStr;
         conStr = JSON.stringify(getCondition());
         $.ajax({
-            url: requestURL,
+            url: jsonURL,
             type: "GET",
             traditional: true,
             data: {"conditionDict": conStr, "pageNum": pageNum, },
@@ -47,7 +47,7 @@
                     alert(data.message);
                 }
             }
-        })
+        });
     }
 
     function createFrame() {
@@ -149,7 +149,7 @@
         $(tag4).addClass("left query-line query-btn");
         $(tag4).attr("name", "btn");
         $(tag4).text("查询");
-        $(tag4).attr("onclick", "$.initData(\"" + requestURL + "\", 1);");
+        $(tag4).attr("onclick", "$.initData(\"" + jsonURL + "\", \"" + newURL + "\", 1);");
         $(frameTag).append(tag4);
 
         $("#condition-grid").append(frameTag);
@@ -307,7 +307,7 @@
         $("#PAGE_reccnt_perpage_select").val($.cookie("reccnt_perpage"));
         $("#PAGE_reccnt_perpage_select").change(function () {
             $.cookie("reccnt_perpage", $(this).val(), {path: "/"});
-            $.initData(requestURL);
+            $.initData(jsonURL, newURL, 1);
         });
     }
 
@@ -419,7 +419,7 @@
     // 暴露调用接口
     jq.extend({
         "initData": function (jsonUrl, newUrl, pageNum) {
-            requestURL = jsonUrl;
+            jsonURL = jsonUrl;
             newURL = newUrl;
             if (!pageNum) pageNum = getPageNum();
             initTable(pageNum);
@@ -510,7 +510,7 @@
             if (num > 0) {
                 conStr = JSON.stringify(deleteList);
                 $.ajax({
-                    url: requestURL,
+                    url: jsonURL,
                     type: "DELETE",
                     traditional: true,
                     data: {"deleteList": conStr, "csrfmiddlewaretoken": $("#content input[name='csrfmiddlewaretoken']").val()},
@@ -559,7 +559,7 @@
             if (num > 0) {
                 conStr = JSON.stringify(updateDict);
                 $.ajax({
-                    url: requestURL,
+                    url: jsonURL,
                     type: "PUT",
                     traditional: true,
                     data: {"updateDict": conStr, "csrfmiddlewaretoken": $("#content input[name='csrfmiddlewaretoken']").val()},
@@ -576,7 +576,7 @@
         },
         "operRefresh": function (obj) {
             editOper("editOut");
-            $.initData(requestURL, 0);
+            $.initData(jsonURL, newURL, 0);
         }
     })
 })(jQuery);

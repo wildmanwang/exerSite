@@ -1,7 +1,8 @@
 (function(jq){
     // 资料列表组件
     // 通过自执行函数封装，避免函数重名
-    var requestURL;
+    var jsonURL;
+    var baseURL;
     var globalDict;
 
     // 为字符串增加格式化方法
@@ -26,7 +27,7 @@
 
     function initTable(nid, stype) {
         $.ajax({
-            url: requestURL,
+            url: jsonURL,
             type: "GET",
             traditional: true,
             data: {"nid": nid, },
@@ -127,24 +128,29 @@
 
     // 暴露调用接口
     jq.extend({
-        "initData": function (url, nid, stype) {
-            requestURL = url;
+        "initData": function (jsonUrl, baseUrl, nid, stype) {
+            jsonURL = jsonUrl;
+            baseURL = baseUrl;
             initTable(nid, stype);
         },
         "operSave": function () {
             $.ajax({
-                url: requestURL,
+                url: jsonURL,
                 type: "POST",
                 data: $("#data-form").serialize(),
                 dataType: "JSON",
                 success: function (data, statusText, xmlRequest) {
                     if(data.status) {
                         alert("数据保存成功！");
+                        location.href = baseURL;
                     }else {
-                        alert(data.message);
+                        $("#errInfo").text(data.message);
                     }
                 }
             });
         },
+        "operRtn": function () {
+            location.href = baseURL;
+        }
     })
 })(jQuery);

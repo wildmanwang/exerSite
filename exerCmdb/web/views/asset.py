@@ -21,7 +21,7 @@ class AssetJsonView(View):
 
 class AssetDetailView(View):
     def get(self, request, nid, *args, **kwargs):
-        return render(request, "assetDetail.html", {"pageTitle": "资产详情", "jsonUrl": "asset-detail-json", "nid": nid})
+        return render(request, "assetDetail.html", {"pageTitle": "资产详情", "jsonUrl": "asset-detail-json", "baseUrl": "asset", "nid": nid})
 
 
 class AssetDetailJsonView(View):
@@ -31,7 +31,7 @@ class AssetDetailJsonView(View):
 
 class AssetNewView(View):
     def get(self, request, *args, **kwargs):
-        return render(request, "assetNew.html", {"pageTitle": "新增资产", "jsonUrl": "asset-new-json"})
+        return render(request, "assetNew.html", {"pageTitle": "新增资产", "jsonUrl": "asset-new-json", "baseUrl": "asset"})
 
 
 class AssetNewJsonView(View):

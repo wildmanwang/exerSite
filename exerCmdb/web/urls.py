@@ -13,6 +13,6 @@ urlpatterns = [
     re_path(r'idc-json$', idc.IdcJsonView.as_view()),
     re_path(r'idc-detail-(?P<nid>\d+)', idc.IdcDetailView.as_view()),
     re_path(r'idc-detail-json', idc.IdcDetailJsonView.as_view()),
-    re_path(r'idc-new', idc.IdcNewView.as_view(), name='idc-new'),
-    re_path(r'idc-new-json', idc.IdcNewJsonView.as_view()),
+    re_path(r'idc-new$', idc.IdcNewView.as_view(), name='idc-new'),
+    re_path(r'idc-new-json$', idc.IdcNewJsonView.as_view()),
 ]

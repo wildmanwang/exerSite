@@ -7,7 +7,6 @@ class ServiceAsset(BaseDataService):
         super().__init__()
 
         self.mainData = models.Asset
-
         self.condition_config = [
                 {
                     "name": "cabinet_num",
@@ -68,7 +67,7 @@ class ServiceAsset(BaseDataService):
                     "group": "基础信息",
                 },
                 {
-                    "colname": "device_type",
+                    "colname": "device_type_id",
                     "caption": "设备类型",
                     "display": {"grid": 1, "new": 1, "detail": 1},
                     "edit": {"enable": 0, "type": "select", "dict": "device_type_list", },
@@ -77,7 +76,7 @@ class ServiceAsset(BaseDataService):
                     "group": "",
                 },
                 {
-                    "colname": "business_unit",
+                    "colname": "business_unit_id",
                     "caption": "业务线",
                     "display": {"grid": 1, "new": 1, "detail": 1},
                     "edit": {"enable": 1, "type": "select", "dict": "business_unit_list", },
@@ -86,7 +85,7 @@ class ServiceAsset(BaseDataService):
                     "group": "",
                 },
                 {
-                    "colname": "idc",
+                    "colname": "idc_id",
                     "caption": "机房",
                     "display": {"grid": 1, "new": 1, "detail": 1},
                     "edit": {"enable": 1, "type": "select", "dict": "idc_list", },
@@ -113,7 +112,7 @@ class ServiceAsset(BaseDataService):
                     "group": "",
                 },
                 {
-                    "colname": "employee",
+                    "colname": "employee_id",
                     "caption": "员工",
                     "display": {"grid": 1, "new": 1, "detail": 1},
                     "edit": {"enable": 1, "type": "select", "dict": "employee_list", },
@@ -122,7 +121,7 @@ class ServiceAsset(BaseDataService):
                     "group": "其他信息",
                 },
                 {
-                    "colname": "user",
+                    "colname": "user_id",
                     "caption": "用户",
                     "display": {"grid": 1, "new": 1, "detail": 1},
                     "edit": {"enable": 1, "type": "select", "dict": "user_list", },
@@ -158,9 +157,9 @@ class ServiceAsset(BaseDataService):
                     "group": "",
                 }
             ]
-
         self.page_config = {
-            "baseUrl": "asset-json",
+            "jsonUrl": "asset-json",
+            "newUrl": "asset-new",
             "onClick": "1"
         }
 

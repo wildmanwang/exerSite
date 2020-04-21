@@ -81,7 +81,7 @@ class BaseDataService(object):
                 tmpFun = "$.initData"
             else:
                 tmpFun = ""
-            page = Pages(len(rs), int(cnt), self.page_config["baseUrl"], request.GET.get("pageNum", 1), tmpFun)
+            page = Pages(len(rs), int(cnt), self.page_config["jsonUrl"], self.page_config["newUrl"], request.GET.get("pageNum", 1), tmpFun)
 
             # 返回数据
             response.data = {
@@ -114,7 +114,12 @@ class BaseDataService(object):
     def postData(self, request):
         response = BaseResponse()
         try:
-            self.mainData.objects.create(**request.POST)
+            tmpDict = dict(request.POST)
+            tmpDict.pop("csrfmiddlewaretoken")
+            newDict = {}
+            for key, value in tmpDict.items():
+                newDict[key] = value[0]
+            self.mainData.objects.create(**newDict)
         except Exception as e:
             response.status = False
             response.message = str(e)
