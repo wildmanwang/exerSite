@@ -26,7 +26,7 @@ def index(request, user, *args, **kwargs):
     cnt = request.COOKIES.get("reccnt_perpage")
     if not cnt:
         cnt = "10"
-    page = Pages(len(dataList), int(cnt), "index-", pageNo)
+    page = Pages(len(dataList), int(cnt), "index-1-1-", pageNo)
     dsCategory = Category.objects.all()
     dsArticle_type = Article_type.objects.all()
     rep = render(
@@ -60,7 +60,7 @@ def blogNew(request, user):
                 upTimes=0,
                 owner_id=user.id
             )
-        return redirect(reverse("app-blogs:index", args=(1, )))
+        return redirect(reverse("app-blogs:index", args=(1, 1, 1, )))
 
 
 @auth

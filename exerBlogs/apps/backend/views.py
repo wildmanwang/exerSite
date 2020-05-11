@@ -54,7 +54,7 @@ def setUser(request, user):
         mf = MfUser(request.POST, instance=rec)
         if mf.is_valid():
             mf.save()
-            return redirect(reverse("app-blogs:index", args=(1, )))
+            return redirect(reverse("app-blogs:index", args=(1, 1, 1, )))
         else:
             return render(request, "backend/setUser.html", {"menuItem": "user", "rec": mf})
 
@@ -70,7 +70,7 @@ def setAcct(request, user):
         mf = MfUserInfo(request.POST, instance=rec)
         if mf.is_valid():
             mf.save()
-            return redirect(reverse("app-blogs:index", args=(1, )))
+            return redirect(reverse("app-blogs:index", args=(1, 1, 1, )))
         else:
             return render(request, "backend/setAcct.html", {"menuItem": "acct", "rec": mf})
 
