@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="3ef271f7-0b84-43f7-af6c-3f99f92dfb85" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/a/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/a/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/b/.idea/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/a/.idea/AutoCMDB.iml" beforeDir="false" afterPath="$PROJECT_DIR$/a/.idea/AutoCMDB.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/a/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/a/.idea/dataSources.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/a/.idea/dataSources/3633ae45-2eaa-499b-8c1b-91b34998bdd2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/a/.idea/dataSources/3633ae45-2eaa-499b-8c1b-91b34998bdd2.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/a/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/a/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/a/AutoCMDB/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/a/AutoCMDB/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/a/repository/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/a/repository/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/b/.idea/AutoCmdb.iml" beforeDir="false" afterPath="$PROJECT_DIR$/b/.idea/AutoCmdb.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/b/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/b/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/b/.idea/dataSources/a7980f93-ae96-42b8-822d-421e7bb9c047.xml" beforeDir="false" afterPath="$PROJECT_DIR$/b/.idea/dataSources/a7980f93-ae96-42b8-822d-421e7bb9c047.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/b/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/b/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/b/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/b/.idea/workspace.xml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/b" />
+  </component>
+  <component name="ProjectId" id="1fuGZKiAJzf7CdnD0sxTXK2zUgo" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../exerDjango" />
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="3ef271f7-0b84-43f7-af6c-3f99f92dfb85" name="Default Changelist" comment="" />
+      <created>1597060618379</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1597060618379</updated>
+      <workItem from="1597060620503" duration="67000" />
+    </task>
+    <servers />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="740" y="274" key="FileChooserDialogImpl" timestamp="1597060686376">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="740" y="274" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1597060686376" />
+  </component>
+</project>
